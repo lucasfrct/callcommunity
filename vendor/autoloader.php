@@ -36,7 +36,7 @@ spl_autoload_register ( function ( $class ) {
 
     // if the file exists, require it
     if ( file_exists ( $file ) ) {
-        require $file;
+        require_once ( $file );
     };
 
     echo $file."<br>";

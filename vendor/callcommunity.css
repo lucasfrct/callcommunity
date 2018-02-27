@@ -18,6 +18,12 @@ body .preloader {
 	color: #0277BD;
 }
 
+body header h3 {
+	margin: 0;
+	padding: 0;
+	padding-top: 0.25em;
+}
+
 body .contacts {
 
 } 
@@ -59,7 +65,7 @@ body .contacts .contacts-details .close {
 	margin: 3px 7px;
 }
 
-body .contacts .contacts-details button[name="save"] {
+body .contacts .contacts-details button[name="edit"] {
 	padding: 0 14px;
 	margin: 3px 7px;
 	float: right;
@@ -151,7 +157,7 @@ body .contacts .contacts-list li {
 	border-bottom: solid 1px #DDD;
 	padding: 4px 7px;
 	cursor: pointer;
-	height: 36px;
+	min-height: 36px !important;
 	line-height: 24px;
 	transition: all 0.3s ease-in-out;
 }
@@ -181,4 +187,121 @@ body .contacts .contacts-list li:focus {
 	background-color: rgba( 0, 0, 0, 0.08 );
 	outline: solid 0.1px rgba( 0, 0, 0, 0.2 );
 	
+}
+
+
+
+
+
+
+
+
+body .calendar .notification-date-week {
+	background-color: rgba( 255, 255, 255, 0.99 );
+	border: solid 0.1px #CCC;
+	position: absolute;
+	z-index: 10;
+}
+
+body .calendar .notification-date-week span {
+	font-size: 2em;
+	line-height: 1.3em;
+	text-align: center;
+	display: block;
+}
+
+body .calendar .notification-date-week strong {
+	line-height: 1em;
+	display: block;
+	text-align: center;
+}
+
+body .calendar .calendar-table {
+	border-bottom: solid 1px #AAA;
+	position: absolute;
+	opacity: 0;
+	transition: all 0.3s ease-in-out;
+	transform: scale(0.1,0.1);
+}
+
+body .calendar:focus-within > .calendar-table {
+	z-index: 10;
+	opacity: 1;
+	transform: scale(1,1);
+}
+
+body .calendar .calendar-table > table {
+	width: calc( 100% - 5px );
+	margin-left: 3px;
+	border:  transparent;
+	counter-reset: days;
+	height: calc( ( ( 100vh / 24 ) * 13 ) - 5px );
+	margin-top: 3px;
+}
+
+body .calendar .calendar-table > table tr:hover {
+	box-shadow: none;
+}
+
+body .calendar .calendar-table > table tr td th {
+	text-align: left;
+}
+
+body .calendar .calendar-table > table tr td {
+	position: relative;
+}
+
+body .calendar .calendar-table > table tr td::before {
+	counter-increment: days;
+	content: counter(days);
+	display: inline-block;
+	position: relative;
+	font-size: 0.7em;
+	width: 14px;
+	height: 14px;
+	text-align: left;
+	margin-bottom: -14px;
+	margin-right: -14px;
+	top: -9px;
+	left: -6px;
+}
+
+body .calendar .calendar-day {
+
+}
+
+body .calendar .calendar-day ul {
+	counter-reset: hour;
+}
+
+body .calendar .calendar-day ul li {
+	background-color: #FFF;
+	min-height: 30px;
+	border-bottom: solid 0.1px #DDD;
+	width: calc( 100% - ( ( 100% / 12 ) * 2 ) );
+	margin-left: calc( ( 100% / 12 ) * 2 );
+	font-size: 1.1em;
+	line-height: 2em;
+	padding: 0 7px 0 14px;
+	cursor: s-resize;
+}
+
+body .calendar .calendar-day ul li::before {
+	min-height: inherit;
+	counter-increment: hour;
+	content: ""counter(hour)":00";
+	display: inline-block;
+	position: relative;
+	top: 0;
+	left: 0;
+	margin-left: calc( ( ( 100% / 12) * -2.4 ) - 16px );
+	margin-right: calc( 3% + 7px );
+	width: calc( ( ( 100% / 12 ) * 2.2 ) - 7px );
+	text-align: right;
+	background-color: inherit;
+	padding: 0;
+	padding-right: 7px;
+	font-size: inherit;
+	line-height: inherit;
+	border-bottom: inherit;
 }

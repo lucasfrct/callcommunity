@@ -13,12 +13,12 @@
 		<div class="row-xs-2 col-xs-8 text-center"><h3>Contatos</h3></div>
 		<div class="line-dashed row-xs-2 col-xs-2"></div>
 	</header>
-	<main class="row-xs-18 row-xs-fluid col-xs-12">
-		<div class="contacts">
+	<main class="row-xs-19 row-xs-fluid col-xs-12">
+		<div class="contacts col-xs-12 row-xs-19">
 			<section class="contacts-details col-xs-12 row-xs-16">
 				<div class="col-xs-3 row-xs-2"><span class="close" data-btn="ghost">x</span></div>
 				<div class="menu col-xs-9 row-xs-2" tabindex="0">
-					<button name="save" data-btn="ghost">Salvar</button>
+					<button name="edit" data-btn="ghost" data-clicked="Salvar">Editar</button>
 				</div>
 				<hr>
 				<div class="col-xs-12 row-xs-13" tabindex="1">
@@ -26,26 +26,27 @@
 						<span class="contacts-ancor">L</span>
 					</div>
 					<div class="col-xs-9 row-xs-5">
-						<textarea name="name" value="" placeholder="Nome" rows="3" >Lucas Ferreira Costa</textarea>
+						<textarea name="name" value="" placeholder="Nome" rows="3" disabled >Lucas Ferreira Costa</textarea>
 					</div>
 					<div class="col-xs-12 row-xs-7">
-						<button class="item-list" data-btn="ghost" >Add</button>
+						<button class="item-list" data-btn="ghost" disabled >Add</button>
 						<ul class="contacts-details-list">
 							<li>
-								<textarea name="condominio" value="" rows="3" placeholder="Condomínio">Condomínio Costa Sol - Bl: 06B - Ap: 122A</textarea>
+								<textarea name="condominio" value="" rows="3" placeholder="Condomínio" disabled >Condomínio Costa Sol - Bl: 06B - Ap: 122A</textarea>
 							</li>
-							<li>Tel: <input type="text" name="tel" value="( 12 ) 99128-5145" placeholder="Telefone"></li>
-							<li>Tel: <input type="text" name="tel" value="( 12 ) 99128-5145" placeholder="Telefone"></li>
-							<li>Tel: <input type="text" name="tel" placeholder="Telefone"></li>
+							<li>Tel: <input type="text" name="tel" value="( 12 ) 99128-5145" placeholder="Telefone" disabled></li>
+							<li>Tel: <input type="text" name="tel" value="( 12 ) 99128-5145" placeholder="Telefone" disabled></li>
+							<li>Tel: <input type="text" name="tel" placeholder="Telefone" disabled></li>
 						</ul>
 					</div>
 				</div>
 			</section>
-			<ul class="contacts-list">
-				<li class="" data-first-letter="L" tabindex="1">Lucas Ferreira Costa</li>
-				<li class="" data-first-letter="R" tabindex="1">Rafael Lírio Moreira</li>
-			</ul>
-			
+			<section class=" col-xs-12 row-xs-19">
+				<ul class="contacts-list">
+					<li class="" data-first-letter="L" tabindex="1">Lucas Ferreira Costa</li>
+					<li class="" data-first-letter="R" tabindex="1">Rafael Lírio Moreira</li>
+				</ul>
+			</section>
 		</div>
 	</main>
 	<footer class="row-xs-3 background-secondary">

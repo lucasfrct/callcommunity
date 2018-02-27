@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
+	<title>Crud</title>
+</head>
+<body>
+	<script>
+
+		function dispatch (  $data = null, $fn = null ) {
+			
+			var $ajax = $.ajax( {
+				method: "POST",
+				url: "Service.php",
+				data: $data,
+			} );
+
+			$ajax.done ( function ( $data ) {
+				if ( $fn ) {
+					$fn ( JSON.parse ( $data ) );
+				};
+			} );	
+		};
+
+		var $create = { 
+			action: "create", 
+			table: "crud.address", 
+			data: { idUser: "1", street: "street1", city: "city1", country: "country1"}, 
+		};
+
+		$read = { 
+			action: "read", 
+			table: "crud.address", 
+			fields: "*", 
+			id: "",
+		};
+
+		$update = { 
+			action: "update", 
+			table: "crud.address", 
+			data: { street:"s2", city:"c2" }, 
+			id: "2", 
+		};
+
+		$delete = { 
+			action: "delete", 
+			table: "crud.address", 
+			id: "3", 
+		};
+
+		dispatch ( $read, function ( $data ) {
+			alert ( JSON.stringify ( $data ) );
+		} );
+
+	</script>
+</body>
+</html>

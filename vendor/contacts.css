@@ -1,0 +1,164 @@
+body .contacts {
+
+} 
+
+body .contacts .contacts-details {
+	display: block;
+	background-color: #FAFAFA;
+	z-index: 10;
+	border: solid 1px #00F;
+	position: absolute;
+	height: 10px;
+	min-height: 10px;
+	transition: all 0.3s ease-in-out;
+	transform: scale( 0.1,0.5 );
+	opacity: 0;
+}
+
+body .contacts:focus-within > .contacts-details {
+	display: block;
+	border: solid 1px #AAA;
+	height: calc( ( 100vh / 24 ) * 16 );
+	opacity: 1;
+	transform: scale( 1,1 );
+}
+
+body .contacts:focus-within > .contacts-details * {
+	outline: 0;
+}
+
+body .contacts .contacts-details .close {
+	color: #F00;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 0;
+	margin-top: 4px;
+	position: relative;
+	text-align: center;
+	line-height: 24px;
+	margin: 3px 7px;
+}
+
+body .contacts .contacts-details button[name="edit"] {
+	padding: 0 14px;
+	margin: 3px 7px;
+	float: right;
+}
+
+body .contacts .contacts-details .contacts-ancor {
+	display: block;
+	background-color: #424242;
+	width: 52px;
+	height: 52px;
+	text-align: center;
+	color: #FAFAFA;
+	font-size: 24px;
+	line-height: 48px;
+	border-radius: 50%;
+	margin-left: calc( 50% - 26px );
+	position: relative;
+	margin-top: 15%;
+}
+
+body .contacts .contacts-details input, 
+body .contacts .contacts-details textarea {
+	outline: 0;
+	border: none;
+	background-color: transparent;
+	font: inherit;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 3px 7px;
+}
+
+body .contacts .contacts-details input:focus , 
+body .contacts .contacts-details textarea:focus {
+	background-color: rgba( 0, 0, 0, 0.05 );
+}
+
+body .contacts .contacts-details textarea {
+	width: calc( 100% - 30px );
+
+}
+
+body .contacts .contacts-details textarea[name="name"] {
+	margin-top: calc( ( 100vh / 24 ) - 7px );
+	font-size: 16px;
+	padding: 7px;
+}
+
+body .contacts .contacts-details textarea[name="condominio"] {
+}
+
+body .contacts .contacts-details button.item-list {
+	position: absolute;
+	height: 36px;
+	padding: 0 14px;
+	margin: 0;
+	float: right;
+	right: 0;
+	bottom: 0;
+	margin-top: calc( ( 100vh / 24 ) * 7 - 38px );
+	margin-left: calc( 100% - 60px );
+	line-height: 14px;
+	font-size: 14px;
+	z-index: 10;
+}
+
+body .contacts .contacts-details .contacts-details-list {
+	display: block;
+	border-top: solid 0.1px #DDD;
+}
+
+body .contacts .contacts-details ul.contacts-details-list > li {
+	height: 24px !important;
+	min-height: 24px !important;
+	margin: 0;
+	padding: 0;
+	padding: 6px 12px;
+}
+
+body .contacts .contacts-details ul.contacts-details-list > li:first-child {
+	height: 60px !important;
+	min-height: 60px !important;
+}
+
+body .contacts .contacts-list {
+	padding: 14px 7px 7px 7px;
+}
+
+body .contacts .contacts-list li {
+	border-bottom: solid 1px #DDD;
+	padding: 4px 7px;
+	cursor: pointer;
+	min-height: 36px !important;
+	line-height: 24px;
+	transition: all 0.3s ease-in-out;
+}
+
+body .contacts .contacts-list li::before {
+
+}
+
+body .contacts .contacts-list li::before {
+	content: attr(data-first-letter) "";
+	display: inline-block;
+	border: solid 1px #424242;
+	top: 0px;
+	left: 0px;
+	position: relative;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	font-size: 16px;
+	background-color: #424242;
+	color: #FAFAFA;
+	margin-right: 14px;
+}
+
+body .contacts .contacts-list li:focus {
+	background-color: rgba( 0, 0, 0, 0.08 );
+	outline: solid 0.1px rgba( 0, 0, 0, 0.2 );
+	
+}

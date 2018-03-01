@@ -15,115 +15,131 @@
 	</header>
 	<main class="row-xs-19 row-xs-fluid col-xs-12">
 		<div class="calendar col-xs-12 row-xs-19">	
-			<section class="calendar-table col-xs-12 row-xs-offset-2 row-xs-13" tabindex="0">
-				<table class="">
-					<tr>
-						<th>D</th>
-						<th>S</th>
-						<th>T</th>
-						<th>Q</th>
-						<th>Q</th>
-						<th>S</th>
-						<th>S</th>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section class="calendar-day col-xs-12 row-xs-19" >
-				<div class="notification-date-week col-xs-2 row-xs-2 col-lg-1 row-lg-2" tabindex="0">
+			
+			<section class="calendar-resume col-xs-12 row-xs-2">
+				<button class="calendar-day-week col-xs-2 row-xs-2">
 					<span>27</span>
 					<strong>ter</strong>
-				</div>
-				<div class="col-xs-12 row-xs-10 line-dashed">
-					<div class="bar col-xs-12 row-xs-offset-3 row-xs-1"><button>x</button> <button>Salvar</button></div>
-					<div class="col-xs-12 row-xs-2"><input type="text" name="title" placeholder="Insira o título"></div>
-					<div class="col-xs-12 rowxs-2">
-						<div class="col-xs-18 row-xs-2">sáb, 3 de fev de 2018</div>
-						<div class="col-xs-4 row-xs-2">6:00</div>
-					</div>
-					<div class="col-xs-12 row-xs-3">
-						<ul>
-							<li>Dom</li>
-							<li>Seg</li>
-							<li>Ter</li>
-							<li>Qua</li>
-							<li>Qui</li>
-							<li>Sex</li>
-							<li>Sáb</li>
-						</ul>
-					</div>
-				</div>
-				<ul>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
-					<li>qwer</li>
-					<li>asdfa</li>
-					<li>hjkgjh</li>
-					<li>cvbncvbn</li>
+				</button>
+				<div class="calendar-name col-xs-10 row-xs-2">fevereiro</div>
+			</section>
+
+			<section class="calendar-day col-xs-12 row-xs-17" >
+				<ul class="col-xs-12 row-xs-offset-1 row-xs-16">
+					<li tabindex="0">tarefa</li>
+					<li tabindex="1">tarefa</li>
+					<li tabindex="2">tarefa</li>
+					<li tabindex="3">tarefa</li>
+					<li tabindex="4">tarefa</li>
+					<li tabindex="5">tarefa</li>
+					<li tabindex="6">tarefa</li>
+					<li tabindex="7">tarefa</li>
+					<li tabindex="8">tarefa</li>
+					<li tabindex="9">tarefa</li>
 				</ul>
 			</section>
+
+			<section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-16">
+				<div class="calendar-task-header col-xs-12 row-xs-6 background-primary">
+					<span class="close" data-btn="ghost">x</span> 
+					<button data-btn="ghost">Salvar</button>
+					<input type="text" name="title" placeholder="Insira o título">
+				</div>
+				<div class="calendar-task-hour col-xs-12 row-xs-offset-1 row-xs-7" tabindex="0">
+					<div class="col-xs-2 row-xs-4"></div>
+					<div class="col-xs-6 row-xs-2">
+						<button>sáb, 3 de fev de 2018</button>
+					</div>
+					<div class="col-xs-4 row-xs-2">
+						<select>
+							<option>8:00</option>
+							<option>9:00</option>
+							<option>10:00</option>
+							<option>11:00</option>
+							<option>12:00</option>
+							<option>13:00</option>
+							<option>14:00</option>
+							<option>15:00</option>
+							<option>16:00</option>
+							<option>17:00</option>
+							<option>18:00</option>
+						</select>
+					</div>
+				</div>
+				<div class="calendar-task-week col-xs-12 row-xs-2" tabindex="0">
+					<ul class="col-xs-12 row-xs-2 text-center">
+						<li>Dom</li>
+						<li>Seg</li>
+						<li>Ter</li>
+						<li>Qua</li>
+						<li>Qui</li>
+						<li>Sex</li>
+						<li>Sáb</li>
+					</ul>
+				</div>
+			</section>
+			<!--section class="calendar-mounth col-xs-12 row-xs-offset-2 row-xs-13" tabindex="0">
+				<table class="">
+					<tbody>
+						<tr>
+							<th>D</th>
+							<th>S</th>
+							<th>T</th>
+							<th>Q</th>
+							<th>Q</th>
+							<th>S</th>
+							<th>S</th>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</section-->
+
+			
 		</div>
 	</main>
 	<footer class="row-xs-3 background-secondary">

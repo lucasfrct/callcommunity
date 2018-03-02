@@ -2953,7 +2953,8 @@ body [type="checkbox"][data-btn="switch"]::after {
 body [data-btn="primary"],
 body [data-btn="secondary"],
 body [data-btn="progress"],
-body [data-btn="ghost"] {
+body [data-btn="ghost"],
+body [data-btn="close"] {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	-o-border-radius: 4px;

@@ -40,31 +40,80 @@
 			</ul>
 		</section>
 
-		<!--section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-16">
+		<section class="calendar-task active col-xs-12 row-xs-offset-2 row-xs-20 line">
 			<div class="calendar-task-header col-xs-12 row-xs-6 background-primary">
-				<span class="close" data-btn="ghost">x</span> 
-				<button data-btn="ghost">Salvar</button>
+				<button class="close" data-btn="close"></button> 
+				<button class="edit" data-btn="ghost">Editar</button>
 				<input type="text" name="title" placeholder="Insira o título">
 			</div>
-			<div class="calendar-task-hour col-xs-12 row-xs-offset-1 row-xs-7" tabindex="0">
-				<div class="col-xs-2 row-xs-4"></div>
-				<div class="col-xs-6 row-xs-2">
-					<button>sáb, 3 de fev de 2018</button>
-				</div>
-				<div class="col-xs-4 row-xs-2">
+			<div class="calendar-task-body col-xs-12 row-xs-12">
+				<div class="calendar-task-action col-xs-4 row-xs-12	">
+					<div class="col-xs-12 row-xs-3">
+					<label>Ação</label>
 					<select>
-						<option>8:00</option>
-						<option>9:00</option>
-						<option>10:00</option>
-						<option>11:00</option>
-						<option>12:00</option>
-						<option>13:00</option>
-						<option>14:00</option>
-						<option>15:00</option>
-						<option>16:00</option>
-						<option>17:00</option>
-						<option>18:00</option>
+						<option value="call">Ligar</option>
+						<option value="sms">SMS</option>
 					</select>
+					</div>
+					<div class="col-xs-12 row-xs-3">
+						<label>Data</label>
+						<span>02/03/2018</span>
+						<input id="date" type="date" name="date">
+					</div>
+					<div class="col-xs-12 row-xs-3">
+						<label>Horário</label>
+						<select>
+							<option value="8">8:00</option>
+							<option value="9">9:00</option>
+							<option value="10">10:00</option>
+							<option value="11">11:00</option>
+							<option value="12">12:00</option>
+							<option value="13">13:00</option>
+							<option value="14">14:00</option>
+							<option value="15">15:00</option>
+							<option value="16">16:00</option>
+							<option value="17">17:00</option>
+							<option value="18">18:00</option>
+						</select>
+					</div>
+				</div>
+				<div class="calendar-task-list col-xs-8 row-xs-12">
+					<input type="search" name="search">
+					<ul class="col-xs-12 row-xs-10">
+						<li>
+							<label>
+								<input type="checkbox" name="select">Lucas Ferreira Costa
+								<span>(12) 99128-5145 - Condomínio Costa Sol</span>
+							</label>
+						</li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+
+						<li><label><input type="checkbox" name="select">Lucas Ferreira Costa</label></li>
+					</ul>
 				</div>
 			</div>
 			<div class="calendar-task-week col-xs-12 row-xs-2" tabindex="0">

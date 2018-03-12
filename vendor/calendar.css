@@ -82,6 +82,16 @@ body .calendar .calendar-day > ul li::before {
 	border-bottom: inherit;
 }
 
+body .calendar .calendar-task-add {
+
+}
+
+body .calendar .calendar-task-add button {
+	padding: 3px 14px;
+	float: right;
+	margin: 5px 14px;
+}
+
 body .calendar .calendar-task {
 	background-color: #FAFAFA;
 	border: solid 0.1px #BBB;
@@ -116,7 +126,7 @@ body .calendar .calendar-task .calendar-task-header {
 
 body .calendar .calendar-task .calendar-task-header > input[name="title"] {
 	margin-left: 7px;
-	margin-top: calc( ( 100vh / 24 ) * 4 - 35px);
+	margin-top: calc( ( 100vh / 24 ) * 3 - 35px);
 	background-color: transparent;
 	color: #FFF;
 	width: calc( 100% - 14px );
@@ -132,82 +142,119 @@ body .calendar .calendar-task .calendar-task-header > input::placeholder {
 body .calendar .calendar-task .calendar-task-body {
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-action {
+body .calendar .calendar-task .calendar-task-body > div {
+	box-shadow: 0 0 0.1px #999;
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-action label {
-	display: block;
-	position: relative;
-	font-size: 10px;
-	line-height: 1.4em;
-	text-align: left;
-	padding-left: 7px;
+body .calendar .calendar-task .calendar-task-body .calendar-task-agendador {
+
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-action select {
+body .calendar .calendar-task .calendar-task-body .calendar-task-agendador > div {
 	margin: 0;
-	border: none;
-	border-bottom: solid 1px rgba( 0, 0, 0, 0.1 );
-	background-color: transparent;
-	width: calc( 100% - 0px );
-	text-align: center;
-	padding: 1px 7px;
-	display: block;
+	padding: 0;
+	padding: 7px;
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-action span {
-	position: absolute;
-	display: block;
-	padding: 1px 7px;
-	text-align: center;
+body .calendar .calendar-task .calendar-task-body .calendar-task-agendador > div input,
+body .calendar .calendar-task .calendar-task-body .calendar-task-agendador > div select {
 	width: calc( 100% - 14px );
-	font-size: 13px;
-	border-bottom: solid 1px rgba( 0, 0, 0, 0.1 );
+	display: block;
+	border: solid 1px #DDD;
+	padding: 2px 7px;
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-action input[name="date"] {
-	width: calc( 100% - 7px );
-	height: calc( ( ( 100vh / 24 ) * 2 ) - 21px );
-	opacity: 0;
-	font-size: 40px;
+body .calendar .calendar-task .calendar-task-body .calendar-task-agendador > div select {
+	width: calc( 100% - 4px );
+	padding: 2px;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts > div {
+	font-size: 11px;
+	padding: 7px;
+	text-align: left;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts > div .add {
+	padding: 4px 7px;
+	margin: 0;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list {
+
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list div {
+	border: solid 1px #EEE;
+	margin: 0;
+	padding: 4px;
+	height: auto;
+	width: 100%;
+	min-height: auto;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list div strong {
+	padding-right: 7px;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list div em {
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list div span {
 	display: block;
-	vertical-align: top;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list div button {
+	float: right;
 	position: relative;
+	top: 0;
+	right: 0;
+	vertical-align: top;
+	margin: 0;
+}	
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-set-week {
+	text-align: center;
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-list {
-
+body .calendar .calendar-task .calendar-task-body .calendar-task-set-week label {
+	position: relative;
+	display: inline-block;
+	background-color: transparent;
+	top: 0;
+	left: 0;
+	padding: 0;
+	margin: 0;
+	margin-top: 4px;
+	width: calc( ( 100% / 7) - 0.5% - 4px );
 }
 
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-list input[type="search"] {
-	margin: 2px 14px;
-	width: calc( 100% - 28px );
-	border-radius: 4px;
-	outline: 0;
-	box-shadow: 0;
-	border: none;
-	border: solid 1px #AAA;
-	padding: 3px 7px;
+body .calendar .calendar-task .calendar-task-body .calendar-task-set-week label input {
+	margin: 0;
+	padding: 0;
+	height: inherit;
+	width: 100%;
+	padding: 0;
+	text-align: left;
+	vertical-align: top;
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-list ul {
-	
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-list ul li {
-	padding: 7px 14px;
-	min-height: auto !important;
-	height: auto !important;
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-list ul li span {
-	font-size: 9px;
-	color: #767676;
+body .calendar .calendar-task .calendar-task-body .calendar-task-set-week label input::before {
+	content: attr(name);
 	display: block;
-	margin-left: 20px;
+	height: inherit;
+	width: calc( 100% - 14px );
+	background-color: #0F0;
+	padding: 7px;
+	border-radius: 4px;
+	text-align: center;
+	background-color: #90CAF9;
+	color: #FAFAFA;
 }
 
+body .calendar .calendar-task .calendar-task-body .calendar-task-set-week label input:checked::before {
+	background-color: #1565C0;
+}
 
 body .calendar .calendar-task .calendar-task-week {
 	padding: 0 14px;
@@ -344,4 +391,8 @@ body .edit[data-btn="ghost"] {
 	vertical-align: top;
 	float: right;
 	color: #FAFAFA;
+}
+
+body #datepicker {
+	width: 
 }

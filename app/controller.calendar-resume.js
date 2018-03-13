@@ -23,7 +23,22 @@
 		];
 
 		var $date = $Date ( "", "", $months );
-		setCalendar ( $scope, $date.day, $date.week, $date.Month ); 
+
+		$scope.currentDate = new Date ( $date.Year, $date.month, $date.day );
+
+		setCalendar ( $scope, $date.day, $date.week, $date.Month );
+
+		$scope.openCalendar = function ( ) {
+
+			//var $element = document.querySelector ( ".date-resume" );
+			//openPicker (  $element );
+	
+		};
+
+		$scope.changeCalendar = function ( ) {
+			var $date = $Date ( "", "", $months, $scope.currentDate );
+			setCalendar ( $scope, $date.day, $date.week, $date.Month );
+		};
 	};
 
 	function setCalendar ( $scope = "", $day = "", $week = "", $month = "" ) {
@@ -31,5 +46,14 @@
 		$scope.dayWeek = $week;
 		$scope.month = $month;			
 	};
+
+
+
+function openPicker ( $element ) {
+    
+	$element.focus ( );
+
+
+};
 
 } ) ( );

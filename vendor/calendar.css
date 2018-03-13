@@ -37,6 +37,21 @@ body .calendar .calendar-resume .calendar-day-week strong {
 	text-align: center;
 }
 
+body .calendar .calendar-resume .calendar-picker {
+	background-color: #FBFBFB;
+	text-align: right;
+
+}
+
+body .calendar .calendar-resume .calendar-picker input {
+	height: inherit;
+	width: 90%;
+	font-size: 16px;
+	border: none;
+	background-color: transparent;
+	text-align: right;
+}
+
 body .calendar .calendar-day {
 
 }

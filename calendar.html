@@ -13,7 +13,8 @@
 	<script type="text/javascript" src="app/module.js"></script>
 	<script type="text/javascript" src="app/controller.calendar-resume.js"></script>
 	<script type="text/javascript" src="app/controller.calendar-day.js"></script>
-	<script type="text/javascript" src="app/controller.calendar-task.js"></script>	
+	<script type="text/javascript" src="app/controller.calendar-task.js"></script>
+	<script type="text/javascript" src="vendor/calendar.js"></script>	
 </head>
 <body class="">
 	<header class="row-xs-2 col-xs-12 background-secondary">
@@ -24,11 +25,14 @@
 	<main class="calendar row-xs-20 col-xs-12">
 
 		<section class="calendar-resume col-xs-12 row-xs-2" ng-controller="calendar-resume">
-			<button class="calendar-day-week col-xs-2 row-xs-2" >
+			<button class="calendar-day-week col-xs-2 row-xs-2" ng-click="openCalendar ( );" >
 				<span>{{ day }}</span>
 				<strong>{{ dayWeek }}</strong>
 			</button>
-			<div class="calendar-name col-xs-10 row-xs-2">{{ month }}</div>
+			<div class="calendar-name col-xs-4 row-xs-2">{{ month }}</div>
+			<div class="calendar-picker col-xs-6 row-xs-2">
+				<input type="date" name="current-date"  ng-model="currentDate" ng-change="changeCalendar ( );" >
+			</div>
 		</section>
 
 		<section class="calendar-day col-xs-12 row-xs-16" ng-controller="calendar-day">
@@ -52,28 +56,27 @@
 
 		<section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-20" ng-controller="calendar-task">
 			<div class="calendar-task-header col-xs-12 row-xs-5 background-primary">
-				<button class="close" data-btn="close"></button> 
-				<button class="edit" data-btn="ghost">Salvar</button>
-				<input type="text" name="title" placeholder="Insira o título">
+				<button class="close" data-btn="close" ng-click="taskToggle ( );"></button> 
+				<button class="edit" data-btn="ghost" ng-click="taskSave ( )">Salvar</button>
+				<input type="text" name="title" placeholder="Insira o título" ng-model="task.title" >
 			</div>
 			<div class="calendar-task-body col-xs-12 row-xs-15">
 				<div class="calendar-task-agendador col-xs-12 row-xs-2">
 					<div class="col-xs-2 row-xs-2"></div>
 					<div class="col-xs-7 row-xs-2">
-						<input type="date" name="date" value="2018-03-09"></div>
+						<input type="date" name="date" value="2018-03-09" ng-model="task.date"></div>
 					<div class="col-xs-3 row-xs-2">
-						<select name="hour"> 
-							<option value="8:00">8:00</option>
-							<option value="8:00">9:00</option>
-							<option value="8:00">10:00</option>
-							<option value="8:00">11:00</option>
-							<option value="8:00">12:00</option>
-							<option value="8:00">13:00</option>
-							<option value="8:00">14:00</option>
-							<option value="8:00">15:00</option>
-							<option value="8:00">16:00</option>
-							<option value="8:00">17:00</option>
-							<option value="8:00">18:00</option>
+						<select name="hour" ng-model="task.hour"> 
+							<option value="8:00" selected>8:00</option>
+							<option value="9:00">9:00</option>
+							<option value="10:00">10:00</option>
+							<option value="11:00">11:00</option>
+							<option value="12:00">12:00</option>
+							<option value="13:00">13:00</option>
+							<option value="14:00">14:00</option>
+							<option value="15:00">15:00</option>
+							<option value="16:00">16:00</option>
+							<option value="17:00">17:00</option>
 						</select>
 					</div>
 				</div>
@@ -82,40 +85,22 @@
 						<button class="add" data-btn="ghost">Add</button>
 					</div>
 					<div class="calendar-task-cantacts-list col-xs-10">
-						<div>
-							<button class="close" data-btn="close"></button>
-							<strong>Lucas Costa</strong>
-							<em>(12) 99128-5145</em>
-							<span>Condomínio Costa Sol</span>
-						</div>
-						<div>
-							<button class="close" data-btn="close"></button>
-							<strong>Lucas Costa</strong>
-							<em>(12) 99128-5145</em>
-							<span>Condomínio Costa Sol</span>
-						</div>
-						<div>
-							<button class="close" data-btn="close"></button>
-							<strong>Lucas Costa</strong>
-							<em>(12) 99128-5145</em>
-							<span>Condomínio Costa Sol</span>
-						</div>
-						<div>
-							<button class="close" data-btn="close"></button>
-							<strong>Lucas Costa</strong>
-							<em>(12) 99128-5145</em>
-							<span>Condomínio Costa Sol</span>
+						<div ng-repeat="contact in task.contacts">
+							<button class="close" data-btn="close" ng-click="task.contacts.splice ( $index, 1 );"></button>
+							<strong>{{ contact.name }}</strong>
+							<em>{{ contact.cel }}</em>
+							<span>{{ contact.condominium }}</span>
 						</div>
 					</div>
 				</div>
 				<div class="calendar-task-set-week col-xs-12 row-xs-2">
-					<label><input type="checkbox" name="dom"></label>
-					<label><input type="checkbox" name="seg"></label>
-					<label><input type="checkbox" name="ter"></label>
-					<label><input type="checkbox" name="qua"></label>
-					<label><input type="checkbox" name="qui"></label>
-					<label><input type="checkbox" name="sex"></label>
-					<label><input type="checkbox" name="sab"></label>
+					<label><input type="checkbox" name="dom" ng-model="task.repeat['dom']"></label>
+					<label><input type="checkbox" name="seg" ng-model="task.repeat['seg']"></label>
+					<label><input type="checkbox" name="ter" ng-model="task.repeat['ter']"></label>
+					<label><input type="checkbox" name="qua" ng-model="task.repeat['qua']"></label>
+					<label><input type="checkbox" name="qui" ng-model="task.repeat['qui']"></label>
+					<label><input type="checkbox" name="sex" ng-model="task.repeat['sex']"></label>
+					<label><input type="checkbox" name="sab" ng-model="task.repeat['sab']"></label>
 				</div>
 			</div>
 		</section>

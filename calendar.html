@@ -7,13 +7,14 @@
 	<link rel="stylesheet" type="text/css" href="lib/components/components-all.css">
 	<link rel="stylesheet" type="text/css" href="vendor/callcommunity.css">
 	<link rel="stylesheet" type="text/css" href="vendor/calendar.css">
+
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+	<script type="text/javascript" src="lib/angular/angular-touch.min.js"></script>
+	<script type="text/javascript" src="vendor/callcommunity.js"></script>
 	<script type="text/javascript" src="lib/components/date.js"></script>
 
 	<script type="text/javascript" src="app/module.js"></script>
-	<script type="text/javascript" src="app/controller.calendar-resume.js"></script>
-	<script type="text/javascript" src="app/controller.calendar-day.js"></script>
-	<script type="text/javascript" src="app/controller.calendar-task.js"></script>
+	<script type="text/javascript" src="app/controller.calendar.js"></script>
 	<script type="text/javascript" src="vendor/calendar.js"></script>	
 </head>
 <body class="">
@@ -22,51 +23,51 @@
 		<div class="row-xs-2 col-xs-8 text-center"><h3>Calendar</h3></div>
 		<div class="row-xs-2 col-xs-2"></div>
 	</header>
-	<main class="calendar row-xs-20 col-xs-12">
+	<main class="calendar row-xs-20 col-xs-12" ng-controller="calendar">
 
-		<section class="calendar-resume col-xs-12 row-xs-2" ng-controller="calendar-resume">
-			<button class="calendar-day-week col-xs-2 row-xs-2" ng-click="openCalendar ( );" >
-				<span>{{ day }}</span>
-				<strong>{{ dayWeek }}</strong>
+		<section class="calendar-resume col-xs-12 row-xs-2">
+			<button class="col-xs-2 row-xs-2" >
+				<span>{{ currentDay }}</span>
+				<strong>{{ currentDayWeek }}</strong>
 			</button>
-			<div class="calendar-name col-xs-4 row-xs-2">{{ month }}</div>
-			<div class="calendar-picker col-xs-6 row-xs-2">
-				<input type="date" name="current-date"  ng-model="currentDate" ng-change="changeCalendar ( );" >
+			<div class="col-xs-4 row-xs-2">{{ currentMonth }}</div>
+			<div class="col-xs-6 row-xs-2">
+				<input type="date" name="current-date"  ng-model="currentDate" ng-change="changeDate ( );" >
 			</div>
 		</section>
 
-		<section class="calendar-day col-xs-12 row-xs-16" ng-controller="calendar-day">
+		<section class="calendar-current-day col-xs-12 row-xs-16">
 			<ul class="col-xs-12 row-xs-offset-1 row-xs-15">
-				<li tabindex="8">{{ hour8 }}</li>
-				<li tabindex="9">{{ hour9 }}</li>
-				<li tabindex="10">{{ hour10 }}</li>
-				<li tabindex="11">{{ hour11 }}</li>
-				<li tabindex="12">{{ hour12 }}</li>
-				<li tabindex="13">{{ hour13 }}</li>
-				<li tabindex="14">{{ hour14 }}</li>
-				<li tabindex="15">{{ hour15 }}</li>
-				<li tabindex="16">{{ hour16 }}</li>
-				<li tabindex="17">{{ hour17 }}</li>
+				<li tabindex="8" data-task="{{ tasksList.hour8.join ( ', ' ); }}"></li>
+				<li tabindex="9" data-task="{{ tasksList.hour9.join ( ', ' ); }}"></li>
+				<li tabindex="10" data-task="{{ tasksList.hour10.join ( ', ' ); }}"></li>
+				<li tabindex="11" data-task="{{ tasksList.hour11.join ( ', ' ); }}"></li>
+				<li tabindex="12" data-task="{{ tasksList.hour12.join ( ', ' ); }}"></li>
+				<li tabindex="13" data-task="{{ tasksList.hour13.join ( ', ' ); }}"></li>
+				<li tabindex="14" data-task="{{ tasksList.hour14.join ( ', ' ); }}"></li>
+				<li tabindex="15" data-task="{{ tasksList.hour15.join ( ', ' ); }}"></li>
+				<li tabindex="16" data-task="{{ tasksList.hour16.join ( ', ' ); }}"></li>
+				<li tabindex="17" data-task="{{ tasksList.hour17.join ( ', ' ); }}"></li>
 			</ul>
 		</section>
 
-		<section class="calendar-task-add col-xs-12 row-xs-2" ng-controller="calendar-task">
-			<button data-btn="ghost" ng-click="taskToggle ( );">Nova Tarefa</button>
+		<section class="calendar-task-add col-xs-12 row-xs-2">
+			<button data-btn="secondary" ng-click="taskToggle ( );">Nova Tarefa</button>
 		</section>
 
-		<section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-20" ng-controller="calendar-task">
+		<section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-20">
 			<div class="calendar-task-header col-xs-12 row-xs-5 background-primary">
-				<button class="close" data-btn="close" ng-click="taskToggle ( );"></button> 
-				<button class="edit" data-btn="ghost" ng-click="taskSave ( )">Salvar</button>
-				<input type="text" name="title" placeholder="Insira o título" ng-model="task.title" >
+				<button  name="close" data-btn="close" ng-click="taskToggle ( );"></button> 
+				<button name="save" data-btn="secondary" ng-click="taskSave ( )">Salvar</button>
+				<input class="row-xs-offset-1" type="text" name="title" placeholder="título da tarefa" ng-model="taskNew.title" >
 			</div>
 			<div class="calendar-task-body col-xs-12 row-xs-15">
 				<div class="calendar-task-agendador col-xs-12 row-xs-2">
 					<div class="col-xs-2 row-xs-2"></div>
 					<div class="col-xs-7 row-xs-2">
-						<input type="date" name="date" value="2018-03-09" ng-model="task.date"></div>
+						<input type="date" name="date" ng-model="taskNew.date" ng-change="inChange()"></div>
 					<div class="col-xs-3 row-xs-2">
-						<select name="hour" ng-model="task.hour"> 
+						<select name="hour" ng-model="taskNew.hour"> 
 							<option value="8:00" selected>8:00</option>
 							<option value="9:00">9:00</option>
 							<option value="10:00">10:00</option>
@@ -82,89 +83,41 @@
 				</div>
 				<div class="calendar-task-contacts col-xs-12 row-xs-11">
 					<div class="col-xs-2 row-xs-11">
-						<button class="add" data-btn="ghost">Add</button>
+						<button name="add" data-btn="secondary" ng-click="contactToggle ( );">Add</button>
 					</div>
-					<div class="calendar-task-cantacts-list col-xs-10">
-						<div ng-repeat="contact in task.contacts">
-							<button class="close" data-btn="close" ng-click="task.contacts.splice ( $index, 1 );"></button>
+					<ul class="calendar-task-cantacts-list col-xs-10">
+						<li ng-repeat="contact in taskNew.contacts">
+							<button name="close" data-btn="close" ng-click="taskNew.contacts.splice ( $index, 1 );"></button>
 							<strong>{{ contact.name }}</strong>
-							<em>{{ contact.cel }}</em>
-							<span>{{ contact.condominium }}</span>
-						</div>
-					</div>
+							<em>{{ contact.cel }} - {{ contact.condominium }}</em>
+						</li>
+					</ul>
 				</div>
 				<div class="calendar-task-set-week col-xs-12 row-xs-2">
-					<label><input type="checkbox" name="dom" ng-model="task.repeat['dom']"></label>
-					<label><input type="checkbox" name="seg" ng-model="task.repeat['seg']"></label>
-					<label><input type="checkbox" name="ter" ng-model="task.repeat['ter']"></label>
-					<label><input type="checkbox" name="qua" ng-model="task.repeat['qua']"></label>
-					<label><input type="checkbox" name="qui" ng-model="task.repeat['qui']"></label>
-					<label><input type="checkbox" name="sex" ng-model="task.repeat['sex']"></label>
-					<label><input type="checkbox" name="sab" ng-model="task.repeat['sab']"></label>
+					<label><input type="checkbox" name="dom" ng-model="taskNew.repeat['dom']"></label>
+					<label><input type="checkbox" name="seg" ng-model="taskNew.repeat['seg']"></label>
+					<label><input type="checkbox" name="ter" ng-model="taskNew.repeat['ter']"></label>
+					<label><input type="checkbox" name="qua" ng-model="taskNew.repeat['qua']"></label>
+					<label><input type="checkbox" name="qui" ng-model="taskNew.repeat['qui']"></label>
+					<label><input type="checkbox" name="sex" ng-model="taskNew.repeat['sex']"></label>
+					<label><input type="checkbox" name="sab" ng-model="taskNew.repeat['sab']"></label>
 				</div>
 			</div>
 		</section>
 
-		<!--section class="calendar-mounth col-xs-12 row-xs-offset-2 row-xs-13" tabindex="0">
-			<table class="">
-				<tbody>
-					<tr>
-						<th>D</th>
-						<th>S</th>
-						<th>T</th>
-						<th>Q</th>
-						<th>Q</th>
-						<th>S</th>
-						<th>S</th>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-		</section-->
+		<section class="calendar-task-window col-xs-12 row-xs-offset-2 row-xs-20">
+			<div class="col-xs-12 row-xs-2"><input type="search" name="contact-search" placeholder="digite o nome" ng-model="search"></div>
+			<div class="col-xs-12 row-xs-16">
+			<label data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts | filter: search" ng-dblclick="contactLoad ( $index ); ">
+				<input type="checkbox" ng-model="contact.selected">
+				<strong>{{ contact.name }}</strong>
+				<em>{{ contact.tel }} - {{ contact.condominium }}</em>
+			</label>
+			</div>
+			<div class="col-xs-12 row-xs-2">
+				<button name="add-contatos" data-btn="secondary" ng-click="addContacts ( );">Adicionar estes Contatos</button>
+			</div>
+		</section>
 	</main>
 	<footer class="row-xs-2 background-secondary">
 		<nav class="col-xs-12 row-xs-2">

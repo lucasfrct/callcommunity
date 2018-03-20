@@ -124,13 +124,15 @@ body ol,
 body ul {
     display: block;
     list-style: none;
+    min-height: initial;
 }
 
 body ol li,
 body ul li {
     display: inline-block;
-    width: 100%;
     font-size: 1.4em;
+    min-height: initial;
+    width: 100%;
 }
 
 body ol li > a,
@@ -410,6 +412,31 @@ body hr, body .hr {
     height: 2px;
     margin-top: 10px;
     margin-bottom: 7.5px;
+}
+
+body .radius,
+body .circle {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+}
+
+body .radius-4 {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+body .radius-8 {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
 }
 
 /*component-line.css*/
@@ -2891,9 +2918,9 @@ STATES
 
 body [data-btn] {
 	background-color: #EEEEEE;
-	border: solid 0.5px #BDBDBD;
+	border: solid 0.5px currentColor;
 	bottom: 0;
-	color: #212121;
+	color: #767676;
 	font-size: 1.4em;
 	cursor: pointer;
 	display: inline-block;
@@ -2911,6 +2938,7 @@ body [data-btn] {
 	-o-transform-origin: center center;
 	-ms-transform-origin: center center;
 	transform-origin: center center;
+	vertical-align: top;
 }
 
 body [data-btn]:not( :disabled ):hover,
@@ -2953,8 +2981,7 @@ body [type="checkbox"][data-btn="switch"]::after {
 body [data-btn="primary"],
 body [data-btn="secondary"],
 body [data-btn="progress"],
-body [data-btn="ghost"],
-body [data-btn="close"] {
+body [data-btn="ghost"] {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	-o-border-radius: 4px;
@@ -3145,6 +3172,24 @@ body [type="checkbox"][data-btn="switch"]:not( :disabled ):checked::after {
 
 body [type="checkbox"][data-btn="switch"]:disabled::after {
 	background-color: #F6F6F6;
+}
+
+body [data-btn="close"] {
+	color: #F00;
+	font-size: 28px;
+	line-height: 1em;
+	padding: 0em;
+}
+
+body [data-btn="close"]::before {
+	color: inherit;
+	content: "\d7";
+	font-size: inherit;
+	line-height: inherit;
+	position: relative;
+	text-align: center;
+	top: 1px;
+	padding: 0;
 }
 
 /* component-shape-reset.css */

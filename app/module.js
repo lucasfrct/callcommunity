@@ -1,2 +1,2 @@
 angular
-	.module ( "callcommunity", [ ] );
+	.module ( "callcommunity", [ "ngTouch" ] );

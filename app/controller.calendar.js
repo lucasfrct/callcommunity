@@ -63,6 +63,10 @@
 			{ id: 5, name: "Lupe Sonso", tel: "(22) 090-5060", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
 			{ id: 6, name: "Lupe Bobo", tel: "(12) 11111-1111", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
 		];
+
+		$scope.multimedia = [ ];
+
+		$scope.mesages = [ ];
 		
 		$scope.tasksList = { };
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

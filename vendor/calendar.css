@@ -116,6 +116,7 @@ body .calendar .calendar-task-add button {
 	float: right;
 	background-color: transparent;
 	margin: 3px 7px;
+	color: #1976D2;
 }
 
 body .calendar .calendar-task {
@@ -150,23 +151,13 @@ body .calendar .calendar-task .calendar-task-header {
 	padding: 7px;
 }
 
-body .calendar .calendar-task .calendar-task-header [name="close"],
-body .calendar .calendar-task .calendar-task-header [name="save"] {
-	background-color: transparent;
-	color: #FAFAFA;
-}
-
 body .calendar .calendar-task .calendar-task-header [name="close"] {
-	color: #D32F2F;
+	
 }
 
 body .calendar .calendar-task .calendar-task-header [name="save"] {
 	float: right;
 	right: 0;
-}
-
-body .calendar .calendar-task .calendar-task-header [name="save"]:disabled {
-	color: #DDD;
 }
 
 body .calendar .calendar-task .calendar-task-header [name="title"] {
@@ -210,11 +201,71 @@ body .calendar .calendar-task .calendar-task-body .calendar-task-agendador [name
 	width: calc( ( 100% - 4px ) - 7px );
 }
 
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="add"] {
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="caller"],
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="sms"] {
+	display: block;
+	padding: 0;
+	text-align: center;
+	line-height: 28px;
+	font-size: 14px;
+	margin: 21px 0 0 7px;
+	border: none;
+	height: 30px;
+	position: relative;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="add"],
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="delete"]  {
 	padding: 0 7px;
-	margin: 14px 0 0 7px;
+	margin: 21px 0 0 7px;
 	background-color: transparent;
 }
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="delete"] {
+	margin: 0 0 0 7px;
+	color: #EF5350;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="delete"]:disabled {
+	color: #FFCDD2;	
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="caller"] [type="checkbox"],
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="sms"] [type="checkbox"] {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	vertical-align: 0;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 30px;
+	text-align: center;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="caller"] [type="checkbox"]::before,
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="sms"] [type="checkbox"]::before {
+	content: attr( name );
+	display: block;
+	font-size: 14px;
+	width: 100%;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #EF5350;
+	color: #FAFAFA;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+}
+
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="caller"] [type="checkbox"]:checked::before,
+body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name="sms"] [type="checkbox"]:checked::before {
+	background-color: #388E3C;
+}
+
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list {
 
@@ -222,7 +273,7 @@ body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calen
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li {
 	border-bottom: solid 1px #DDD;
-
+	position: relative;
 }
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li > * {
@@ -240,14 +291,10 @@ body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calen
 }
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li [name="close"] {
-	float: right;
 	position: relative;
-	top: 0;
+	padding: 0;
+	float: right;
 	right: 0;
-	vertical-align: top;
-	margin: 0;
-	background-color: transparent;
-	border: none;
 }	
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-set-week {
@@ -319,12 +366,12 @@ body .calendar .calendar-task-window.active {
 }
 
 body .calendar .calendar-task-window [name="contact-search"] {
-	width: calc( 100% - 54px );
-	margin: 3px 7px;
+	width: calc( 100% - 65px );
+	margin: 6px 7px 0 7px;
+	padding: 3.5px 7px;
 }
 
 body .calendar .calendar-task-window label {
-	border-bottom: solid 1px #DDD;
 	cursor: pointer;
 	min-height: 36px !important;
 	display: block;
@@ -362,11 +409,25 @@ body .calendar .calendar-task-window label::before {
 body .calendar .calendar-task-window label:focus {
 }
 
-body .calendar .calendar-task-window label input {
+body .calendar .calendar-task-window label [type="checkbox"] {
 	position: absolute;
-	float: right;
-	right: 0;
-	opacity: 0.5;
+	opacity: 0.3;
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+}
+
+body .calendar .calendar-task-window label [type="checkbox"]::before {
+	content: "";
+	display: block;
+	background-color: #DDD;
+	width: 100%;
+	height: 100%;
+	border-bottom: solid 1px #767676;
+}
+
+body .calendar .calendar-task-window label [type="checkbox"]:checked::before {
+		background-color: #66BB6A;
 }
 
 body .calendar .calendar-task-window label strong {

@@ -1,0 +1,10 @@
+[
+	{ 
+		"id": "0001", 
+		"index": "0", 
+		"name": "Lucas Costa", 
+		"tel": "(12) 99128-5145", 
+		"condominium": "Condomínio Costa Sol, Bl 14B Ap 1023A", 
+		"selected": false, 
+	},
+];

@@ -1,0 +1,23 @@
+[ 
+	{
+		"id": 1,
+		"index": null,
+		"title": "tarefa 1", 
+		"date": "2018-03-12", 
+		"hour": "9:00",
+		"caller": true,
+		"sms": true,
+		"contacts": [
+			{ "id": 1, "name": "Lucas Costa", "tel": "(12) 99128-5145", "condominium": "Condomínio Costa Sol, Bl 14B Ap 1023A", "selected": false, },
+		],
+		"repeat": { 
+			"dom": false,
+			"seg": true, 
+			"ter": false,
+			"qua": false, 
+			"qui": false,
+			"sex": false,
+			"sab": false,
+		},
+	},
+];

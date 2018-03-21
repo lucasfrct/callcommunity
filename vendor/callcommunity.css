@@ -43,9 +43,25 @@ body footer nav > ul > li > a {
 	padding-top: 12px !important;
 }
 
+body [data-btn] {
+	background-color: transparent;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	color: #1976D2;
+	margin: 3px 7px;
+}
+
+body [data-btn]:disabled {
+	color: #CCC;
+}
 
 body [data-btn="close"] {
-	background-color: transparent;
-	border-color: #FAFAFA;
-	border-radius: 4px;
+	color: #D32F2F;
+}
+
+body [name="save"] {
+	color: #FFF;
 }

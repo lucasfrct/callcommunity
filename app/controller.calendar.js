@@ -28,6 +28,8 @@
 					{ id: 1, name: "Lucas Costa", tel: "(12) 99128-5145", condominium: "Condomínio Costa Sol, Bl 14B Ap 1023A", selected: false, },
 					{ id: 2, name: "Cristiane Costa", tel: "(12) 98123-1965", condominium: "Condomínio Costa Resplandecer, Bl 14B Ap 1023A", selected: false, },
 				],
+				audio: { title: "audio 1", source:"audio/audio.mp3", },
+				msg: { title: "msg 1", text: "Msg 1" },
 				repeat: { 
 					dom: false,
 					seg: true, 
@@ -43,6 +45,8 @@
 					{ id: 3, name: "Rafael Lírio", tel: "(22) 99709-9009", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
 					{ id: 4, name: "Roberta Lírio", tel: "(22) 99709-5060", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
 				],
+				audio: { title: "audio 2", source:"audio/audio.mp3", },
+				msg: { title: "msg 2", text: "Msg 2" },
 				repeat: { 
 					dom: false,
 					seg: true, 
@@ -64,9 +68,17 @@
 			{ id: 6, name: "Lupe Bobo", tel: "(12) 11111-1111", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
 		];
 
-		$scope.multimedia = [ ];
+		$scope.multimedia = [ 
+			{ title: "Audio 1", source: "audio/audio.mp3", selected: false, },
+			{ title: "Audio 2", source: "audio/audio.mp3", selected: false, },
+			{ title: "Audio 3", source: "audio/audio.mp3", selected: false, },
+		];
 
-		$scope.mesages = [ ];
+		$scope.messages = [ 
+			{ title: "msg 1", text: "Msg 1", selected: false, },
+			{ title: "msg 2", text: "Msg 2", selected: false, },
+			{ title: "msg 3", text: "Msg 3", selected: false, },
+		];
 		
 		$scope.tasksList = { };
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,6 +173,40 @@
 			$scope.taskNew.contacts = uniqueArray ( [ ].concat ( $scope.taskNew.contacts,  $contacts ) );
 
 			$scope.contactToggle ( );
+		};
+
+		$scope.audioToggle = function ( ) {
+			toggleClass ( ".calendar-task-window.multimedia",  "active" );
+		};
+
+		$scope.addAudio = function ( ) {
+
+			var $audio = angular.copy ( 
+				$scope.multimedia.filter ( function ( $audio ) { 
+					return $audio.selected == true;
+				} )[ 0 ] 
+			);
+
+			$scope.taskNew.audio = $audio;
+			$scope.audioToggle ( );
+			console.log ( $scope.taskNew.audio );
+		};
+
+		$scope.msgToggle = function ( ) {
+			toggleClass ( ".calendar-task-window.text",  "active" );
+		};
+
+		$scope.addMsg = function ( ) {
+
+			var $text = angular.copy ( 
+				$scope.messages.filter ( function ( $text ) { 
+					return $text.selected == true;
+				} )[ 0 ] 
+			);
+
+			$scope.taskNew.msg = $text;
+			$scope.msgToggle ( );
+			console.log ( $scope.taskNew );
 		};
 
 	};

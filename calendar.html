@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" >
 	<title>Call Community</title>
+	<link rel="icon" href="vendor/icon.png" sizes="32x32">
 	<link rel="stylesheet" type="text/css" href="lib/components/components-all.css">
 	<link rel="stylesheet" type="text/css" href="vendor/callcommunity.css">
 	<link rel="stylesheet" type="text/css" href="vendor/calendar.css">
@@ -58,7 +59,7 @@
 		<section class="calendar-task col-xs-12 row-xs-offset-2 row-xs-20">
 			<div class="calendar-task-header col-xs-12 row-xs-5 background-primary">
 				<button  name="close" data-btn="close" ng-click="taskToggle ( );"></button> 
-				<button name="save" data-btn="secondary" ng-click="taskSave ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !taskNew.contacts || taskNew.contacts >= 0">Salvar</button>
+				<button name="save" data-btn="secondary" ng-click="taskSave ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.msg.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Salvar</button>
 				<input class="row-xs-offset-1" type="text" name="title" placeholder="título da tarefa" ng-model="taskNew.title" >
 			</div>
 			<div class="calendar-task-body col-xs-12 row-xs-15">
@@ -83,16 +84,27 @@
 				</div>
 				<div class="calendar-task-contacts col-xs-12 row-xs-11">
 					<div class="col-xs-2 row-xs-11">
-						<div class="col-xs-12 row-xs-9	">
-							<label name="caller"><input name="Ligar" type="checkbox" ng-model="taskNew.caller"></label>
-
-							<label name="sms" ><input name="SMS" type="checkbox" ng-model="taskNew.sms"></label>
+						<div class="col-xs-12 row-xs-9">
 							<button name="add" data-btn="secondary" ng-click="contactToggle ( );">Add</button>
+							<label name="caller"><input name="Ligar" type="checkbox" ng-model="taskNew.caller"></label>
+							<label name="sms" ><input name="SMS" type="checkbox" ng-model="taskNew.sms"></label>
 						</div>
-						<button name="delete" data-btn="secondary" ng-click="taskDelete ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !taskNew.contacts || taskNew.contacts >= 0">Deletar</button>
+						<button name="delete" data-btn="secondary" ng-click="taskDelete ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.msg.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Del</button>
 					</div>
-					<ul class="calendar-task-cantacts-list col-xs-10">
-						<li ng-repeat="contact in taskNew.contacts">
+					<ul class="calendar-task-cantacts-list col-xs-10 row-xs-11">
+						<li ng-show="taskNew.caller">
+							<button name="close" data-btn="close" ng-click="taskNew.audio = null;" ng-show="taskNew.audio.selected"></button>
+							<strong>{{ taskNew.audio.title }}</strong>
+							<em>{{ taskNew.audio.source }}</em>
+							<button name="audio" data-btn="secondary" ng-click="audioToggle ( );" ng-hide="taskNew.audio.selected">Add um audio</button>
+						</li>
+						<li ng-show="taskNew.sms">
+							<button name="close" data-btn="close" ng-click="taskNew.msg = null;" ng-show="taskNew.msg.selected"></button>
+							<strong>{{ taskNew.msg.title }}</strong>
+							<em>{{ taskNew.msg.text }}</em>
+							<button name="text" data-btn="secondary" ng-click="msgToggle ( );" ng-hide="taskNew.msg.selected">Add um texto</button>
+						</li>
+						<li ng-repeat="contact in taskNew.contacts" >
 							<button name="close" data-btn="close" ng-click="taskNew.contacts.splice ( $index, 1 );"></button>
 							<strong>{{ contact.name }}</strong>
 							<em>{{ contact.cel }} - {{ contact.condominium }}</em>
@@ -127,12 +139,49 @@
 				<button name="add-contatos" data-btn="secondary" ng-click="addContacts ( );">Adicionar estes Contatos</button>
 			</div>
 		</section>
+
+		<section class="calendar-task-window multimedia col-xs-12 row-xs-offset-2 row-xs-20">
+			<div class="col-xs-12 row-xs-2">
+				<button name="close" data-btn="close" ng-click="audioToggle ( );"></button>
+				<input type="search" name="contact-search" placeholder="digite o nome" ng-model="audioSearch">
+			</div>
+			<div class="col-xs-12 row-xs-16">
+			<label data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: audioSearch">
+				<input type="radio" name="audio" ng-model="audio.selected" ng-value="true" >
+				<strong>{{ audio.title }}</strong>
+				<em>{{ audio.source }}</em>
+			</label>
+			</div>
+			<div class="col-xs-12 row-xs-2">
+				<button name="add-contatos" data-btn="secondary" ng-click="addAudio ( );">Adicionar este Audio</button>
+			</div>
+		</section>
+
+		<section class="calendar-task-window text col-xs-12 row-xs-offset-2 row-xs-20">
+			<div class="col-xs-12 row-xs-2">
+				<button name="close" data-btn="close" ng-click="msgToggle ( );"></button>
+				<input type="search" name="contact-search" placeholder="digite o nome" ng-model="msgSearch">
+			</div>
+			<div class="col-xs-12 row-xs-16">
+			<label data-first-letter="{{ msg.title.substring ( 1, 0 ); }}" ng-repeat="msg in messages | filter: msgSearch">
+				<input type="radio" name="audio" ng-model="msg.selected" ng-value="true" >
+				<strong>{{ msg.title }}</strong>
+				<em>{{ msg.text }}</em>
+			</label>
+			</div>
+			<div class="col-xs-12 row-xs-2">
+				<button name="add-contatos" data-btn="secondary" ng-click="addMsg ( );">Adicionar este Texto</button>
+			</div>
+		</section>
+
 	</main>
 	<footer class="row-xs-2 background-secondary">
 		<nav class="col-xs-12 row-xs-2">
 			<ul class="menu-footer col-xs-12 row-xs-2">
 				<li><a href="calendar.html">Calendário</a></li>
 				<li><a href="contacts.html">Contatos</a></li>
+				<li><a href="multimedia.html">Audios</a></li>
+				<li><a href="messages.html">Mensagens</a></li>
 			</ul>
 		</nav>
 	</footer>

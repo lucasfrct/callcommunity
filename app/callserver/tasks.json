@@ -7,6 +7,8 @@
 		"hour": "9:00",
 		"caller": true,
 		"sms": true,
+		"audio": { "title": "audio 1" , "source": "audio/audio.mp3", },
+		"msg": { "title": "msg 1", "text" : "text 1", },
 		"contacts": [
 			{ "id": 1, "name": "Lucas Costa", "tel": "(12) 99128-5145", "condominium": "Condomínio Costa Sol, Bl 14B Ap 1023A", "selected": false, },
 		],

@@ -1,4 +1,5 @@
 body .calendar {
+	position: relative;
 
 }
 
@@ -120,33 +121,7 @@ body .calendar .calendar-task-add button {
 }
 
 body .calendar .calendar-task {
-	background-color: #FAFAFA;
-	border: solid 0.1px #BBB;
-	opacity: 0;
-	position: absolute;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-	-webkit-transform: scale( 0.1, 0.1 );
-	-moz-transform: scale( 0.1, 0.1 );
-	-ms-transform: scale( 0.1, 0.1 );
-	-o-transform: scale( 0.1, 0.1 );
-	transform: scale( 0.1, 0.1 );
-	will-change: transform;
-	z-index: 1;
-}
 
-body .calendar .active {
-	opacity: 1 !important;
-	-webkit-transform: scale( 1, 1) !important;
-	-moz-transform: scale( 1, 1) !important;
-	-ms-transform: scale( 1, 1) !important;
-	-o-transform: scale( 1, 1) !important;
-	transform: scale( 1, 1) !important;
-	will-change: transform;
-	z-index: 10;
 }
 
 body .calendar .calendar-task .calendar-task-header {
@@ -267,35 +242,8 @@ body .calendar .calendar-task .calendar-task-body .calendar-task-contacts [name=
 	background-color: #388E3C;
 }
 
-
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list {
 
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li {
-	border-bottom: solid 1px #DDD;
-	position: relative;
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li > * {
-	display: block;
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li strong {
-	font-size: 14px;
-	padding: 7px  0 3px 7px;
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li em {
-	font-size: 10px;
-	padding: 3px 0 3px 7px;
-}
-
-body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li [name="close"] {
-	float: right;
-	position: relative;
-	padding: 0;
-	right: 0;
 }
 
 body .calendar .calendar-task .calendar-task-body .calendar-task-contacts .calendar-task-cantacts-list li [name="audio"],
@@ -354,25 +302,7 @@ body .calendar .calendar-task .calendar-task-week {
 }
 
 body .calendar .calendar-task-window {
-	background-color: #FAFAFA;
-	position: absolute;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-	-webkit-transform: scale( 0.1, 0.1 );
-	-moz-transform: scale( 0.1, 0.1 );
-	-ms-transform: scale( 0.1, 0.1 );
-	-o-transform: scale( 0.1, 0.1 );
-	transform: scale( 0.1, 0.1 );
-	opacity: 0;
-	will-change: transform;
-	z-index: -1;
-}
 
-body .calendar .calendar-task-window.active {
-	z-index: 101;
 }
 
 body .calendar .calendar-task-window [name="contact-search"] {
@@ -381,91 +311,25 @@ body .calendar .calendar-task-window [name="contact-search"] {
 	width: calc( 100% - 65px );
 }
 
-body .calendar .calendar-task-window label {
-	cursor: pointer;
-	display: block;
-	min-height: 36px !important;
-	position: relative;
-	width: calc( 100% - 6px );
-}
-
-body .calendar .calendar-task-window label::before {
-	background-color: #424242;
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	-ms-border-radius: 50%;
-	-o-border-radius: 50%;
-	border-radius: 50%;
-	color: #FAFAFA;
-	content: attr( data-first-letter ) "";
-	display: inline-block;
-	font-size: 14px;
-	height: 30px;
-	left: 0px;
-	line-height: 28px;
-	margin: 7px 0 0 7px;
-	padding: 0;
-	position: absolute;
-	text-align: center;
-	text-transform: uppercase;
-	top: 0px;
-	vertical-align: top;
-	width: 30px;
-}
-
-body .calendar .calendar-task-window label:focus {
-}
-
-body .calendar .calendar-task-window label [type="checkbox"],
-body .calendar .calendar-task-window label [type="radio"] {
-	background-color: transparent;
-	height: 100%;
-	position: absolute;
-	opacity: 0.3;
-	width: 100%;
-}
-
-body .calendar .calendar-task-window label [type="checkbox"]::before,
-body .calendar .calendar-task-window label [type="radio"]::before {
-	background-color: #DDD;
-	border-bottom: solid 1px #767676;
-	content: "";
-	display: block;
-	height: 100%;
-	width: 100%;
-}
-
-body .calendar .calendar-task-window label [type="checkbox"]:checked::before,
-body .calendar .calendar-task-window label [type="radio"]:checked::before {
-	background-color: #66BB6A;
-}
-
-body .calendar .calendar-task-window label strong {
-	display: inline-block;
-	font-size: 1.4em;
-	font-weight: normal;
-	left: 0;
-	line-height: 1.3em;
-	margin-left: 32px;
-	padding: 7px 14px 0 14px;
-	position: relative;
-	top: 0;
-	vertical-align: top;
-	width: calc( ( 100% - 28px ) - 30px);
-}
-
-body .calendar .calendar-task-window label em {
-	display: inline-block;
-	font-size: 1em;
-	line-height: 1.4em;
-	padding: 3.5px 14px 3.5px 30px;
-	text-align: right;
-	width: calc( 100% - 44px );
-}
-
 body .calendar .calendar-task-window [name="add-contatos"] {
 	background-color: #00897B;
 	color: #FAFAFA;
 	margin-left: 7px;
 	width: calc( 100% - 14px );
+}
+
+body .calendar .calendar-task-header [name="save"] {
+	color: #FAFAFA;
+}
+
+body .calendar .calendar-task-header [name="save"]:disabled {
+	color: #AAA;
+} 
+
+body .list [name="msg"] {
+	text-align: justify !important;
+	margin: 0 0 7px 7px;
+	background-color: #EEE;
+	padding: 7px;
+	line-height: 1.4em;
 }

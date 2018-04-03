@@ -1,0 +1,12 @@
+
+body .messages {
+	position: relative;
+} 
+
+body .messages [name="messages-search"] {
+	margin-top: 6px;
+}
+
+body .messages [name="btn-new"] {
+	float: right;
+}

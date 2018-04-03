@@ -1,1 +1,16 @@
-[ ];
+[
+	{ 
+		"title": "Exempço de Áudio 1", 
+		"description": "Exemplo da descrição do audio 1",
+		"uri": "multimedia/audio.mp3", 
+		"source": null, 
+		"selected": false 
+	},
+	{ 
+		"title": "Exempço de Áudio 2", 
+		"description": "Exemplo da descrição do audio 2",
+		"uri": "multimedia/audio.mp3", 
+		"source": null, 
+		"selected": false 
+	}
+]

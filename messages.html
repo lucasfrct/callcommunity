@@ -7,7 +7,7 @@
 	<link rel="icon" href="vendor/icon.png" sizes="32x32">
 	<link rel="stylesheet" type="text/css" href="lib/components/components-all.css">
 	<link rel="stylesheet" type="text/css" href="vendor/callcommunity.css">
-	<link rel="stylesheet" type="text/css" href="vendor/contacts.css">
+	<link rel="stylesheet" type="text/css" href="vendor/messages.css">
 
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
 	<script type="text/javascript" src="lib/angular/angular-touch.min.js"></script>
@@ -15,8 +15,8 @@
 	<script type="text/javascript" src="lib/components/date.js"></script>
 
 	<script type="text/javascript" src="app/module.js"></script>
-	<script type="text/javascript" src="app/controller.contact.js"></script>
-	<script type="text/javascript" src="vendor/contacts.js"></script>
+	<script type="text/javascript" src="app/controller.messages.js"></script>
+	<script type="text/javascript" src="vendor/messages.js"></script>
 </head>
 <body class="">
 	<header class="row-xs-2 col-xs-12 background-secondary">
@@ -24,36 +24,38 @@
 		<div class="row-xs-2 col-xs-8 text-center"><h3>Mensagens</h3></div>
 		<div class="row-xs-2 col-xs-2"></div>
 	</header>
-	<main class="contacts row-xs-20 col-xs-12" ng-controller="contact">
-		<section class="contacts-details col-xs-12 row-xs-offset-2 row-xs-20">
-			<div class="contacts-details-btn col-xs-12 row-xs-2">
-				<button name="close" data-btn="close" ng-click="contactToggle ( );"></button>
-			</div>
-			<div class="col-xs-12 row-xs-5">
-				<span class="contact-circle line radius">{{ contactCurrent.name.substring ( 1, 0 ); }}</span>
-				<textarea name="name" placeholder="Nome" rows="3" ng-model="contactCurrent.name"></textarea>
-			</div>
-			<div class="col-xs-12 row-xs-5">
-				<textarea name="condominium" rows="3" placeholder="Condomínio" ng-model="contactCurrent.condominium" ></textarea>
-			</div>
-			<div class="col-xs-12 row-xs-6">
-				<input type="text" name="tel" placeholder="Telefone" ng-model="contactCurrent.tel" ></li>
-			</div>
+	<main class="messages row-xs-20 col-xs-12" ng-controller="messages">
+		
+		<section class="window active col-xs-12 row-xs-20">
 			<div class="col-xs-12 row-xs-2">
-				<button name="delete" data-btn="secondary" ng-click="contactDelete ( ); " ng-disabled="!contactCurrent.name || !contactCurrent.condominium || !contactCurrent.tel || contactCurrent.index == null">Deletar</button>
-				<button name="save" data-btn="secondary" ng-click="contactSave ( );" ng-disabled="!contactCurrent.name || !contactCurrent.condominium || !contactCurrent.tel">Salvar</button>
+				<input type="search" name="messages-search" placeholder="digite o título" ng-model="msgSearch">
+			</div>
+			<div class="col-xs-12 row-xs-16 list">
+				<li data-first-letter="{{ message.title.substring ( 1, 0 ); }}" ng-repeat="message in messages | filter: msgSearch" ng-dblclick="messageLoad ( $index ); ">
+					<strong>{{ message.title }}</strong>
+					<em>{{ message.text }}</em>
+				</li>
+			</div>
+			<button name="btn-new" data-btn="tertiary" ng-click="messageToggle ( );">Nova Mensagem</button>
+		</section>
+
+		<section class="message details window col-xs-12 row-xs-20">
+			<div class="col-xs-12 row-xs-2">
+				<button name="close" data-btn="close" ng-click="messageToggle ( );"></button>
+			</div>
+			<div class="col-xs-12 row-xs-5">
+				<span class="circle line radius">{{ messageCurrent.name.substring ( 1, 0 ); }}</span>
+				<textarea class="row-xs-offset-1" name="title" placeholder="digite o título" rows="3" ng-model="messageCurrent.title"></textarea>
+			</div>
+			<div class="col-xs-12 row-xs-10">
+				<textarea class="row-xs-offset-1" name="text" rows="8" placeholder="digite o texto" ng-model="messageCurrent.text" ></textarea>
+			</div>
+			<div class="col-xs-12 row-xs-3">
+				<button name="delete" data-btn="secondary" ng-click="messageDelete ( ); " ng-disabled="!messageCurrent.title || !messageCurrent.text || messageCurrent.index == null">Deletar</button>
+				<button name="save" data-btn="secondary" ng-click="messageSave ( );" ng-disabled="!messageCurrent.title || !messageCurrent.text">Salvar</button>
 			</div>
 		</section>
-		<section class="contacts-list col-xs-12 row-xs-18">
-			<label data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts" ng-dblclick="contactLoad ( $index ); ">
-				<input type="checkbox" ng-model="contact.selected">
-				<strong>{{ contact.name }}</strong>
-				<em>{{ contact.tel }} - {{ contact.condominium }}</em>
-			</label>
-		</section>
-		<section class="col-xs-12 row-xs-2">
-			<button name="btn-new-contact" data-btn="secondary" ng-click="contactToggle ( );">Novo Contato</button>
-		</section>
+
 	</main>
 	<footer class="row-xs-2 background-secondary">
 		<nav class="col-xs-12 row-xs-2">

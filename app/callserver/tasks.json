@@ -2,15 +2,40 @@
 	{
 		"id": 1,
 		"index": null,
-		"title": "tarefa 1", 
-		"date": "2018-03-12", 
-		"hour": "9:00",
+		"title": "Exemplo de tarefa 1", 
+		"date": "2018-4-3", 
+		"hour": "8:00",
 		"caller": true,
 		"sms": true,
-		"audio": { "title": "audio 1" , "source": "audio/audio.mp3", },
-		"msg": { "title": "msg 1", "text" : "text 1", },
-		"contacts": [
-			{ "id": 1, "name": "Lucas Costa", "tel": "(12) 99128-5145", "condominium": "Condomínio Costa Sol, Bl 14B Ap 1023A", "selected": false, },
+		"audio": { 
+			"title": "Exempço de Áudio 1", 
+			"description": "Exemplo da descrição do audio 1",
+			"uri": "multimedia/audio.mp3", 
+			"source": null, 
+			"selected": true 
+		},
+		"message": { 
+			"title": "Exemplo de mensagem 1", 
+			"text": "Exemplo de texto para mensagem.", 
+			"selected": true
+		},
+		"contacts": [ 
+			{ 
+				"id": 1, 
+				"index": null, 
+				"name": "Exemplo de Contato 1", 
+				"tel": "(00) 00000-0000", 
+				"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+				"selected": false
+			},
+			{ 
+				"id": 2, 
+				"index": null, 
+				"name": "Exemplo de Contato 2", 
+				"tel": "(00) 00000-0000", 
+				"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+				"selected": false
+			}
 		],
 		"repeat": { 
 			"dom": false,
@@ -19,7 +44,55 @@
 			"qua": false, 
 			"qui": false,
 			"sex": false,
-			"sab": false,
-		},
+			"sab": false
+		}
 	},
-];
+	{
+		"id": 2,
+		"index": null,
+		"title": "Exemplo de tarefa 2", 
+		"date": "2018-4-3", 
+		"hour": "17:00",
+		"caller": true,
+		"sms": true,
+		"audio": { 
+			"title": "Exempço de Áudio 1", 
+			"description": "Exemplo da descrição do audio 1",
+			"uri": "multimedia/audio.mp3", 
+			"source": null, 
+			"selected": true 
+		},
+		"message": { 
+			"title": "Exemplo de mensagem 1", 
+			"text": "Exemplo de texto para mensagem.", 
+			"selected": true
+		},
+		"contacts": [ 
+			{ 
+				"id": 1, 
+				"index": null, 
+				"name": "Exemplo de Contato 1", 
+				"tel": "(00) 00000-0000", 
+				"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+				"selected": false
+			},
+			{ 
+				"id": 2, 
+				"index": null, 
+				"name": "Exemplo de Contato 2", 
+				"tel": "(00) 00000-0000", 
+				"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+				"selected": false
+			}
+		],
+		"repeat": { 
+			"dom": false,
+			"seg": true, 
+			"ter": false,
+			"qua": true, 
+			"qui": false,
+			"sex": true,
+			"sab": false
+		}
+	}
+]

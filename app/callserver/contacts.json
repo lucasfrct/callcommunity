@@ -1,10 +1,18 @@
 [
 	{ 
-		"id": "0001", 
-		"index": "0", 
-		"name": "Lucas Costa", 
-		"tel": "(12) 99128-5145", 
-		"condominium": "Condomínio Costa Sol, Bl 14B Ap 1023A", 
-		"selected": false, 
+		"id": 1, 
+		"index": null, 
+		"name": "Exemplo de Contato 1", 
+		"tel": "(00) 00000-0000", 
+		"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+		"selected": false
 	},
-];
+	{ 
+		"id": 2, 
+		"index": null, 
+		"name": "Exemplo de Contato 2", 
+		"tel": "(00) 00000-0000", 
+		"condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
+		"selected": false
+	}
+]

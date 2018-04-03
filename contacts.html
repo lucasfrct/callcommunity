@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="lib/components/date.js"></script>
 
 	<script type="text/javascript" src="app/module.js"></script>
-	<script type="text/javascript" src="app/controller.contact.js"></script>
+	<script type="text/javascript" src="app/controller.contacts.js"></script>
 	<script type="text/javascript" src="vendor/contacts.js"></script>
 </head>
 <body class="">
@@ -24,36 +24,41 @@
 		<div class="row-xs-2 col-xs-8 text-center"><h3>Contatos</h3></div>
 		<div class="row-xs-2 col-xs-2"></div>
 	</header>
-	<main class="contacts row-xs-20 col-xs-12" ng-controller="contact">
-		<section class="contacts-details col-xs-12 row-xs-offset-2 row-xs-20">
-			<div class="contacts-details-btn col-xs-12 row-xs-2">
+	<main class="contacts row-xs-20 col-xs-12" ng-controller="contacts">
+		
+		<section class="window active col-xs-12 row-xs-20">
+			<div class="col-xs-12 row-xs-2">
+				<input type="search" name="contact-search" placeholder="digite o nome" ng-model="contactSearch">
+			</div>
+			<div class="col-xs-12 row-xs-16 list">
+				<li data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts | filter: contactSearch" ng-dblclick="contactLoad ( $index ); ">
+					<strong>{{ contact.name }}</strong>
+					<em>{{ contact.tel }} - {{ contact.condominium }}</em>
+				</li>
+			</div>
+			<button name="btn-new" data-btn="tertiary" ng-click="contactToggle ( );">Novo Contato</button>
+		</section>
+
+		<section class="contact details window col-xs-12 row-xs-20">
+			<div class="col-xs-12 row-xs-2">
 				<button name="close" data-btn="close" ng-click="contactToggle ( );"></button>
 			</div>
 			<div class="col-xs-12 row-xs-5">
-				<span class="contact-circle line radius">{{ contactCurrent.name.substring ( 1, 0 ); }}</span>
-				<textarea name="name" placeholder="Nome" rows="3" ng-model="contactCurrent.name"></textarea>
+				<span class="circle line radius">{{ contactCurrent.name.substring ( 1, 0 ); }}</span>
+				<textarea class="row-xs-offset-1" name="name" placeholder="Nome" rows="3" ng-model="contactCurrent.name"></textarea>
 			</div>
 			<div class="col-xs-12 row-xs-5">
-				<textarea name="condominium" rows="3" placeholder="Condomínio" ng-model="contactCurrent.condominium" ></textarea>
+				<textarea class="row-xs-offset-1" name="condominium" rows="3" placeholder="Condomínio" ng-model="contactCurrent.condominium" ></textarea>
 			</div>
-			<div class="col-xs-12 row-xs-6">
-				<input type="text" name="tel" placeholder="Telefone" ng-model="contactCurrent.tel" ></li>
+			<div class="col-xs-12 row-xs-5">
+				<input class="row-xs-offset-1" type="text" name="tel" placeholder="Telefone" ng-model="contactCurrent.tel" ></li>
 			</div>
-			<div class="col-xs-12 row-xs-2">
+			<div class="col-xs-12 row-xs-3">
 				<button name="delete" data-btn="secondary" ng-click="contactDelete ( ); " ng-disabled="!contactCurrent.name || !contactCurrent.condominium || !contactCurrent.tel || contactCurrent.index == null">Deletar</button>
 				<button name="save" data-btn="secondary" ng-click="contactSave ( );" ng-disabled="!contactCurrent.name || !contactCurrent.condominium || !contactCurrent.tel">Salvar</button>
 			</div>
 		</section>
-		<section class="contacts-list col-xs-12 row-xs-18">
-			<label data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts" ng-dblclick="contactLoad ( $index ); ">
-				<input type="checkbox" ng-model="contact.selected">
-				<strong>{{ contact.name }}</strong>
-				<em>{{ contact.tel }} - {{ contact.condominium }}</em>
-			</label>
-		</section>
-		<section class="col-xs-12 row-xs-2">
-			<button name="btn-new-contact" data-btn="secondary" ng-click="contactToggle ( );">Novo Contato</button>
-		</section>
+
 	</main>
 	<footer class="row-xs-2 background-secondary">
 		<nav class="col-xs-12 row-xs-2">

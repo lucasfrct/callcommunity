@@ -2898,6 +2898,7 @@ component-btn.css
 	btn sm 47px
 	btn md 57px
 	btn lg 72px
+	padding, margin = 3.5px || 7px || 14px || 21px || 28px;
 
 TYPES BTNs
 	** primary
@@ -2918,21 +2919,28 @@ STATES
 
 body [data-btn] {
 	background-color: #EEEEEE;
-	border: solid 0.5px currentColor;
+	border: solid 1px currentColor;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	-ms-border-radius: 4px;
+	border-radius: 4px;
 	bottom: 0;
 	color: #767676;
-	font-size: 1.4em;
+	font-size: 14px; /*standart 14px*/
 	cursor: pointer;
 	display: inline-block;
 	left: 0;
+	line-height: 1em;
 	margin: 2px 0;
 	/*max-width: 57px; /* 57px or 72px */
 	min-height: 30px;
 	min-width: 30px;
-	padding: 1em;
+	padding: 7px 14px;
 	position: relative;
 	right: 0;
 	top: 0;
+	text-align: center;
 	-webkit-transform-origin: center center;
 	-moz-transform-origin: center center;
 	-o-transform-origin: center center;
@@ -2945,25 +2953,41 @@ body [data-btn]:not( :disabled ):hover,
 body [data-btn]:not( :disabled ):focus, 
 body [data-btn="fab"]:not( :disabled ):hover::before,
 body [data-btn="fab"]:not( :disabled ):focus::before {
-	-webkit-box-shadow: 0 0 2px 0.5px #616161; /* #616161 or #212121*/
-	-moz-box-shadow: 0 0 2px 0.5px #616161;
-	-o-box-shadow: 0 0 2px 0.5px #616161;
-	-ms-box-shadow: 0 0 2px 0.5px #616161;
-	box-shadow: 0 0 2px 0.5px #616161;
+	-webkit-box-shadow: 0 0 2px 0.5px #929292;
+	-moz-box-shadow: 0 0 2px 0.5px #929292;
+	-o-box-shadow: 0 0 2px 0.5px #929292;
+	-ms-box-shadow: 0 0 2px 0.5px #929292;
+	box-shadow: 0 0 2px 0.5px #929292;
 	outline: 0;
 }
 
 body [data-btn]:not( :disabled ):active,
 body [data-btn="fab"]:not( :disabled ):active::before {
-	-webkit-box-shadow: 0 0 2px 2px #616161, 0 0 4px 2px #FFFFFF inset; /* #616161 or #212121*/
-	-moz-box-shadow: 0 0 2px 2px #616161, 0 0 4px 2px #FFFFFF inset;
-	-o-box-shadow: 0 0 2px 2px #616161, 0 0 4px 2px #FFFFFF inset;
-	-ms-box-shadow: 0 0 2px 2px #616161, 0 0 4px 2px #FFFFFF inset;
-	box-shadow: 0 0 2px 2px #616161, 0 0 4px 2px #FFFFFF inset;
+	-webkit-box-shadow: 0 0 2px 2px currentColor, 0 0 4px 2px #FAFAFA inset;
+	-moz-box-shadow: 0 0 2px 2px currentColor, 0 0 4px 2px #FAFAFA inset;
+	-o-box-shadow: 0 0 2px 2px currentColor, 0 0 4px 2px #FAFAFA inset;
+	-ms-box-shadow: 0 0 2px 2px currentColor, 0 0 4px 2px #FAFAFA inset;
+	box-shadow: 0 0 2px 2px currentColor, 0 0 4px 2px #FAFAFA inset;
 	outline: 0;
 }
 
+body [data-btn="fab"]:hover,
+body [data-btn="fab"]:focus,
+body [data-btn="fab"]:hover::before,
+body [data-btn="fab"]:focus::before,
+body [data-btn="switch"]:active,
+body [type="checkbox"][data-btn="switch"]:hover,
+body [type="checkbox"][data-btn="switch"]:focus,
+body [type="checkbox"][data-btn="switch"]:active {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-o-box-shadow: none !important;
+	-ms-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
 body [data-btn]:disabled,
+body [data-btn="progress"]:disabled::after,
 body [data-btn="fab"]:disabled::after {
 	color: #A0A0A0;
 }
@@ -2978,16 +3002,14 @@ body [type="checkbox"][data-btn="switch"]::after {
 	border-radius: 50%;
 }
 
-body [data-btn="primary"],
-body [data-btn="secondary"],
-body [data-btn="progress"],
-body [data-btn="ghost"] {
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	-o-border-radius: 4px;
-	-ms-border-radius: 4px;
-	border-radius: 4px;
-}
+
+body [data-btn="cta"] {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	-ms-border-radius: 0;
+	border-radius: 0;
+} 
 
 body [data-btn="fab"],
 body [type="checkbox"][data-btn="switch"]::after {
@@ -2999,26 +3021,28 @@ body [type="checkbox"][data-btn="switch"]::after {
 	will-change: transform;
 }
 
-body [data-btn="fab"]:hover,
-body [data-btn="fab"]:focus,
-body [data-btn="fab"]:active,
-body [data-btn="switch"]:active,
-body [type="checkbox"][data-btn="switch"]:hover,
-body [type="checkbox"][data-btn="switch"]:focus,
-body [type="checkbox"][data-btn="switch"]:active {
-	-webkit-box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	-o-box-shadow: none !important;
-	-ms-box-shadow: none !important;
-	box-shadow: none !important;
+body [data-btn="fab"] {
+	-webkit-transform: rotate( 0deg );
+	-moz-transform: rotate( 0deg );
+	-o-transform: rotate( 0deg );
+	-ms-transform: rotate( 0deg );
+	transform: rotate( 0deg) ;
+	will-change: transform;
 }
 
 body [data-btn="primary"] {
-	padding: 1em 2em; 
+	padding: 14px 28px;
 }
 
 body [data-btn="secondary"] {
-	padding: 0.5em 1em; 
+	padding: 14px;
+}
+
+body [data-btn="tertiary"] {
+}
+
+body [data-btn="quaternary"] {
+	padding: 3px 7px;
 }
 
 body [data-btn="progress"]::after {
@@ -3026,14 +3050,16 @@ body [data-btn="progress"]::after {
 	animation-iteration-count: infinite;
 	animation-name: btn-progresser;
 	animation-timing-function: linear;
-	border: solid 2px #0D47A1;
+	border: solid 2px currentColor;
 	border-top-color: transparent;
+	color:  #0D47A1;
 	content: "";
 	display: inline-block;
+	font-size: 0;
 	height: 10px;
-	margin-left: 5px;
-	margin-right: 2px;
-	padding: 0px;
+	line-height: 10px;
+	margin: 0 7px;
+	padding: 0;
 	position: relative;
 	width: 10px;
 	will-change: transform;
@@ -3042,28 +3068,28 @@ body [data-btn="progress"]::after {
 
 @keyframes btn-progresser {
 	0% { 
-		-webkit-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		transform: rotate(0deg); 
+		-webkit-transform: rotate( 0deg );
+		-moz-transform: rotate( 0deg );
+		-o-transform: rotate( 0deg );
+		-ms-transform: rotate( 0deg );
+		transform: rotate( 0deg ); 
 	}
 	100% {
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		transform: rotate(360deg); 
+		-webkit-transform: rotate( 360deg );
+		-moz-transform: rotate( 360deg );
+		-o-transform: rotate( 360deg );
+		-ms-transform: rotate( 360deg );
+		transform: rotate( 360deg ); 
 	}
 }
 
 body [data-btn="cta"] {
-	-webkit-border-radius: 1px;
-	-moz-border-radius: 1px;
-	-o-border-radius: 1px;
-	-ms-border-radius: 1px;
-    border-radius: 1px;
-    padding: 1em 5em;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	-ms-border-radius: 2px;
+    border-radius: 2px;
+    padding: 21px 35px;
 }
 
 body [data-btn="ghost"] {
@@ -3073,54 +3099,55 @@ body [data-btn="ghost"] {
 body [data-btn="fab"] {
 	background-color: transparent;
 	border: none;
-	color: #FFF;
+	color: #FAFAFA;
+	display: inline-block;
 	font-size: 0;
 	height: 45px;
 	position: relative;
 	width: 45px;
+	line-height: 45px;
 }
 
 body [data-btn="fab"]:not( :disabled ):hover,
 body [data-btn="fab"]:not( :disabled ):focus  {
-	-webkit-transform: rotate(225deg);
-	-moz-transform: rotate(225deg);
-	-o-transform: rotate(225deg);
-	-ms-transform: rotate(225deg);
-	transform: rotate(225deg);
+	-webkit-transform: rotate( 225deg );
+	-moz-transform: rotate( 225deg );
+	-o-transform: rotate( 225deg );
+	-ms-transform: rotate( 225deg );
+	transform: rotate( 225deg) ;
 }
 
 body [data-btn="fab"]::before,
 body [data-btn="fab"]::after {
 	content: "";
-	height: inherit;
-	width: inherit;
-	display: inline-block;
-	position: absolute;
+	display: block;
 	height: 45px;
+	line-height: 45px;
+	position: absolute;
 	width: 45px;
+	font-size: 45px;
+	top: 0px;
+	left: 0px;
+	vertical-align: top;
+	text-align: center;
 }
 
 body [data-btn="fab"]::before {
-	top: 0px;
-	left: 0px;
 	background-color: #E0E0E0;
+}
+
+body [data-btn="fab"]:active::before {
+	background-color: #F44336;
 }
 
 body [data-btn="fab"]::after {
 	content: "+";
-	top: 0px;
-	left: 0px;
-	font-size: 42px;
-}
-
-body [data-btn="fab"]:not( :disabled ):hover::after,
-body [data-btn="fab"]:not( :disabled ):focus::after {
-	color: #F44336;
 }
 
 body [type="checkbox"][data-btn="switch"] {
+	background-color: #E0E0E0;
 	width: 60px;
-	background-color: #EEEEEE;
+	height: 30px;
 }
 
 body [type="checkbox"][data-btn="switch"]::before,
@@ -3128,13 +3155,13 @@ body [type="checkbox"][data-btn="switch"]::after {
 	content: "";
 	display: inline-block;
 	position: absolute;
-
+	top: 0;
+	left: 0;
+	height: inherit;
 }
 
 body [type="checkbox"][data-btn="switch"]::before {
-	border: solid 1px #AAA;
-	width: inherit;
-	height: 30px;
+	border: solid 1px #A0A0A0;
 	background-color: inherit;
 	-webkit-border-radius: 30px;
 	-moz-border-radius: 30px;
@@ -3146,6 +3173,7 @@ body [type="checkbox"][data-btn="switch"]::before {
 	-o-transition: background-color 0.3s ease-in-out;
 	-ms-transition: background-color 0.3s ease-in-out;
 	transition: background-color 0.3s ease-in-out; 
+	width: inherit;
 }
 
 body [type="checkbox"][data-btn="switch"]:checked::before {
@@ -3153,21 +3181,25 @@ body [type="checkbox"][data-btn="switch"]:checked::before {
 }
 
 body [type="checkbox"][data-btn="switch"]::after {
-	border: solid 1px #BBB;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
+	border: solid 1px #B0B0B0;
 	background: #FFF;
 	left: 1px;
+	line-height: 28px;
+	-webkit-transform: translateX( 0px );
+	-moz-transform: translateX( 0px );
+	-ms-transform: translateX( 0px );
+	-o-transform: translateX( 0px );
+	transform: translateX( 0px );
+	width: 30px;
 	will-change: transform;
 }
 
 body [type="checkbox"][data-btn="switch"]:not( :disabled ):checked::after {
-	-webkit-transform: translateX(28px);
-	-moz-transform: translateX(28px);
-	-o-transform: translateX(28px);
-	-ms-transform: translateX(28px);
-	transform: translateX(28px);
+	-webkit-transform: translateX( 29px );
+	-moz-transform: translateX( 29px );
+	-o-transform: translateX( 29px );
+	-ms-transform: translateX( 29px );
+	transform: translateX( 29px );
 }
 
 body [type="checkbox"][data-btn="switch"]:disabled::after {
@@ -3177,8 +3209,7 @@ body [type="checkbox"][data-btn="switch"]:disabled::after {
 body [data-btn="close"] {
 	color: #F00;
 	font-size: 28px;
-	line-height: 1em;
-	padding: 0em;
+	padding: 0;
 }
 
 body [data-btn="close"]::before {
@@ -3487,6 +3518,36 @@ body [ data-shape="backspace" ]::after {
 	-ms-transform: rotate( 45deg );
 	-o-transform: rotate( 45deg );
 	transform: rotate( 45deg );
+}
+
+/* component-shape-calendar-flip.css */
+
+
+body [data-shape="calendar-flip"] {
+	display: inline-block;
+	font-size: 12px;
+	border: solid 2px currentColor;
+	border-top-width: 5px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	padding: 2px 2px;
+	top: 0px;
+	margin-top: 14px;
+	margin-left: 7px;
+	color: #767676;
+}
+
+body [data-shape="calendar-flip"]::before {
+	content: "";
+	display: block;
+	width: 9px;
+	height: 4px;
+	border-left: solid 4px currentColor;
+	border-right: solid 4px currentColor;
+	position: absolute;
+	top: -8px;
+	left: 2px;
 }
 
 /*

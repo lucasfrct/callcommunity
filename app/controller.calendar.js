@@ -3,11 +3,13 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "calendar", Calendar );
+		.controller ( "calendar", [ "$scope", "$http", "$cookies", Calendar ] );
 
-	function Calendar ( $scope ) {
+	function Calendar ( $scope, $http, $cookies ) {
 
-		var $months = [ 
+		var $uri = "app/callserver/tasks.json";
+
+		var $months = [
 			"janeiro", 
 			"fevereiro", 
 			"março", 
@@ -22,69 +24,59 @@
 			"dezembro", 
 		];
 
-		$scope.tasks = [ 
-			{ id: 1, index: null, title: "tarefa 1", date: new Date ( 2018, 03, 12 ), hour: "9:00", caller: true, sms: false,
-				contacts: [
-					{ id: 1, name: "Lucas Costa", tel: "(12) 99128-5145", condominium: "Condomínio Costa Sol, Bl 14B Ap 1023A", selected: false, },
-					{ id: 2, name: "Cristiane Costa", tel: "(12) 98123-1965", condominium: "Condomínio Costa Resplandecer, Bl 14B Ap 1023A", selected: false, },
-				],
-				audio: { title: "audio 1", source:"audio/audio.mp3", },
-				msg: { title: "msg 1", text: "Msg 1" },
-				repeat: { 
-					dom: false,
-					seg: true, 
-					ter: false,
-					qua: false, 
-					qui: false,
-					sex: false,
-					sab: false,
-				},
-			},
-			{ id: 2, index: null, title: "tarefa 2", date: new Date ( 2018, 03, 12 ), hour: "12:00", caller: false, sms: true,
-				contacts: [
-					{ id: 3, name: "Rafael Lírio", tel: "(22) 99709-9009", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-					{ id: 4, name: "Roberta Lírio", tel: "(22) 99709-5060", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-				],
-				audio: { title: "audio 2", source:"audio/audio.mp3", },
-				msg: { title: "msg 2", text: "Msg 2" },
-				repeat: { 
-					dom: false,
-					seg: true, 
-					ter: false,
-					qua: true, 
-					qui: false,
-					sex: true,
-					sab: false,
-				},
-			},
-		];
-
-		$scope.contacts = [
-			{ id: 1, name: "Lucas Costa", tel: "(12) 99128-5145", condominium: "Condomínio Costa Sol, Bl 14B Ap 1023A", selected: false, },
-			{ id: 2, name: "Cristiane Costa", tel: "(12) 98123-1965", condominium: "Condomínio Costa Resplandecer, Bl 14B Ap 1023A", selected: false, },
-			{ id: 3, name: "Rafael Lírio", tel: "(22) 99709-9009", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-			{ id: 4, name: "Roberta Lírio", tel: "(22) 99709-5060", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-			{ id: 5, name: "Lupe Sonso", tel: "(22) 090-5060", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-			{ id: 6, name: "Lupe Bobo", tel: "(12) 11111-1111", condominium: "Condomínio Paineras, Bl 14B Ap 1023A", selected: false, },
-		];
-
-		$scope.multimedia = [ 
-			{ title: "Audio 1", source: "audio/audio.mp3", selected: false, },
-			{ title: "Audio 2", source: "audio/audio.mp3", selected: false, },
-			{ title: "Audio 3", source: "audio/audio.mp3", selected: false, },
-		];
-
-		$scope.messages = [ 
-			{ title: "msg 1", text: "Msg 1", selected: false, },
-			{ title: "msg 2", text: "Msg 2", selected: false, },
-			{ title: "msg 3", text: "Msg 3", selected: false, },
-		];
+		$scope.contacts = [ ];
 		
+		$scope.$watch ( "contacts", function ( $newValue ) { 
+			$cookies.put ( "contacts", $newValue );
+		} );
+
+		query ( $http, "app/callserver/contacts.json", function ( $data ) { 
+			$scope.contacts = $data;
+		} )
+
+		
+		$scope.multimedia = [ ];
+		
+		$scope.$watch ( "multimedia", function ( $newValue ) { 
+			$cookies.put ( "multimedia", $newValue );
+		} );
+
+		query ( $http, "app/callserver/multimedia.json", function ( $data ) { 
+			$scope.multimedia = $data;
+		} );
+
+
+		$scope.messages = [ ];
+
+		$scope.$watch ( "messages", function ( $newValue ) { 
+			$cookies.put ( "messages", $newValue );
+		} );
+
+		query ( $http, "app/callserver/messages.json", function ( $data ) { 
+			$scope.messages = $data;
+		} );
+
+
+		$scope.tasks = [ ];
 		$scope.tasksList = { };
+
+		$scope.$watch ( "tasks", function ( $newValue, $oldValue ) {
+			$scope.tasksList = loadTasks ( $scope.tasks );
+			$cookies.put ( "tasks", $scope.tasks );
+			$cookies.put ( "tasksList", $scope.tasksList );
+		} );
+
+		query ( $http, $uri, function ( $data ) { 
+			$scope.tasks = $data;
+		} );
+
+		console.log ( $cookies.getAll ( ) );
+		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 		var $todayDate = $Date ( "", "", $months );
-		//alert ( JSON.stringify ( $currentDate ) );
 
 		$scope.currentDate = initCurrentDate ( $todayDate );
 
@@ -123,6 +115,7 @@
 
 			if ( $taskLoad && typeof $taskLoad === "object" ) {
 				$scope.taskNew = $taskLoad;
+				$scope.taskNew.date = new Date ( $scope.taskNew.date );
 			} else {
 				$scope.taskNew = taskReset ( initCurrentDate ( $todayDate ), $hour  );
 			};
@@ -158,11 +151,11 @@
 		};
 		
 		$scope.contactToggle = function ( ) {
-			toggleClass ( ".calendar-task-window",  "active" );
+			toggleClass ( ".contacts.window",  "active" );
 			$scope.contacts = contactsReset ( $scope.contacts );
 		};
 
-		$scope.addContacts = function ( ) {
+		$scope.contactAdd = function ( ) {
 
 			var $contacts = angular.copy ( 
 				$scope.contacts.filter ( function ( $contact ) { 
@@ -176,10 +169,10 @@
 		};
 
 		$scope.audioToggle = function ( ) {
-			toggleClass ( ".calendar-task-window.multimedia",  "active" );
+			toggleClass ( ".multimedia.window",  "active" );
 		};
 
-		$scope.addAudio = function ( ) {
+		$scope.audioAdd = function ( ) {
 
 			var $audio = angular.copy ( 
 				$scope.multimedia.filter ( function ( $audio ) { 
@@ -187,26 +180,36 @@
 				} )[ 0 ] 
 			);
 
+			$scope.multimedia.map ( function ( $audio ) { 
+				if ( $audio.selected == true ) {
+					$audio.selected = false;
+				};
+			} );
+
 			$scope.taskNew.audio = $audio;
 			$scope.audioToggle ( );
-			console.log ( $scope.taskNew.audio );
 		};
 
-		$scope.msgToggle = function ( ) {
-			toggleClass ( ".calendar-task-window.text",  "active" );
+		$scope.messageToggle = function ( ) {
+			toggleClass ( ".messages.window",  "active" );
 		};
 
-		$scope.addMsg = function ( ) {
+		$scope.messageAdd = function ( ) {
 
-			var $text = angular.copy ( 
-				$scope.messages.filter ( function ( $text ) { 
-					return $text.selected == true;
-				} )[ 0 ] 
+			var $message = angular.copy ( 
+				$scope.messages.filter ( function ( $msg ) { 
+					return $msg.selected == true;
+				} )[ 0 ]
 			);
 
-			$scope.taskNew.msg = $text;
-			$scope.msgToggle ( );
-			console.log ( $scope.taskNew );
+			$scope.messages.map ( function ( $msg ) { 
+				if ( $msg.selected == true ) {
+					$msg.selected = false;
+				};
+			} );
+
+			$scope.taskNew.message = $message;
+			$scope.messageToggle ( );
 		};
 
 	};

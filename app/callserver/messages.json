@@ -1,0 +1,12 @@
+[
+	{ 
+		"title": "Exemplo de mensagem 1", 
+		"text": "Exemplo de texto para mensagem.", 
+		"selected": false
+	},
+	{ 
+		"title": "Exemplo de mensagem 2", 
+		"text": "Exemplo de texto para mensagem.", 
+		"selected": false
+	}			
+]

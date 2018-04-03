@@ -1,0 +1,24 @@
+
+body .multimedia {
+	position: relative;
+} 
+
+body .multimedia [name="contact-search"] {
+	margin-top: 6px;
+}
+
+body .multimedia [name="btn-new"] {
+	float: right;
+}
+
+body .multimedia [name="src"] {
+	margin: 7px 14px;
+	position: relative;
+	display: inline-block;
+	border: solid 1px #DDD;
+	width: calc( 100% - 28px - 28px - 2px );
+	background-color: #EEE;
+	padding: 7px 14px;
+	font-size: 14px;
+	font-weight: normal;
+}

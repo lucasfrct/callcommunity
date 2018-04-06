@@ -3,16 +3,20 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "multimedia", Multimedia );
+		.controller ( "multimedia", [ "$scope", "$http", "$cookies", Multimedia ] );
 
-	function Multimedia ( $scope, $http ) {
+	function Multimedia ( $scope, $http, $cookies ) {
 
 		var $uri = "app/callserver/multimedia.json";
 
-		$scope.multimedia = [ ];
+		$scope.multimedia = cookieGet ( $cookies, "multimedia" );
+		
+		$scope.$watch ( "multimedia", function ( $multimedia ) { 
+			cookiePut ( $cookies, "multimedia", $multimedia );
+		}, true );
 
-		query ( $http, $uri, function ( $data ) { 
-			$scope.multimedia = $data;
+		query ( $http, "app/callserver/multimedia.json", function ( $multimedia ) { 
+			$scope.multimedia = $multimedia;
 		} );
 		
 		$scope.multimediaCurrent = {
@@ -42,7 +46,8 @@
 		};
 
 		$scope.multimediaDelete = function ( ) {
-			if ( $scope.multimediaCurrent.index !== null ) {
+			var $delete = confirm ( 'deseja deletar o áudio "'+$scope.multimediaCurrent.title+'"?' );
+			if ( $delete && $scope.multimediaCurrent.index !== null ) {
 				$scope.multimedia.splice ( $scope.multimediaCurrent.index , 1 );
 			};
 			

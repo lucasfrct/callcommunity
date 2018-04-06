@@ -24,79 +24,85 @@
 			"dezembro", 
 		];
 
-		$scope.contacts = [ ];
+		$scope.contacts = cookieGet( $cookies, "contacts" );
 		
-		$scope.$watch ( "contacts", function ( $newValue ) { 
-			$cookies.put ( "contacts", $newValue );
+		$scope.$watch ( "contacts", function ( $contacts ) { 
+			cookiePut( $cookies, "contacts", $contacts );
+		}, true );
+
+		query ( $http, "app/callserver/contacts.json", function ( $contacts ) { 
+			$scope.contacts = $contacts;
 		} );
-
-		query ( $http, "app/callserver/contacts.json", function ( $data ) { 
-			$scope.contacts = $data;
-		} )
-
 		
-		$scope.multimedia = [ ];
+		$scope.multimedia = cookieGet ( $cookies, "multimedia" );
 		
-		$scope.$watch ( "multimedia", function ( $newValue ) { 
-			$cookies.put ( "multimedia", $newValue );
+		$scope.$watch ( "multimedia", function ( $multimedia ) { 
+			cookiePut ( $cookies, "multimedia", $multimedia );
+		}, true );
+
+		query ( $http, "app/callserver/multimedia.json", function ( $multimedia ) { 
+			$scope.multimedia = $multimedia;
 		} );
 
-		query ( $http, "app/callserver/multimedia.json", function ( $data ) { 
-			$scope.multimedia = $data;
+		$scope.messages = cookieGet ( $cookies, "messages" );
+
+		$scope.$watch ( "messages", function ( $messages ) { 
+			cookiePut ( $cookies, "messages", $messages );
+		}, true );
+
+		query ( $http, "app/callserver/messages.json", function ( $messages ) { 
+			$scope.messages = $messages;
 		} );
 
+		$scope.tasks = cookieGet( $cookies, "tasks" );
+		$scope.tasksList = loadTasks ( $scope.tasks );
 
-		$scope.messages = [ ];
-
-		$scope.$watch ( "messages", function ( $newValue ) { 
-			$cookies.put ( "messages", $newValue );
-		} );
-
-		query ( $http, "app/callserver/messages.json", function ( $data ) { 
-			$scope.messages = $data;
-		} );
-
-
-		$scope.tasks = [ ];
-		$scope.tasksList = { };
-
-		$scope.$watch ( "tasks", function ( $newValue, $oldValue ) {
+		$scope.$watch ( "tasks", function ( ) {
+			cookiePut ( $cookies, "tasks", $scope.tasks );
 			$scope.tasksList = loadTasks ( $scope.tasks );
-			$cookies.put ( "tasks", $scope.tasks );
-			$cookies.put ( "tasksList", $scope.tasksList );
+		}, true );
+
+		query ( $http, $uri, function ( $tasks ) { 
+			$scope.tasks = $tasks;
 		} );
 
-		query ( $http, $uri, function ( $data ) { 
-			$scope.tasks = $data;
-		} );
-
-		console.log ( $cookies.getAll ( ) );
+		//cookieClearAll ( $cookies );
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 		var $todayDate = $Date ( "", "", $months );
 
-		$scope.currentDate = initCurrentDate ( $todayDate );
+		$scope.currentDate = "";
 
-		$scope.currentDay = $todayDate.day;
+		$scope.$watch ( "currentDate", function ( $newDate ) { 
+			
+			console.log ( "date" );
+
+		}, true );
+
+
+/*
+	server 0.south-america.pool.ntp.org
+	server 1.south-america.pool.ntp.org
+	server 2.south-america.pool.ntp.org
+	server 3.south-america.pool.ntp.org
+*/
+
+	query ( $http, "ntp.php", function ( $data ) {
+		console.log ( $data );
+	} );
+
+
+
+
+
+		$scope.currentDay = $Date( "", "", $months, $scope.currentDate ).day;
 		$scope.currentDayWeek = $todayDate.Week;
 		$scope.currentMonth = $todayDate.Month;
 		
 		$scope.tasksList = loadTasks ( $scope.tasks );
 
 		$scope.taskNew = taskReset ( initCurrentDate ( $todayDate ) );
-
-		$scope.changeDate = function ( ) {
-			$date = dateUpdate ( $scope.currentDate );
-
-			$scope.currentDay = $date.day;
-			$scope.currentDayWeek = $date.Week;
-			$scope.currentMonth = $date.Month;
-
-			$scope.tasksList = loadTasks ( $scope.tasks );
-		};
 		
 		$scope.taskToggle = function ( ) {
 			toggleClass ( ".calendar-task",  "active" );
@@ -137,17 +143,14 @@
 		};
 
 		$scope.taskDelete = function ( ) {
-
-			var $delete = confirm ( "Deseja deletar esta Tarefa?" );
+			var $delete = confirm ( 'Deseja deletar a tarefa "'+$scope.taskNew.title+'"?' );
 
 			if ( $delete && $scope.taskNew.index !== null && $scope.taskNew.index >= 0 ) {
 				$scope.tasks.splice ( $scope.taskNew.index, 1 );
-
 			};
 
 			$scope.tasksList = loadTasks ( $scope.tasks );
 			$scope.taskToggle ( );
-
 		};
 		
 		$scope.contactToggle = function ( ) {
@@ -211,7 +214,6 @@
 			$scope.taskNew.message = $message;
 			$scope.messageToggle ( );
 		};
-
 	};
 
 
@@ -222,7 +224,7 @@
 		return new Date ( $currentDate.Year, ( $currentDate.month - 1 ), $currentDate.day );
 	};
 
-	function dateUpdate ( $date, $months ) {
+	function dateParse ( $date, $months ) {
 		return $Date( "", "", $months, $date );
 	};
 
@@ -231,41 +233,43 @@
 
 	function loadTasks ( $tasks ) {
 		var $list = { };
-		$tasks.map ( function ( $task, $index ) {
-			switch ( $task.hour ) {
+		if ( angular.isArray ( $tasks ) ) {
+			$tasks.map ( function ( $task, $index ) {
+				switch ( $task.hour ) {
 
-				case "8:00":
-					$list.hour8 = $task.title ;
-					break;
-				case "9:00":
-					$list.hour9 = ( $task.title );
-					break;
-				case "10:00":
-					$list.hour10 = ( $task.title );
-					break;
-				case "11:00":
-					$list.hour11 = ( $task.title );
-					break;
-				case "12:00":
-					$list.hour12 = ( $task.title );
-					break;
-				case "13:00":
-					$list.hour13 = ( $task.title );
-					break;
-				case "14:00":
-					$list.hour14 = ( $task.title );
-					break;
-				case "15:00":
-					$list.hour15 = ( $task.title );
-					break;
-				case "16:00":
-					$list.hour16 = ( $task.title );
-					break;
-				case "17:00":
-					$list.hour17 = ( $task.title );
-					break;
-			};
-		} );
+					case "8:00":
+						$list.hour8 = $task.title ;
+						break;
+					case "9:00":
+						$list.hour9 = ( $task.title );
+						break;
+					case "10:00":
+						$list.hour10 = ( $task.title );
+						break;
+					case "11:00":
+						$list.hour11 = ( $task.title );
+						break;
+					case "12:00":
+						$list.hour12 = ( $task.title );
+						break;
+					case "13:00":
+						$list.hour13 = ( $task.title );
+						break;
+					case "14:00":
+						$list.hour14 = ( $task.title );
+						break;
+					case "15:00":
+						$list.hour15 = ( $task.title );
+						break;
+					case "16:00":
+						$list.hour16 = ( $task.title );
+						break;
+					case "17:00":
+						$list.hour17 = ( $task.title );
+						break;
+				};
+			} );
+		};
 
 		return  $list;
 	};

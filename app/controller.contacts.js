@@ -2,17 +2,21 @@
 	"use strict";
 
 	angular.module ( "callcommunity" )
-		.controller ( "contacts", [ "$scope", "$http",  Contacts ] );
+		.controller ( "contacts", [ "$scope", "$http", "$cookies", Contacts ] );
 
-	function Contacts ( $scope, $http ) {
+	function Contacts ( $scope, $http, $cookies ) {
 
 		var $uri =  "app/callserver/contacts.json";
 		
-		$scope.contacts = [ ];
+		$scope.contacts = cookieGet( $cookies, "contacts" );
 
-		query ( $http, $uri, function ( $data ) {
-			$scope.contacts = $data;
-		} );
+		$scope.$watch ( "contacts", function ( $contacts ) { 
+			cookiePut( $cookies, "contacts", $contacts );
+		}, true );
+
+		query ( $http, "app/callserver/contacts.json", function ( $contacts ) { 
+			$scope.contacts = $contacts;
+		} ); 
 
 		$scope.contactCurrent = {
 			name: "",
@@ -39,7 +43,9 @@
 		};
 
 		$scope.contactDelete = function ( ) {
-			if ( $scope.contactCurrent.index !== null ) {
+			var $delete = confirm ( 'Deseja deletar o contato"'+$scope.contactCurrent.name+'"?' );
+
+			if ( $delete && $scope.contactCurrent.index !== null ) {
 				$scope.contacts.splice ( $scope.contactCurrent.index , 1 );
 			};
 			

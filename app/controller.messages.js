@@ -2,16 +2,20 @@
 	"use strict";
 
 	angular.module ( "callcommunity" )
-		.controller ( "messages", Messages );
+		.controller ( "messages", [ "$scope", "$http", "$cookies", Messages ] );
 
-	function Messages ( $scope, $http ) {
+	function Messages ( $scope, $http, $cookies ) {
 
 		var $uri = "app/callserver/messages.json";
 
-		$scope.messages = [ ];
+		$scope.messages = cookieGet ( $cookies, "messages" );
 
-		query ( $http, $uri, function ( $data ) { 
-			$scope.messages = $data;
+		$scope.$watch ( "messages", function ( $messages ) { 
+			cookiePut ( $cookies, "messages", $messages );
+		}, true );
+
+		query ( $http, "app/callserver/messages.json", function ( $messages ) { 
+			$scope.messages = $messages;
 		} );
 
 		$scope.messageCurrent = {
@@ -38,7 +42,8 @@
 		};
 
 		$scope.messageDelete = function ( ) {
-			if ( $scope.messageCurrent.index !== null ) {
+			var $delete = confirm ( "Deseja deletar esta mensagem?" );
+			if ( $delete && $scope.messageCurrent.index !== null ) {
 				$scope.messages.splice ( $scope.messageCurrent.index , 1 );
 			};
 			

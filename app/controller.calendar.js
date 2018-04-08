@@ -24,6 +24,8 @@
 			"dezembro", 
 		];
 
+		var $todayDate = $Date ( true, $months );
+
 		$scope.contacts = cookieGet( $cookies, "contacts" );
 		
 		$scope.$watch ( "contacts", function ( $contacts ) { 
@@ -54,6 +56,10 @@
 			$scope.messages = $messages;
 		} );
 
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		$scope.tasks = cookieGet( $cookies, "tasks" );
 		$scope.tasksList = loadTasks ( $scope.tasks );
 
@@ -62,51 +68,49 @@
 			$scope.tasksList = loadTasks ( $scope.tasks );
 		}, true );
 
+
 		query ( $http, $uri, function ( $tasks ) { 
 			$scope.tasks = $tasks;
 		} );
 
-		//cookieClearAll ( $cookies );
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		var $todayDate = $Date ( "", "", $months );
-
-		$scope.currentDate = "";
-
-		$scope.$watch ( "currentDate", function ( $newDate ) { 
-			
-			console.log ( "date" );
-
+		$scope.$watch ( "currentDate", function ( $newDate ) {
+			console.log ( "consulta todas as tarefas com a data selecionada" );
+			queryTasks ( $http, $date );
 		}, true );
 
+		//cookieClearAll ( $cookies );
 
-/*
-	server 0.south-america.pool.ntp.org
-	server 1.south-america.pool.ntp.org
-	server 2.south-america.pool.ntp.org
-	server 3.south-america.pool.ntp.org
-*/
+		/*
+		server 0.south-america.pool.ntp.org
+		server 1.south-america.pool.ntp.org
+		server 2.south-america.pool.ntp.org
+		server 3.south-america.pool.ntp.org
+		*/
 
-	query ( $http, "ntp.php", function ( $data ) {
-		console.log ( $data );
-	} );
+		query ( $http, "ntp.php", function ( $data ) {
+			console.log ( $data );
+		} );
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		$scope.currentDate = $Date ( );
 
-
-
-
-		$scope.currentDay = $Date( "", "", $months, $scope.currentDate ).day;
-		$scope.currentDayWeek = $todayDate.Week;
-		$scope.currentMonth = $todayDate.Month;
+		$scope.$watch ( "currentDate", function ( $newDate ) { 
+			$scope.dataObj = $Date ( true, $scope.currentDate, $months );
+			$scope.currentDay = $scope.dataObj.day;
+			$scope.currentDayWeek = $scope.dataObj.week;
+			$scope.currentMonth = $scope.dataObj.Month;
+		}, true );
 		
 		$scope.tasksList = loadTasks ( $scope.tasks );
 
-		$scope.taskNew = taskReset ( initCurrentDate ( $todayDate ) );
+		$scope.taskNew = taskReset ( $Date ( ) ); 
+		console.log ( $scope.taskNew );
 		
 		$scope.taskToggle = function ( ) {
 			toggleClass ( ".calendar-task",  "active" );
-			$scope.taskNew = taskReset ( initCurrentDate ( $todayDate ) );
+			$scope.taskNew = taskReset ( $Date ( ) );
 		};
 
 		$scope.taskLoad = function ( $hour ) {
@@ -119,11 +123,11 @@
 				return $task.hour == $hour;
 			} )[0] );
 
-			if ( $taskLoad && typeof $taskLoad === "object" ) {
+			if ( $taskLoad && "object" === typeof $taskLoad ) {
 				$scope.taskNew = $taskLoad;
-				$scope.taskNew.date = new Date ( $scope.taskNew.date );
+				$scope.taskNew.date = $Date ( $scope.taskNew.date );
 			} else {
-				$scope.taskNew = taskReset ( initCurrentDate ( $todayDate ), $hour  );
+				$scope.taskNew = taskReset ( $Date ( ), $hour  );
 			};
 
 			$scope.tasksList = loadTasks ( $scope.tasks );
@@ -216,20 +220,7 @@
 		};
 	};
 
-
-
 	///////////////////////////////////////////////////////////////////////
-
-	function initCurrentDate ( $currentDate ) {
-		return new Date ( $currentDate.Year, ( $currentDate.month - 1 ), $currentDate.day );
-	};
-
-	function dateParse ( $date, $months ) {
-		return $Date( "", "", $months, $date );
-	};
-
-	function setCurrentDate ( $scope = "", $day = "", $week = "", $month = "" ) {			
-	};
 
 	function loadTasks ( $tasks ) {
 		var $list = { };
@@ -274,7 +265,7 @@
 		return  $list;
 	};
 
-	function taskReset ( $currentDate, $hour = null ) {
+	function taskReset ( $currentDate = null, $hour = null ) {
 		var $taskNew = {
 			id: null,
 			index: null,
@@ -321,6 +312,30 @@
 	    };
 
 	    return $newArr;
+	};
+
+	function queryTasks ( $http = null, $date = null ) {
+		var $uri = "lib/crud/Service.php";
+		
+		var $read = { 
+			'action': "read", 
+			'table': "callcommunity.tasks", 
+			'fields': "*",
+		};
+
+		$http ( {
+			url: $uri,
+			method: "POST",
+			data: $read,
+			dataType: 'json',
+			headers : { 'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8' },
+		} )
+			.then ( function ( $data ) {
+				console.log ( $data.data );
+			}, function ( $error ) {
+				console.log ( "error" );
+			} );
+
 	};
 
 } ) ( );

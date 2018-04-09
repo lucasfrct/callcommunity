@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<!--meta http-equiv="refresh" content="3,test.php"-->
+	<script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
+	<title>Crud</title>
+	<style>
+
+		main > a {
+			background-color: #6C6;
+			border: solid 1px #AAA;
+			padding: 7px 14px;
+			margin: 0;
+			margin-bottom: 14px;
+			display: inline-block;
+			color: #FFF;
+		}
+
+		main > div {
+			background-color: #EEE;
+			border: solid 1px #AAA;
+			margin: 1px 0;
+			padding: 7px 14px;
+		}
+
+		main > div xmp {
+			background-color: #DDD;
+			padding: 7px;
+			margin: 0;
+		}
+
+		main > div span {
+			margin: 0;
+			padding: 7px;
+			background-color: #CDCDCD;
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<header><h1>Service Crud</h1></header>
+	<main>
+		<a href="test.php">Teste Unitário</a>
+		<div id="create">
+			<h4>Create</h4>
+			<xmp>{ action: "create", table: "tester.test", data: { name: "create teste json"}, };</xmp>
+			<span></span>
+		</div>
+		<div id="read">
+			<h4>Read</h4>
+			<xmp>{ action: "read", table: "tester.test", fields: "*", id: "", };</xmp>
+			<span></span>
+		</div>
+		<div id="update">
+			<h4>Update</h4>
+			<xmp>{ action: "update", table: "tester.test", data: { name: "Update teste Json" }, id: "3", };</xmp>
+			<span></span>
+		</div>
+		<div id="delete">
+			<h4>Delete</h4>
+			<xmp>{ action: "delete", table: "tester.test", id: "3", };</xmp>
+			<span></span>
+		</div>
+	</main>
+	<script>
+
+		$.ajax( { method: "GET", url: "test.php", } );
+
+		function dispatch (  $data = null, $fn = null ) {
+			
+			var $ajax = $.ajax( {
+				method: "POST",
+				url: "Service.php",
+				data: $data,
+			} );
+
+			$ajax.done ( function ( $data ) {
+				if ( $fn ) {
+					$fn ( JSON.parse ( $data ) );
+				};
+			} );	
+		};
+
+		var $create = { 
+			action: "create", 
+			table: "tester.test", 
+			data: { name: "create teste json"}, 
+		};
+
+		dispatch ( $create, function ( $data ) {
+			$("#create > span").text( JSON.stringify ( $data ) );
+		} );
+
+
+		$read = { 
+			action: "read", 
+			table: "tester.test", 
+			fields: "*", 
+			id: "",
+		};
+
+		dispatch ( $read, function ( $data ) {
+			$("#read > span").text( JSON.stringify ( $data ) );
+		} );
+
+		$update = { 
+			action: "update", 
+			table: "tester.test", 
+			data: { name: "Update teste Json" }, 
+			id: "3", 
+		};
+
+		dispatch ( $update, function ( $data ) {
+			$("#update > span").text( JSON.stringify ( $data ) );
+		} );
+
+		$delete = { 
+			action: "delete", 
+			table: "tester.test", 
+			id: "3", 
+		};
+
+		dispatch ( $delete, function ( $data ) {
+			$("#delete > span").text( JSON.stringify ( $data ) );
+		} );
+
+		$.ajax( { method: "GET", url: "test.php", } );
+
+	</script>
+</body>
+</html>

@@ -3,9 +3,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "calendar", [ "$scope", "$http", "$cookies", Calendar ] );
+		.controller ( "calendar", [ "$scope", "$http", "$cookies", "$filter", Calendar ] );
 
-	function Calendar ( $scope, $http, $cookies ) {
+	function Calendar ( $scope, $http, $cookies, $filter ) {
 
 		var $uri = "app/callserver/tasks.json";
 
@@ -68,15 +68,19 @@
 			$scope.tasksList = loadTasks ( $scope.tasks );
 		}, true );
 
+		$scope.$watch ( "currentDate", function ( $newDate ) {
+			queryTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
+				$scope.tasks = $tasks;
+				console.log ( $scope.tasks );
+			} );
+		}, true );
+
 
 		query ( $http, $uri, function ( $tasks ) { 
 			$scope.tasks = $tasks;
+			console.log ( $scope.tasks );
 		} );
 
-		$scope.$watch ( "currentDate", function ( $newDate ) {
-			console.log ( "consulta todas as tarefas com a data selecionada" );
-			queryTasks ( $http, $date );
-		}, true );
 
 		//cookieClearAll ( $cookies );
 
@@ -88,7 +92,7 @@
 		*/
 
 		query ( $http, "ntp.php", function ( $data ) {
-			console.log ( $data );
+			//console.log ( $data );
 		} );
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +110,7 @@
 		$scope.tasksList = loadTasks ( $scope.tasks );
 
 		$scope.taskNew = taskReset ( $Date ( ) ); 
-		console.log ( $scope.taskNew );
+		//console.log ( $scope.taskNew );
 		
 		$scope.taskToggle = function ( ) {
 			toggleClass ( ".calendar-task",  "active" );
@@ -137,9 +141,21 @@
 			var $index = $scope.taskNew.index;
 
 			if (  $index !== null && $index >= 0 ) {
+				//Update Task
+				console.log ( "init Update task" )
+				console.log ( "end Update task" );
 				$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
+
 			} else {
-				$scope.tasks.push ( angular.copy ( $scope.taskNew ) );
+				//New Task
+				
+				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) { 
+					if ( $data ) {
+						$scope.tasks.push ( angular.copy ( $scope.taskNew ) );
+					};
+				} );
+
+				
 			};
 
 			$scope.tasksList = loadTasks ( $scope.tasks );
@@ -314,28 +330,67 @@
 	    return $newArr;
 	};
 
-	function queryTasks ( $http = null, $date = null ) {
+	function queryTasks ( $http = null, $filter = null, $date = "2018-01-01", $fn = null ) {
 		var $uri = "lib/crud/Service.php";
 		
 		var $read = { 
-			'action': "read", 
-			'table': "callcommunity.tasks", 
+			'action': "read",
+			'table': "tasks", 
 			'fields': "*",
+			//'id':"",
+			"condition": { dated: $filter ( 'date' )( $date , 'yyyy-M-d' ) },
 		};
-
+		
 		$http ( {
 			url: $uri,
 			method: "POST",
-			data: $read,
-			dataType: 'json',
-			headers : { 'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8' },
+			data: "callcommunity="+JSON.stringify ( $read ),
+			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
+			responseType: 'text',
 		} )
 			.then ( function ( $data ) {
-				console.log ( $data.data );
+				if ( null !== $fn ) {
+					$fn (  $data.data );
+				};
 			}, function ( $error ) {
 				console.log ( "error" );
 			} );
+	};
 
+	function createTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
+		var $uri = "lib/crud/Service.php";
+
+
+		var $create = { 
+			'action': "create",
+			'table': "tasks",
+			'data':{ 
+				title: $task.title, 
+				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
+				hour: $task.hour,
+				caller: $task.caller, 
+				sms: $task.sms,
+				audio: $task.audio,
+				message: $task.message,
+				contacts: $task.contacts,
+				repeated: $task.repeat
+			},
+		};
+		
+		$http ( {
+			url: $uri,
+			method: "POST",
+			data: "callcommunity="+JSON.stringify ( $create ),
+			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
+			responseType: 'text',
+		} )
+			.then ( function ( $data ) {
+				if ( null !== $fn ) {
+					$fn (  $data.data );
+				};
+			}, function ( $error ) {
+				console.log ( "error" );
+			} );
 	};
 
 } ) ( );

@@ -51,7 +51,7 @@ class Crud
             );
 
             while ( $row = $result->fetch_assoc ( ) ) {  
-                array_push ( $rows, $row ); 
+                array_push ( $rows, self::$instance->model->parseDatabaseToArray ( $row ) ); 
             };
             
             array_push (self::$message, "Use crud read" );
@@ -92,7 +92,7 @@ class Crud
         
         $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : null;
         
-        #$condition = ( isset ( $ins->data [ "condition" ] ) ) ? self::$instance->model->parseJsonToItem ( json_encode ( $ins->data [ "condition" ] ) ): null;
+        $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : null;
         
         $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : null;
         
@@ -101,12 +101,12 @@ class Crud
         switch ( $action ) {
             case "create":
                 $parse = $ins->model->parseJsonToFieldsAndValues ( $data );
-                $ins->response = json_encode ( $ins->create ( $table, $parse [ "fields" ], $parse [ "values" ] ) );
+                $ins->response = $ins->create ( $table, $parse [ "fields" ], $parse [ "values" ] );
                 break;
             case "read":
-                #$cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
-                #$cond = ( NULL !== $condition ) ? "{$cond} AND {$condition}" : $cond;
-                #$ins->response = json_encode ( $ins->read ( $table, $fields, "WHERE {$cond}" ) );
+                $cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
+                $cond = ( NULL !== $condition ) ? "{$cond} AND {$condition}" : $cond;
+                $ins->response = $ins->read ( $table, $fields, "WHERE {$cond}" );
                 break;
             case "update":
                 #$data = $ins->model->parseJsonToItem ( $data );
@@ -131,7 +131,7 @@ class Crud
     public function response ( ): string 
     { 
         array_push ( self::$message, "return Crud response" );
-        return self::$instance->response;
+        return json_encode ( self::$instance->response );
     }
 
     public static function report ( ) {

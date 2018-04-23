@@ -15,8 +15,8 @@ class Service
 			#echo $_POST[ "callcommunity" ];
 
 			self::$crud->digestJson (  $_POST[ "callcommunity" ] );
-			echo self::$crud->run ( );
-			#echo self::$crud->response ( );
+			self::$crud->run ( );
+			echo self::$crud->response ( );
 		};
 	}
 

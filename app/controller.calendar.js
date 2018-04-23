@@ -61,27 +61,19 @@
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		$scope.tasks = cookieGet( $cookies, "tasks" );
-		$scope.tasksList = loadTasks ( $scope.tasks );
+		$scope.tasksList = taskLoad ( $scope.tasks );
 
 		$scope.$watch ( "tasks", function ( ) {
 			cookiePut ( $cookies, "tasks", $scope.tasks );
-			$scope.tasksList = loadTasks ( $scope.tasks );
+			$scope.tasksList = taskLoad ( $scope.tasks );
 		}, true );
 
 		$scope.$watch ( "currentDate", function ( $newDate ) {
-			
-			/*queryTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
-				//$scope.tasks = $tasks;
-			} );*/
-
-		}, true );
-
-
-		query ( $http, $uri, function ( $tasks ) { 
-			//$scope.tasks = $tasks;
-			//console.log ( $scope.tasks );
-		} );
-
+			readTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
+				$scope.tasks = $tasks;
+				console.log ( $scope.tasks );
+			} );
+		}, true )
 
 		//cookieClearAll ( $cookies );
 
@@ -108,7 +100,7 @@
 			$scope.currentMonth = $scope.dataObj.Month;
 		}, true );
 		
-		$scope.tasksList = loadTasks ( $scope.tasks );
+		$scope.tasksList = taskLoad ( $scope.tasks );
 
 		$scope.taskNew = taskReset ( $Date ( ) ); 
 		//console.log ( $scope.taskNew );
@@ -135,7 +127,7 @@
 				$scope.taskNew = taskReset ( $Date ( ), $hour  );
 			};
 
-			$scope.tasksList = loadTasks ( $scope.tasks );
+			$scope.tasksList = taskLoad ( $scope.tasks );
 		};
 
 		$scope.taskSave = function ( ) {
@@ -148,17 +140,14 @@
 
 			} else {
 				//New Task
-				console.log ( "CREATE" );
 				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) {
-					if ( JSON.parse ( $data ).trim ( ) == "true" ) {
+					if ( $data == "true" ) {
 						$scope.tasks.push ( angular.copy ( $scope.taskNew ) );
-						$scope.tasksList = loadTasks ( $scope.tasks );
+						$scope.tasksList = taskLoad ( $scope.tasks );
 						$scope.taskToggle ( );
 					};
 				} );	
 			};
-
-			
 		};
 
 		$scope.taskDelete = function ( ) {
@@ -168,7 +157,7 @@
 				$scope.tasks.splice ( $scope.taskNew.index, 1 );
 			};
 
-			$scope.tasksList = loadTasks ( $scope.tasks );
+			$scope.tasksList = taskLoad ( $scope.tasks );
 			$scope.taskToggle ( );
 		};
 		
@@ -237,7 +226,7 @@
 
 	///////////////////////////////////////////////////////////////////////
 
-	function loadTasks ( $tasks ) {
+	function taskLoad ( $tasks ) {
 		var $list = { };
 		if ( angular.isArray ( $tasks ) ) {
 			$tasks.map ( function ( $task, $index ) {
@@ -329,7 +318,7 @@
 	    return $newArr;
 	};
 
-	function queryTasks ( $http = null, $filter = null, $date = "2018-01-01", $fn = null ) {
+	function readTasks ( $http = null, $filter = null, $date = "2018-1-1", $fn = null ) {
 		var $uri = "lib/crud/Service.php";
 
 		var $read = { 
@@ -352,7 +341,7 @@
 					$fn (  $data.data );
 				};
 			}, function ( $error ) {
-				console.log ( "error" );
+				$fn ( $error );
 			} );
 	};
 
@@ -385,10 +374,10 @@
 		} )
 			.then ( function ( $data ) {
 				if ( null !== $fn ) {
-					$fn (  $data.data );
+					$fn ( $data.data );
 				};
 			}, function ( $error ) {
-				console.log ( "error" );
+				$fn ( $error );
 			} );
 	};
 

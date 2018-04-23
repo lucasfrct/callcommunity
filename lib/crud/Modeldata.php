@@ -51,11 +51,32 @@ class Modeldata
     public function parseArrayToDatabase ( $data = null ) 
     {
         if ( is_array ( $data ) && count ( $data ) > 0 ) {
-            $data = json_encode ( $data );
+            $data = serialize ( $data );
         };
 
         return $data;
     }
+
+    public function parseDatabaseToArray ( $data = null ) 
+    {
+
+        $data = array_map ( function ( $item ) {
+            if ( $item == serialize ( false ) || @unserialize ( $item ) !== false ) {
+                return unserialize ( $item );
+            } else {
+                return $item;
+            };
+        }, $data );
+        /*$data = array_map ( function ( $item, $index ) {
+                if ( ( $data == serialize ( false ) || @unserialize ( $data ) !== false ) ) {
+                    $data = unserialize ( $data );
+                }
+                return $item;
+            }, $data
+        );*/
+        return $data;
+
+    } 
 
     public function parseJsonToFieldsAndValues ( array $data = null ): array 
     {

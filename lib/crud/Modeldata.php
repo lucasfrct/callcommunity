@@ -39,32 +39,37 @@ class Modeldata
     {
         $itens = array ( );
 
-        $data = ( is_array ( $data ) ) ? $data : json_decode ( $data, true );
+        #$data = ( is_array ( $data ) ) ? $data : json_decode ( $data, true );
         foreach ( $data as $field => $value ) {
             $value = self::$instance->parseBool ( $value );
-            array_push ( $itens, ( string ) "{$field} = '".json_encode ( $value )."'" );
+            array_push ( $itens, "{$field} = '".$value."'" );
         };
 
         return implode ( ",", $itens );
     }
 
-    public function parseJsonToFieldsAndValues ( $data = null ): array 
+    public function parseArrayToDatabase ( $data = null ) 
+    {
+        if ( is_array ( $data ) && count ( $data ) > 0 ) {
+            $data = json_encode ( $data );
+        };
+
+        return $data;
+    }
+
+    public function parseJsonToFieldsAndValues ( array $data = null ): array 
     {
         $parse = array ( "fields" => array ( ) , "values" => array ( ) );
 
-        if ( !empty ( $data ) ) {
-            $data = ( is_array ( $data ) ) ? $data : json_decode ( $data, true );
-            
-            foreach ( $data as $field => $value ) {
-                if ( isset ( $parse [ "fields" ] ) ) {
-                    array_push ( $parse [ "fields" ], $field );
-                };
-                if ( isset ( $parse [ "values" ] ) ) {
-                    $value = self::$instance->parseBool ( $value );
-                    array_push ( $parse [ "values" ], ( string ) "'".json_encode ( $value )."'" );
-                };
+        foreach ( $data as $field => $value ) {
+            if ( isset ( $parse [ "fields" ] ) ) {
+                array_push ( $parse [ "fields" ], ( string ) $field );
+            };
+            if ( isset ( $parse [ "values" ] ) ) {
+                array_push ( $parse [ "values" ], "'".self::$instance->parseArrayToDatabase ( $value )."'" );
             };
         };
+
 
        $parse [ "fields" ] = implode ( ",", $parse [ "fields" ] );
        $parse [ "values" ] = implode ( ",", $parse [ "values" ] );
@@ -73,13 +78,7 @@ class Modeldata
 
     public function digest ( string $data = null ): array 
     {
-        $digest = array ( );
-
-        foreach ( json_decode ( $data, true ) as $field => $value ) {
-            $digest = array_merge ( $digest, array ( $field => $value ) );
-        };
-
-        return $digest;
+        return json_decode ( $data, true );
     }
 
     private function __construct ( ) { }

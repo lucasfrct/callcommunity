@@ -69,16 +69,17 @@
 		}, true );
 
 		$scope.$watch ( "currentDate", function ( $newDate ) {
-			queryTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
-				$scope.tasks = $tasks;
-				console.log ( $scope.tasks );
-			} );
+			
+			/*queryTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
+				//$scope.tasks = $tasks;
+			} );*/
+
 		}, true );
 
 
 		query ( $http, $uri, function ( $tasks ) { 
-			$scope.tasks = $tasks;
-			console.log ( $scope.tasks );
+			//$scope.tasks = $tasks;
+			//console.log ( $scope.tasks );
 		} );
 
 
@@ -143,23 +144,21 @@
 			if (  $index !== null && $index >= 0 ) {
 				//Update Task
 				console.log ( "init Update task" )
-				console.log ( "end Update task" );
-				$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
+				//$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
 
 			} else {
 				//New Task
-				
-				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) { 
-					if ( $data ) {
+				console.log ( "CREATE" );
+				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) {
+					if ( JSON.parse ( $data ).trim ( ) == "true" ) {
 						$scope.tasks.push ( angular.copy ( $scope.taskNew ) );
+						$scope.tasksList = loadTasks ( $scope.tasks );
+						$scope.taskToggle ( );
 					};
-				} );
-
-				
+				} );	
 			};
 
-			$scope.tasksList = loadTasks ( $scope.tasks );
-			$scope.taskToggle ( );
+			
 		};
 
 		$scope.taskDelete = function ( ) {
@@ -332,13 +331,13 @@
 
 	function queryTasks ( $http = null, $filter = null, $date = "2018-01-01", $fn = null ) {
 		var $uri = "lib/crud/Service.php";
-		
+
 		var $read = { 
-			'action': "read",
-			'table': "tasks", 
-			'fields': "*",
-			//'id':"",
-			"condition": { dated: $filter ( 'date' )( $date , 'yyyy-M-d' ) },
+			action: "read",
+			table: "tasks", 
+			fields: "*",
+			id: "",
+			condition: { dated: $filter ( 'date' )( $date , 'yyyy-M-d' ) },
 		};
 		
 		$http ( {
@@ -358,13 +357,13 @@
 	};
 
 	function createTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
+		
 		var $uri = "lib/crud/Service.php";
 
-
 		var $create = { 
-			'action': "create",
-			'table': "tasks",
-			'data':{ 
+			action: "create",
+			table: "tasks",
+			data: { 
 				title: $task.title, 
 				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
 				hour: $task.hour,

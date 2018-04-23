@@ -12,11 +12,11 @@ class Service
 
 		if ( $_SERVER [ "REQUEST_METHOD"] == 'POST' ) {
 
-			//echo $_POST[ "callcommunity" ];
+			#echo $_POST[ "callcommunity" ];
 
 			self::$crud->digestJson (  $_POST[ "callcommunity" ] );
-			self::$crud->run ( );
-			echo self::$crud->response ( );
+			echo self::$crud->run ( );
+			#echo self::$crud->response ( );
 		};
 	}
 

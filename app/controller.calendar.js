@@ -70,10 +70,9 @@
 
 		$scope.$watch ( "currentDate", function ( $newDate ) {
 			readTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
-				$scope.tasks = $tasks;
-				console.log ( $scope.tasks );
+				$scope.tasks = tasksModel ( $tasks );
 			} );
-		}, true )
+		}, true );
 
 		//cookieClearAll ( $cookies );
 
@@ -102,27 +101,24 @@
 		
 		$scope.tasksList = taskLoad ( $scope.tasks );
 
-		$scope.taskNew = taskReset ( $Date ( ) ); 
-		//console.log ( $scope.taskNew );
+		$scope.taskNew = taskReset ( $Date ( ), "8:00" ); 
 		
 		$scope.taskToggle = function ( ) {
 			toggleClass ( ".calendar-task",  "active" );
-			$scope.taskNew = taskReset ( $Date ( ) );
+			$scope.taskNew = taskReset ( $Date ( ), "8:00" );
 		};
 
 		$scope.taskLoad = function ( $hour ) {
 			$scope.taskToggle ( );
 
-			var $hour = String ( $hour+":00" );
-
 			$taskLoad = angular.copy ( $scope.tasks.filter ( function ( $task, $index ) {
-				$task.index = $index;
 				return $task.hour == $hour;
 			} )[0] );
 
+			console.log ( $taskLoad );
+
 			if ( $taskLoad && "object" === typeof $taskLoad ) {
 				$scope.taskNew = $taskLoad;
-				$scope.taskNew.date = $Date ( $scope.taskNew.date );
 			} else {
 				$scope.taskNew = taskReset ( $Date ( ), $hour  );
 			};
@@ -142,9 +138,11 @@
 				//New Task
 				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) {
 					if ( $data == "true" ) {
-						$scope.tasks.push ( angular.copy ( $scope.taskNew ) );
-						$scope.tasksList = taskLoad ( $scope.tasks );
 						$scope.taskToggle ( );
+						
+						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
+							$scope.tasks = tasksModel ( $tasks );
+						} );
 					};
 				} );	
 			};
@@ -229,38 +227,38 @@
 	function taskLoad ( $tasks ) {
 		var $list = { };
 		if ( angular.isArray ( $tasks ) ) {
-			$tasks.map ( function ( $task, $index ) {
+			$tasks.map ( function ( $task ) {
 				switch ( $task.hour ) {
 
 					case "8:00":
 						$list.hour8 = $task.title ;
 						break;
 					case "9:00":
-						$list.hour9 = ( $task.title );
+						$list.hour9 = $task.title;
 						break;
 					case "10:00":
-						$list.hour10 = ( $task.title );
+						$list.hour10 = $task.title;
 						break;
 					case "11:00":
-						$list.hour11 = ( $task.title );
+						$list.hour11 = $task.title;
 						break;
 					case "12:00":
-						$list.hour12 = ( $task.title );
+						$list.hour12 = $task.title;
 						break;
 					case "13:00":
-						$list.hour13 = ( $task.title );
+						$list.hour13 = $task.title;
 						break;
 					case "14:00":
-						$list.hour14 = ( $task.title );
+						$list.hour14 = $task.title;
 						break;
 					case "15:00":
-						$list.hour15 = ( $task.title );
+						$list.hour15 = $task.title;
 						break;
 					case "16:00":
-						$list.hour16 = ( $task.title );
+						$list.hour16 = $task.title;
 						break;
 					case "17:00":
-						$list.hour17 = ( $task.title );
+						$list.hour17 = $task.title;
 						break;
 				};
 			} );
@@ -270,9 +268,7 @@
 	};
 
 	function taskReset ( $currentDate = null, $hour = null ) {
-		var $taskNew = {
-			id: null,
-			index: null,
+		return {
 			title: "",
 			date: $currentDate,
 			hour: ( $hour ) ? $hour : "8:00",
@@ -281,9 +277,24 @@
 			contacts: [ ],
 			repeat: { dom: false, seg: false, ter: false, qua: false, qui: false, sex: false, sab: false, },
 		};
-
-		return $taskNew;
 	};
+
+	function tasksModel ( $tasks ) {
+		$tasks = $tasks.map ( function ( $task, $index ) {
+			if ( $task.caller === "1" ) { $task.caller = true; };
+			if ( $task.caller === "0" ) { $task.caller = false; };
+			if ( $task.sms === "1" ) { $task.sms = true; };
+			if ( $task.sms === "0" ) { $task.sms = false; };
+			$task.index = $index;
+			$task.repeat = $task.repeated;
+			delete $task.repeated;
+			$task.date = $Date ( $task.dated );
+			delete $task.dated;
+			delete $task.enable;
+			return $task;
+		} );
+		return $tasks;
+	}
 
 	function contactsReset ( $contacts ) {
 		$contacts.map ( function ( $contact ) { 
@@ -318,7 +329,7 @@
 	    return $newArr;
 	};
 
-	function readTasks ( $http = null, $filter = null, $date = "2018-1-1", $fn = null ) {
+	function readTasks ( $http = null, $filter = null, $date = null, $fn = null ) {
 		var $uri = "lib/crud/Service.php";
 
 		var $read = { 

@@ -159,7 +159,18 @@
 			var $delete = confirm ( 'Deseja deletar a tarefa "'+$scope.taskNew.title+'"?' );
 
 			if ( $delete && $scope.taskNew.index !== null && $scope.taskNew.index >= 0 ) {
-				$scope.tasks.splice ( $scope.taskNew.index, 1 );
+				//$scope.tasks.splice ( $scope.taskNew.index, 1 );
+				console.log ( "init delete" );
+				deleteTasks ( $http, $filter, $scope.taskNew, function ( $data ) {
+					if ( $data == "true" ) {
+						$scope.taskToggle ( );
+						$scope.tasks.splice ( $scope.taskNew.index, 1 );
+						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
+							$scope.tasks = tasksModel ( $tasks );
+						} );
+					};
+				} );
+				console.log ( "end delete" );
 			};
 
 			$scope.tasksList = taskLoad ( $scope.tasks );
@@ -423,6 +434,42 @@
 			url: $uri,
 			method: "POST",
 			data: "callcommunity="+JSON.stringify ( $update ),
+			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
+			responseType: 'text',
+		} )
+		.then ( function ( $data ) {
+			if ( null !== $fn ) {
+				$fn ( $data.data );
+			};
+		}, function ( $error ) {
+			$fn ( $error );
+		} );
+	};
+
+	function deleteTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
+		var $uri = "lib/crud/Service.php";
+
+		var $delete = { 
+			action: "delete",
+			table: "tasks",
+			id : $task.id,
+			data: { 
+				title: $task.title, 
+				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
+				hour: $task.hour,
+				caller: $task.caller, 
+				sms: $task.sms,
+				audio: $task.audio,
+				message: $task.message,
+				contacts: $task.contacts,
+				repeated: $task.repeat,
+			}
+		};
+
+		$http ( {
+			url: $uri,
+			method: "POST",
+			data: "callcommunity="+JSON.stringify ( $delete ),
 			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
 			responseType: 'text',
 		} )

@@ -114,13 +114,16 @@ class Crud
                 if ( !empty ( $id ) || $id !== NULL ) {
                     $ins->response = $ins->update ( $table, $data, "WHERE {$cond}" );
                 } else {
-                     $ins->response = false;
+                    $ins->response = false;
                 };
                 break;
             case "delete": 
-                #$cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
-                #$cond = ( NULL !== $condition ) ? "{$cond} AND {$condition}" : $cond;
-                #$ins->response = json_encode ( $ins->delete ( $table, $cond ) );
+                $cond = ( NULL !== $condition ) ? "id = {$id} AND {$condition}" : "id = {$id}";
+                if ( !empty ( $id ) || $id !== NULL ) {
+                    $ins->response = $ins->delete ( $table, "WHERE {$cond}" );
+                } else {
+                    $ins->response = false;
+                };
                 break;
             default:
                 break;

@@ -131,8 +131,15 @@
 
 			if (  $index !== null && $index >= 0 ) {
 				//Update Task
-				console.log ( "init Update task" )
-				//$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
+				updateTasks ( $http, $filter, angular.copy( $scope.taskNew ), function ( $data ) { 
+					if ( $data == "true" ) {
+						$scope.taskToggle ( );
+						$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
+						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
+							$scope.tasks = tasksModel ( $tasks );
+						} );
+					};
+				} );
 
 			} else {
 				//New Task
@@ -347,13 +354,13 @@
 			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
 			responseType: 'text',
 		} )
-			.then ( function ( $data ) {
-				if ( null !== $fn ) {
-					$fn (  $data.data );
-				};
-			}, function ( $error ) {
-				$fn ( $error );
-			} );
+		.then ( function ( $data ) {
+			if ( null !== $fn ) {
+				$fn (  $data.data );
+			};
+		}, function ( $error ) {
+			$fn ( $error );
+		} );
 	};
 
 	function createTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
@@ -383,13 +390,49 @@
 			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
 			responseType: 'text',
 		} )
-			.then ( function ( $data ) {
-				if ( null !== $fn ) {
-					$fn ( $data.data );
-				};
-			}, function ( $error ) {
-				$fn ( $error );
-			} );
+		.then ( function ( $data ) {
+			if ( null !== $fn ) {
+				$fn ( $data.data );
+			};
+		}, function ( $error ) {
+			$fn ( $error );
+		} );
+	};
+
+	function updateTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
+		var $uri = "lib/crud/Service.php";
+
+		var $update = { 
+			action: "update",
+			table: "tasks",
+			id : $task.id,
+			data: { 
+				title: $task.title, 
+				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
+				hour: $task.hour,
+				caller: $task.caller, 
+				sms: $task.sms,
+				audio: $task.audio,
+				message: $task.message,
+				contacts: $task.contacts,
+				repeated: $task.repeat,
+			}
+		};
+
+		$http ( {
+			url: $uri,
+			method: "POST",
+			data: "callcommunity="+JSON.stringify ( $update ),
+			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
+			responseType: 'text',
+		} )
+		.then ( function ( $data ) {
+			if ( null !== $fn ) {
+				$fn ( $data.data );
+			};
+		}, function ( $error ) {
+			$fn ( $error );
+		} );
 	};
 
 } ) ( );

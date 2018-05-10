@@ -39,10 +39,9 @@ class Modeldata
     {
         $itens = array ( );
 
-        #$data = ( is_array ( $data ) ) ? $data : json_decode ( $data, true );
         foreach ( $data as $field => $value ) {
             $value = self::$instance->parseBool ( $value );
-            array_push ( $itens, "{$field} = '".$value."'" );
+            array_push ( $itens, "{$field} = '".self::$instance->parseArrayToDatabase ( $value )."'" );
         };
 
         return implode ( ",", $itens );

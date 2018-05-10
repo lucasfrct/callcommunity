@@ -8,12 +8,10 @@ class Service
 {
 	private static $crud = null;
 
-	private static function post ( ) {
+	private static function post ( ) 
+	{
 
 		if ( $_SERVER [ "REQUEST_METHOD"] == 'POST' ) {
-
-			#echo $_POST[ "callcommunity" ];
-
 			self::$crud->digestJson (  $_POST[ "callcommunity" ] );
 			self::$crud->run ( );
 			echo self::$crud->response ( );

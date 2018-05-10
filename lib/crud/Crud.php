@@ -74,7 +74,7 @@ class Crud
         return self::$instance->update ( $table, "enable = false", $condition );
     }
 
-    public function digestJson ( string $data = null ): array {
+    public function digestJson ( string $data = NULL ): array {
         array_push ( self::$message, "Use model digest" );
         return self::$instance->data = self::$instance->model->digest ( $data );
     }
@@ -88,13 +88,13 @@ class Crud
         
         $table = $ins->data [ "table" ];
         
-        $fields = ( isset ( $ins->data [ "fields" ] ) ) ? $ins->data [ "fields" ] : null;
+        $fields = ( isset ( $ins->data [ "fields" ] ) ) ? $ins->data [ "fields" ] : NULL;
         
-        $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : null;
+        $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : NULL;
         
-        $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : null;
+        $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : NULL;
         
-        $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : null;
+        $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : NULL;
         
         #print_r ( $ins->data );
 
@@ -109,10 +109,13 @@ class Crud
                 $ins->response = $ins->read ( $table, $fields, "WHERE {$cond}" );
                 break;
             case "update":
-                #$data = $ins->model->parseJsonToItem ( $data );
-                #$cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
-                #$cond = ( NULL !== $condition ) ? "{$cond} AND {$condition}" : $cond;
-                #$ins->response = json_encode ( $ins->update ( $table, $data, $cond ) );
+                $data = $ins->model->parseJsonToItem ( $data );
+                $cond = ( NULL !== $condition ) ? "id = {$id} AND {$condition}" : "id = {$id}";
+                if ( !empty ( $id ) || $id !== NULL ) {
+                    $ins->response = $ins->update ( $table, $data, "WHERE {$cond}" );
+                } else {
+                     $ins->response = false;
+                };
                 break;
             case "delete": 
                 #$cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
@@ -153,7 +156,7 @@ class Crud
     
     private function __clone ( ) { }
     
-    private function __wakeup ( ) { }  
+    private function __wakeup ( ) { } 
 };
 
 #$create = '{ "action": "create", "table":"crud.address", "data": { "idUser": "1", "street":"street1", "city": "city1", "country":"country1" } }';

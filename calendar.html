@@ -16,6 +16,10 @@
 	<script type="text/javascript" src="lib/components/date.js"></script>
 
 	<script type="text/javascript" src="app/module.js"></script>
+	<script type="text/javascript" src="app/service.tasks.js"></script>
+	<script type="text/javascript" src="app/service.contacts.js"></script>
+	<script type="text/javascript" src="app/service.multimedia.js"></script>
+	<script type="text/javascript" src="app/service.messages.js"></script>
 	<script type="text/javascript" src="app/controller.calendar.js"></script>
 	<script type="text/javascript" src="vendor/calendar.js"></script>	
 </head>
@@ -151,7 +155,7 @@
 			<div class="col-xs-12 row-xs-16 list">
 				<label data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: audioSearch">
 					<input type="radio" name="audio" ng-model="audio.selected" ng-value="true" >
-					<strong>{{ audio.title }}<audio src="{{audio.uri}}" preload="metadata" controls></strong>
+					<strong>{{ audio.title }}<audio ng-src="{{audio.uri}}" preload="metadata" controls></strong>
 					<em>{{ audio.description }} - {{ audio.uri }}</em>
 				</label>
 			</div>
@@ -174,6 +178,12 @@
 			</div>
 			<div class="col-xs-12 row-xs-2">
 				<button name="add-contatos" data-btn="tertiary" ng-click="messageAdd ( );">Adicionar esta Mensagem</button>
+			</div>
+		</section>
+
+		<section class="modal window col-xs-12 row-xs-24">
+			<div class="col-xs-12 row-xs-offset-4 text-center" style="color: #FFF;">
+				<h2>Aguarde, processando...</h2>
 			</div>
 		</section>
 

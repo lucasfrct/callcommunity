@@ -38,3 +38,13 @@ function cookieClearAll ( $cookies ) {
 	console.log (  $cookies.getAll ( ) );
 	console.log ( "Cookies End Clear" );
 };
+
+function modalToggle ( $time = 0 ) {
+	setTimeout ( function ( ) {
+		toggleClass ( ".modal", "active" );
+	}, $time );
+};
+
+function upRead ( $scope = null ) {
+	$scope.upRead = !$scope.upRead;
+};

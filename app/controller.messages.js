@@ -1,12 +1,10 @@
-( function () {
+( function ( ) {
 	"use strict";
 
 	angular.module ( "callcommunity" )
-		.controller ( "messages", [ "$scope", "$http", "$cookies", Messages ] );
+		.controller ( "messages", [ "$scope", "$http", "$cookies", "messages", Messages ] );
 
-	function Messages ( $scope, $http, $cookies ) {
-
-		var $uri = "app/callserver/messages.json";
+	function Messages ( $scope, $http, $cookies, $serviceMessages ) {
 
 		$scope.messages = cookieGet ( $cookies, "messages" );
 
@@ -14,41 +12,67 @@
 			cookiePut ( $cookies, "messages", $messages );
 		}, true );
 
-		query ( $http, "app/callserver/messages.json", function ( $messages ) { 
-			$scope.messages = $messages;
-		} );
+		upRead ( $scope );
 
-		$scope.messageCurrent = {
-			title: "",
-			text: "",
-			index: null,
-		};
+		$scope.$watch ( "upRead", function ( $up ) {
+			$serviceMessages.read ( "*", function ( $data ) {
+				$scope.messages = $data;
+			} );
+		}, true );
+
+		$scope.messageCurrent = messageCurrentReset ( );
 
 		$scope.messageToggle = function ( ) {
 			toggleClass ( ".message", "active" );
-			$scope.messageCurrent = { };
+			$scope.messageCurrent = messageCurrentReset ( );
 		};
 
 		$scope.messageSave = function ( ) {
-			if ( $scope.messageCurrent.index !== null && $scope.messageCurrent.index >= 0 ) {
-				$scope.messages[ $scope.messageCurrent.index ] = angular.copy ( $scope.messageCurrent );
-			} else {
-				$scope.messageCurrent.index = null;
-				$scope.messages.push ( angular.copy ( $scope.messageCurrent ) );
+
+			var $message = angular.copy ( $scope.messageCurrent );
+
+			modalToggle ( );
+
+			if ( $message.index !== null && $message.index >= 0 && $message.id >= 1 ) {
+
+				$serviceMessages.update ( $message, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.messageToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+
+			} else if ( $message.index == null ) {
+				$serviceMessages.create ( $message, function ( $data ) { 
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.messageToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+
 			};
 
-			$scope.messageToggle ( );
-			$scope.messageCurrent = { };
 		};
 
 		$scope.messageDelete = function ( ) {
-			var $delete = confirm ( "Deseja deletar esta mensagem?" );
-			if ( $delete && $scope.messageCurrent.index !== null ) {
-				$scope.messages.splice ( $scope.messageCurrent.index , 1 );
-			};
 			
-			$scope.messageToggle ( );
-			$scope.messageCurrent = { };
+			var $message = angular.copy ( $scope.messageCurrent );
+
+			modalToggle ( );
+
+			var $delete = confirm ( "Deseja deletar esta mensagem?" );
+			
+			if ( $delete && $message.id >= 1 ) {
+				$serviceMessages.delete ( $message, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.messageToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+			};
 		};
 
 		$scope.messageLoad = function ( $index ) {
@@ -57,5 +81,14 @@
 			$scope.messageCurrent.index = $index;
 		};
 	};
+
+	function messageCurrentReset ( ) {
+		return {
+			index: null,
+			id: null,
+			title: "",
+			text: "",
+		};
+	}
 
 } ) ( );

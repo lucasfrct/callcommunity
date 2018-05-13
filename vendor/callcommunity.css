@@ -83,6 +83,28 @@ body [type="search"] {
 
 
 
+
+
+
+
+
+
+body .modal {
+	background-color: rgba( 0, 0, 0 , 0.5 ) !important;
+	position: fixed !important;
+	-webkit-transition: all 0.2s ease-in-out !important;
+	-moz-transition: all 0.2s ease-in-out !important;
+	-ms-transition: all 0.2s ease-in-out !important;
+	-o-transition: all 0.2s ease-in-out !important;
+	transition: all 0.2s ease-in-out !important;
+	z-index: -1 !important;
+}
+
+body .modal.active {
+	z-index: 1000000 !important;
+}
+
+
 body .window {
 	background-color: #FAFAFA;
 	position: absolute;
@@ -91,11 +113,11 @@ body .window {
 	-ms-transition: all 0.4s ease-in-out;
 	-o-transition: all 0.4s ease-in-out;
 	transition: all 0.4s ease-in-out;
-	-webkit-transform: scale( 0.1, 0.1 );
-	-moz-transform: scale( 0.1, 0.1 );
-	-ms-transform: scale( 0.1, 0.1 );
-	-o-transform: scale( 0.1, 0.1 );
-	transform: scale( 0.1, 0.1 );
+	-webkit-transform: scale( 0.01, 0.01 );
+	-moz-transform: scale( 0.01, 0.01 );
+	-ms-transform: scale( 0.01, 0.01 );
+	-o-transform: scale( 0.01, 0.01 );
+	transform: scale( 0.01, 0.01 );
 	will-change: transform;
 	z-index: 0;
 }
@@ -339,3 +361,4 @@ body .messages .list > * > em {
 	background-color: #EEE;
 	margin: 7px 0;
 }
+

@@ -17,6 +17,7 @@
 
 	<script type="text/javascript" src="app/module.js"></script>
 	<script type="text/javascript" src="app/directive.input-file.js"></script>
+	<script type="text/javascript" src="app/service.multimedia.js"></script>
 	<script type="text/javascript" src="app/controller.multimedia.js"></script>
 	<script type="text/javascript" src="vendor/multimedia.js"></script>
 </head>
@@ -33,8 +34,8 @@
 				<input type="search" name="multimedia-search" placeholder="digite o título" ng-model="multimediaSearch">
 			</div>
 			<div class="col-xs-12 row-xs-16 list">
-				<li data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: multimediaSearch" ng-dblclick="multimediaLoad ( $index ); ">
-					<strong>{{ audio.title }} <audio controls src="{{ audio.uri }}"></strong>
+				<li data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: multimediaSearch" ng-dblclick="multimediaLoad ( audio ); ">
+					<strong>{{ audio.title }} <audio controls ng-src="{{ audio.uri }}"></audio></strong>
 					<em>{{ audio.description }} - {{ audio.uri }}</em>
 				</li>
 			</div>
@@ -47,18 +48,24 @@
 			</div>
 			<div class="col-xs-12 row-xs-5">
 				<span class="circle line radius">{{ multimediaCurrent.title.substring ( 1, 0 ); }}</span>
-				<textarea class="row-xs-offset-1" name="title" placeholder="Nome" rows="3" ng-model="multimediaCurrent.title"></textarea>
+				<textarea class="row-xs-offset-1" name="title" placeholder="Título" rows="3" ng-model="multimediaCurrent.title"></textarea>
 			</div>
 			<div class="col-xs-12 row-xs-5">
-				<textarea class="row-xs-offset-1" name="description" rows="3" placeholder="Condomínio" ng-model="multimediaCurrent.description" ></textarea>
+				<textarea class="row-xs-offset-1" name="description" rows="3" placeholder="Descrição" ng-model="multimediaCurrent.description" ></textarea>
 			</div>
 			<div class="col-xs-12 row-xs-5">
 				<strong name="src" ng-show="multimediaCurrent.uri">{{ multimediaCurrent.uri }}</strong>
-				<input ng-show="!multimediaCurrent.uri"class="row-xs-offset-1" type="file" name="file" placeholder="Telefone" inputfile ng-model="multimediaCurrent.uri" src="multimediaCurrent.source"></li>
+				<input ng-show="!multimediaCurrent.uri" class="row-xs-offset-1" type="file" name="file" placeholder="arquivo" inputfile ng-model="multimediaCurrent.uri" ng-src="multimediaCurrent.source" ></li>
 			</div>
 			<div class="col-xs-12 row-xs-3">
 				<button name="delete" data-btn="secondary" ng-click="multimediaDelete ( ); " ng-disabled="!multimediaCurrent.title || !multimediaCurrent.description || !multimediaCurrent.uri || multimediaCurrent.index == null">Deletar</button>
 				<button name="save" data-btn="secondary" ng-click="multimediaSave ( );" ng-disabled="!multimediaCurrent.title || !multimediaCurrent.description || !multimediaCurrent.uri">Salvar</button>
+			</div>
+		</section>
+
+		<section class="modal window col-xs-12 row-xs-24">
+			<div class="col-xs-12 row-xs-offset-4 text-center" style="color: #FFF;">
+				<h2>Aguarde, processando...</h2>
 			</div>
 		</section>
 

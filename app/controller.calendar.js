@@ -3,11 +3,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "calendar", [ "$scope", "$http", "$cookies", "$filter", Calendar ] );
+		.controller ( "calendar", [ "$scope", "$http", "$cookies", "$filter", "tasks", "contacts", "multimedia", "messages", Calendar ] );
 
-	function Calendar ( $scope, $http, $cookies, $filter ) {
-
-		var $uri = "app/callserver/tasks.json";
+	function Calendar ( $scope, $http, $cookies, $filter, $serviceTasks, $serviceContacts, $serviceMultimedia, $serviceMessages ) {
 
 		var $months = [
 			"janeiro", 
@@ -32,18 +30,18 @@
 			cookiePut( $cookies, "contacts", $contacts );
 		}, true );
 
-		query ( $http, "app/callserver/contacts.json", function ( $contacts ) { 
-			$scope.contacts = $contacts;
+		$serviceContacts.read ( "*", function ( $data ) {
+			$scope.contacts = $data;
 		} );
-		
+
 		$scope.multimedia = cookieGet ( $cookies, "multimedia" );
 		
 		$scope.$watch ( "multimedia", function ( $multimedia ) { 
 			cookiePut ( $cookies, "multimedia", $multimedia );
 		}, true );
 
-		query ( $http, "app/callserver/multimedia.json", function ( $multimedia ) { 
-			$scope.multimedia = $multimedia;
+		$serviceMultimedia.read ( "*", function ( $data ) {
+			$scope.multimedia = $data;
 		} );
 
 		$scope.messages = cookieGet ( $cookies, "messages" );
@@ -52,36 +50,14 @@
 			cookiePut ( $cookies, "messages", $messages );
 		}, true );
 
-		query ( $http, "app/callserver/messages.json", function ( $messages ) { 
-			$scope.messages = $messages;
+		$serviceMessages.read ( "*", function ( $data ) {
+			$scope.messages = $data;
 		} );
 
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		$scope.tasks = cookieGet( $cookies, "tasks" );
-		$scope.tasksList = taskLoad ( $scope.tasks );
-
-		$scope.$watch ( "tasks", function ( ) {
-			cookiePut ( $cookies, "tasks", $scope.tasks );
-			$scope.tasksList = taskLoad ( $scope.tasks );
-		}, true );
-
-		$scope.$watch ( "currentDate", function ( $newDate ) {
-			readTasks ( $http, $filter, $scope.currentDate, function ( $tasks ) {
-				$scope.tasks = tasksModel ( $tasks );
-			} );
-		}, true );
-
 		//cookieClearAll ( $cookies );
-
-		/*
-		server 0.south-america.pool.ntp.org
-		server 1.south-america.pool.ntp.org
-		server 2.south-america.pool.ntp.org
-		server 3.south-america.pool.ntp.org
-		*/
 
 		query ( $http, "ntp.php", function ( $data ) {
 			//console.log ( $data );
@@ -97,85 +73,88 @@
 			$scope.currentDay = $scope.dataObj.day;
 			$scope.currentDayWeek = $scope.dataObj.week;
 			$scope.currentMonth = $scope.dataObj.Month;
+			upRead( $scope );
 		}, true );
-		
+
+		$scope.tasks = cookieGet( $cookies, "tasks" );
 		$scope.tasksList = taskLoad ( $scope.tasks );
+
+		$scope.$watch ( "tasks", function ( ) {
+			cookiePut ( $cookies, "tasks", $scope.tasks );
+			$scope.tasksList = taskLoad ( $scope.tasks );
+		}, true );
+
+		$scope.$watch ( "upRead", function ( $up ) {
+			$serviceTasks.read ( $scope.currentDate, function ( $data ) {
+				$scope.tasks = tasksModel ( $data );
+			} );
+		}, true );
+	
 
 		$scope.taskNew = taskReset ( $Date ( ), "8:00" ); 
 		
 		$scope.taskToggle = function ( ) {
 			toggleClass ( ".calendar-task",  "active" );
 			$scope.taskNew = taskReset ( $Date ( ), "8:00" );
+			$scope.tasksList = taskLoad ( $scope.tasks );
 		};
 
 		$scope.taskLoad = function ( $hour ) {
 			$scope.taskToggle ( );
 
-			$taskLoad = angular.copy ( $scope.tasks.filter ( function ( $task, $index ) {
+			$scope.taskNew = angular.copy ( $scope.tasks.filter ( function ( $task ) {
 				return $task.hour == $hour;
-			} )[0] );
-
-			console.log ( $taskLoad );
-
-			if ( $taskLoad && "object" === typeof $taskLoad ) {
-				$scope.taskNew = $taskLoad;
-			} else {
-				$scope.taskNew = taskReset ( $Date ( ), $hour  );
-			};
-
-			$scope.tasksList = taskLoad ( $scope.tasks );
+			} )[0] || taskReset ( $Date ( ), $hour  ) );
 		};
 
 		$scope.taskSave = function ( ) {
-			var $index = $scope.taskNew.index;
+			var $task = angular.copy ( $scope.taskNew );
 
-			if (  $index !== null && $index >= 0 ) {
-				//Update Task
-				updateTasks ( $http, $filter, angular.copy( $scope.taskNew ), function ( $data ) { 
+			modalToggle ( );
+
+			if ( $task.index !== null && $task.index >= 0 && $task.id  >= 1 ) {
+
+				$serviceTasks.update ( $task, function ( $data ) {
 					if ( $data == "true" ) {
+						upRead( $scope );
 						$scope.taskToggle ( );
-						$scope.tasks [ $index ] = angular.copy( $scope.taskNew );
-						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
-							$scope.tasks = tasksModel ( $tasks );
-						} );
 					};
+					modalToggle ( 400 );
+				} );				
+
+			} else if ( $task.index == null && $task.id == null ) {
+				
+				$serviceTasks.create ( $task, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead( $scope );
+						$scope.taskToggle ( );
+					};
+					modalToggle ( 400 );
 				} );
 
-			} else {
-				//New Task
-				createTasks ( $http, $filter, angular.copy ( $scope.taskNew ), function ( $data ) {
-					if ( $data == "true" ) {
-						$scope.taskToggle ( );
-						
-						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
-							$scope.tasks = tasksModel ( $tasks );
-						} );
-					};
-				} );	
 			};
 		};
 
 		$scope.taskDelete = function ( ) {
-			var $delete = confirm ( 'Deseja deletar a tarefa "'+$scope.taskNew.title+'"?' );
 
-			if ( $delete && $scope.taskNew.index !== null && $scope.taskNew.index >= 0 ) {
-				//$scope.tasks.splice ( $scope.taskNew.index, 1 );
-				console.log ( "init delete" );
-				deleteTasks ( $http, $filter, $scope.taskNew, function ( $data ) {
-					if ( $data == "true" ) {
+			var $task = angular.copy ( $scope.taskNew );
+
+			modalToggle ( );
+
+			var $delete = confirm ( 'Deseja deletar a tarefa "'+$task.title+'"?' );
+
+			if ( $delete && $task.id >= 1 ) {
+				
+				 $serviceTasks.delete ( $task, function ( $data ) {
+				 	if ( $data == "true" ) {
+				 		upRead( $scope );
 						$scope.taskToggle ( );
-						$scope.tasks.splice ( $scope.taskNew.index, 1 );
-						readTasks ( $http, $filter, $scope.taskNew.date, function ( $tasks ) {
-							$scope.tasks = tasksModel ( $tasks );
-						} );
-					};
-				} );
-				console.log ( "end delete" );
+				 	};
+				 	modalToggle ( 400 );
+				 } );
 			};
-
-			$scope.tasksList = taskLoad ( $scope.tasks );
-			$scope.taskToggle ( );
 		};
+		
 		
 		$scope.contactToggle = function ( ) {
 			toggleClass ( ".contacts.window",  "active" );
@@ -287,11 +266,14 @@
 
 	function taskReset ( $currentDate = null, $hour = null ) {
 		return {
+			index: null,
+			id: null,
 			title: "",
-			date: $currentDate,
+			date: ( $currentDate ) ? $currentDate : $Date ( ),
 			hour: ( $hour ) ? $hour : "8:00",
 			caller: false,
 			sms: false,
+			audio: null,
 			contacts: [ ],
 			repeat: { dom: false, seg: false, ter: false, qua: false, qui: false, sex: false, sab: false, },
 		};
@@ -303,10 +285,11 @@
 			if ( $task.caller === "0" ) { $task.caller = false; };
 			if ( $task.sms === "1" ) { $task.sms = true; };
 			if ( $task.sms === "0" ) { $task.sms = false; };
-			$task.index = $index;
+
 			$task.repeat = $task.repeated;
-			delete $task.repeated;
 			$task.date = $Date ( $task.dated );
+			
+			delete $task.repeated;
 			delete $task.dated;
 			delete $task.enable;
 			return $task;
@@ -345,141 +328,6 @@
 	    };
 
 	    return $newArr;
-	};
-
-	function readTasks ( $http = null, $filter = null, $date = null, $fn = null ) {
-		var $uri = "lib/crud/Service.php";
-
-		var $read = { 
-			action: "read",
-			table: "tasks", 
-			fields: "*",
-			id: "",
-			condition: { dated: $filter ( 'date' )( $date , 'yyyy-M-d' ) },
-		};
-		
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $read ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn (  $data.data );
-			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
-	};
-
-	function createTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
-		
-		var $uri = "lib/crud/Service.php";
-
-		var $create = { 
-			action: "create",
-			table: "tasks",
-			data: { 
-				title: $task.title, 
-				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
-				hour: $task.hour,
-				caller: $task.caller, 
-				sms: $task.sms,
-				audio: $task.audio,
-				message: $task.message,
-				contacts: $task.contacts,
-				repeated: $task.repeat
-			},
-		};
-		
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $create ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn ( $data.data );
-			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
-	};
-
-	function updateTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
-		var $uri = "lib/crud/Service.php";
-
-		var $update = { 
-			action: "update",
-			table: "tasks",
-			id : $task.id,
-			data: { 
-				title: $task.title, 
-				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
-				hour: $task.hour,
-				caller: $task.caller, 
-				sms: $task.sms,
-				audio: $task.audio,
-				message: $task.message,
-				contacts: $task.contacts,
-				repeated: $task.repeat,
-			}
-		};
-
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $update ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn ( $data.data );
-			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
-	};
-
-	function deleteTasks ( $http = null, $filter = null, $task = null, $fn = null ) {
-		var $uri = "lib/crud/Service.php";
-
-		var $delete = { 
-			action: "delete",
-			table: "tasks",
-			id : $task.id,
-			data: { 
-				title: $task.title, 
-				dated: $filter( 'date' ) ( $task.date, "yyyy-M-d" ),
-				hour: $task.hour,
-				caller: $task.caller, 
-				sms: $task.sms,
-				audio: $task.audio,
-				message: $task.message,
-				contacts: $task.contacts,
-				repeated: $task.repeat,
-			}
-		};
-
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $delete ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn ( $data.data );
-			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
 	};
 
 } ) ( );

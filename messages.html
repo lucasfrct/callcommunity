@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="lib/components/date.js"></script>
 
 	<script type="text/javascript" src="app/module.js"></script>
+	<script type="text/javascript" src="app/service.messages.js"></script>
 	<script type="text/javascript" src="app/controller.messages.js"></script>
 	<script type="text/javascript" src="vendor/messages.js"></script>
 </head>
@@ -54,6 +55,12 @@
 			<div class="col-xs-12 row-xs-3">
 				<button name="delete" data-btn="secondary" ng-click="messageDelete ( ); " ng-disabled="!messageCurrent.title || !messageCurrent.text || messageCurrent.index == null">Deletar</button>
 				<button name="save" data-btn="secondary" ng-click="messageSave ( );" ng-disabled="!messageCurrent.title || !messageCurrent.text">Salvar</button>
+			</div>
+		</section>
+		
+		<section class="modal window col-xs-12 row-xs-24">
+			<div class="col-xs-12 row-xs-offset-4 text-center" style="color: #FFF;">
+				<h2>Aguarde, processando...</h2>
 			</div>
 		</section>
 

@@ -1,13 +1,11 @@
-( function () {
+( function ( ) {
 	"use strict";
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "multimedia", [ "$scope", "$http", "$cookies", Multimedia ] );
+		.controller ( "multimedia", [ "$scope", "$http", "$cookies", "multimedia", Multimedia ] );
 
-	function Multimedia ( $scope, $http, $cookies ) {
-
-		var $uri = "app/callserver/multimedia.json";
+	function Multimedia ( $scope, $http, $cookies, $serviceMultimedia ) {
 
 		$scope.multimedia = cookieGet ( $cookies, "multimedia" );
 		
@@ -15,50 +13,84 @@
 			cookiePut ( $cookies, "multimedia", $multimedia );
 		}, true );
 
-		query ( $http, "app/callserver/multimedia.json", function ( $multimedia ) { 
-			$scope.multimedia = $multimedia;
-		} );
+		upRead ( $scope );
+
+		$scope.$watch ( "upRead", function ( $up ) {
+			$serviceMultimedia.read ( "*", function ( $data ) {
+				$scope.multimedia = $data;
+			} );
+		}, true );
+
 		
-		$scope.multimediaCurrent = {
-			title: "",
-			uri: "",
-			source: "",
-			description: "",
-			selected: "",
-			index: null,
-		};
+		$scope.multimediaCurrent = multimediaCurrentReset ( );
 
 		$scope.multimediaToggle = function ( ) {
 			toggleClass ( ".audio.details", "active" );
-			$scope.multimediaCurrent = { };
+			$scope.multimediaCurrent = multimediaCurrentReset ( );
 		};
 
 		$scope.multimediaSave = function ( ) {
-			if ( $scope.multimediaCurrent.index !== null && $scope.multimediaCurrent.index >= 0 ) {
-				$scope.multimedia [ $scope.multimediaCurrent.index ] = angular.copy ( $scope.multimediaCurrent );
-			} else {
-				$scope.multimediaCurrent.index = null;
-				$scope.multimedia.push ( angular.copy ( $scope.multimediaCurrent ) );
-			};
 
-			$scope.multimediaToggle ( );
-			$scope.multimediaCurrent = { };
+			var $multimedia = angular.copy ( $scope.multimediaCurrent );
+
+			modalToggle ( );
+			
+			if ( $multimedia.index !== null && $multimedia.index >= 0 && $multimedia.id >= 1 ) {
+
+				$serviceMultimedia.update ( $multimedia, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.multimediaToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+
+			} else if ( $multimedia.index == null ){
+
+				$serviceMultimedia.create ( $multimedia, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.multimediaToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+			};
 		};
 
 		$scope.multimediaDelete = function ( ) {
-			var $delete = confirm ( 'deseja deletar o áudio "'+$scope.multimediaCurrent.title+'"?' );
-			if ( $delete && $scope.multimediaCurrent.index !== null ) {
-				$scope.multimedia.splice ( $scope.multimediaCurrent.index , 1 );
-			};
+
+			modalToggle ( );
 			
-			$scope.multimediaToggle ( );
-			$scope.multimediaCurrent = { };
+			var $multimedia = angular.copy ( $scope.multimediaCurrent );
+
+			var $delete = confirm ( 'deseja deletar o áudio "'+$multimedia.title+'"?' );
+			
+			if ( $delete && $multimedia.id >= 1 ) {
+				$serviceMultimedia.delete ( $multimedia, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope )
+						$scope.multimediaToggle ( );
+					};
+					modalToggle ( 400 );
+				} );
+			};
 		};
 
-		$scope.multimediaLoad = function ( $index ) {
+		$scope.multimediaLoad = function ( $multimedia ) {
 			$scope.multimediaToggle ( );
-			$scope.multimediaCurrent = $scope.multimedia [ $index ];
-			$scope.multimediaCurrent.index = $index;
+			$scope.multimediaCurrent = angular.copy ( $multimedia );
+		};
+	};
+
+	function multimediaCurrentReset ( ) {
+		return  {
+			index: null,
+			id: null,
+			title: "",
+			uri: null,
+			source: null,
+			description: "",
+			selected: "",
 		};
 	};
 

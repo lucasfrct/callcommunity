@@ -1,5 +1,13 @@
 <?php 
-$handle = fsockopen("time-b.timefreq.bldrdoc.gov", 13, $errno, $errstr); 
+
+/*
+server 0.south-america.pool.ntp.org
+server 1.south-america.pool.ntp.org
+server 2.south-america.pool.ntp.org
+server 3.south-america.pool.ntp.org
+*/
+
+$handle = fsockopen ( "time-b.timefreq.bldrdoc.gov", 13, $errno, $errstr ); 
 
 if ( !$handle ) { 
     print "ERROR: $errno - $errstr<br>\n"; 

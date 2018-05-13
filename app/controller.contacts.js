@@ -1,127 +1,98 @@
-( function () {
+( function ( ) {
 	"use strict";
 
-	angular.module ( "callcommunity" )
-		.controller ( "contacts", [ "$scope", "$http", "$cookies", Contacts ] );
+	angular
+		.module ( "callcommunity" )
+		.controller ( "contacts", [ "$scope", "$http", "$cookies", "contacts", Contacts ] )
 
-	function Contacts ( $scope, $http, $cookies ) {
-
-		var $uri =  "app/callserver/contacts.json";
+	function Contacts ( $scope, $http, $cookies, $serviceContacts ) {
 		
 		$scope.contacts = cookieGet( $cookies, "contacts" );
 
 		$scope.$watch ( "contacts", function ( $contacts ) { 	
-			contactRead ( $http, "*", function ( $data ) {
-				$scope.contacts = $data;
-				cookiePut( $cookies, "contacts", $scope.contacts );
-			} );
+			cookiePut( $cookies, "contacts", $scope.contacts );
 		}, true );
 
-		query ( $http, "app/callserver/contacts.json", function ( $contacts ) { 
-			//$scope.contacts = $contacts;
-		} );
+		upRead ( $scope );
 
+		$scope.$watch ( "upRead", function ( $up ) {
+			$serviceContacts.read ( "*", function ( $data ) {
+				$scope.contacts = $data;
+			} );
+		}, true );
 		
 
-		$scope.contactCurrent = {
-			name: "",
-			condominium: "",
-			tel: "",
-			index: null,
-		};
+		$scope.contactCurrent = contactCurrentReset ( );
 
 		$scope.contactToggle = function ( ) {
 			toggleClass ( ".contact", "active" );
-			$scope.contactCurrent = { };
+			$scope.contactCurrent = contactCurrentReset ( );
+		};
+
+		$scope.contactLoad = function ( $contact ) {
+			$scope.contactToggle ( );
+			$scope.contactCurrent = angular.copy ( $contact );
 		};
 
 		$scope.contactSave = function ( ) {
-			if ( $scope.contactCurrent.index !== null && $scope.contactCurrent.index >= 0 ) {
-				console.log ( "init update" );
-				//$scope.contacts[ $scope.contactCurrent.index ] = angular.copy ( $scope.contactCurrent );
-			} else {
-				contactCreate ( $http, angular.copy ( $scope.contactCurrent ), function ( $data ) {
-					$scope.contactCurrent.index = null;
-					$scope.contacts.push ( angular.copy ( $scope.contactCurrent ) );
+			
+			var $contact = angular.copy ( $scope.contactCurrent );
+
+			modalToggle ( );
+
+			if ( $contact.index !== null && $contact.index >= 0 && $contact.id >= 1 ) {
+
+				$serviceContacts.update ( $contact, function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.contactToggle ( );
+					};
+
+					modalToggle ( 400 );
+				} );
+
+			} else if ( $contact.index == null ) {
+
+				$serviceContacts.create ( $contact , function ( $data ) {
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.contactToggle ( );
+					};
+
+					modalToggle ( 400 );
 				} );
 			};
-
-			$scope.contactToggle ( );
-			$scope.contactCurrent = { };
 		};
 
 		$scope.contactDelete = function ( ) {
-			var $delete = confirm ( 'Deseja deletar o contato"'+$scope.contactCurrent.name+'"?' );
-
-			if ( $delete && $scope.contactCurrent.index !== null ) {
-				$scope.contacts.splice ( $scope.contactCurrent.index , 1 );
-			};
 			
-			$scope.contactToggle ( );
-			$scope.contactCurrent = { };
-		};
+			var $contact = angular.copy ( $scope.contactCurrent );
 
-		$scope.contactLoad = function ( $index ) {
-			$scope.contactToggle ( );
-			$scope.contactCurrent = $scope.contacts[ $index ];
-			$scope.contactCurrent.index = $index;
-		};
-	};
+			modalToggle ( );
+			
+			var $delete = confirm ( 'Deseja deletar o contato"'+$contact.name+'"?' );
 
-	function contactCreate ( $http = null, $contact = null, $fn = null ) {
-		var $uri = "lib/crud/Service.php";
+			if ( $delete && $contact.id >= 1 ) {
+				$serviceContacts.delete ( $contact, function ( $data ) { 
+					if ( $data == "true" ) {
+						upRead ( $scope );
+						$scope.contactToggle ( );
+					};
 
-		var $create = { 
-			action: "create",
-			table: "contacts",
-			data: { 
-				name: $contact.name, 
-				tel: $contact.tel,
-				condominium: $contact.condominium
-			}
-		};
-
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $create ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn ( $data.data );
+					modalToggle ( 400 );
+				} );
 			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
-	};
-
-	function contactRead( $http = null, $condition = null, $fn = null ) {
-		var $uri = "lib/crud/Service.php";
-
-		var $read = { 
-			action: "read",
-			table: "contacts", 
-			fields: "*",
-			id: "",
 		};
-		
-		$http ( {
-			url: $uri,
-			method: "POST",
-			data: "callcommunity="+JSON.stringify ( $read ),
-			headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
-			responseType: 'text',
-		} )
-		.then ( function ( $data ) {
-			if ( null !== $fn ) {
-				$fn (  $data.data );
-			};
-		}, function ( $error ) {
-			$fn ( $error );
-		} );
 	};
 
+	function contactCurrentReset ( ) {
+		return {
+			index: null,
+			id: null,
+			name: "",
+			tel: "",
+			condominium: "",
+		};
+	};
 
 } ) ( );

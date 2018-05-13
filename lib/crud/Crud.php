@@ -79,7 +79,7 @@ class Crud
         return self::$instance->data = self::$instance->model->digest ( $data );
     }
 
-    public function run ( ): string 
+    public function run ( ): array 
     {
 
         $ins = self::$instance;
@@ -93,6 +93,7 @@ class Crud
         $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : NULL;
         
         $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : NULL;
+        $condition = implode ( " AND ", explode ( ",", $condition ) );
         
         $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : NULL;
         
@@ -131,7 +132,7 @@ class Crud
 
         array_push ( self::$message, "Use Crud run" );
 
-        return json_encode ( $ins->response );
+        return $ins->response;
     }
 
     public function response ( ): string 

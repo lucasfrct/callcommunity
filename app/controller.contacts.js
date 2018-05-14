@@ -54,6 +54,7 @@
 			} else if ( $contact.index == null ) {
 
 				$serviceContacts.create ( $contact , function ( $data ) {
+					console.log ( $data );
 					if ( $data == "true" ) {
 						upRead ( $scope );
 						$scope.contactToggle ( );

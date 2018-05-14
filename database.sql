@@ -44,3 +44,12 @@ CREATE TABLE IF NOT EXISTS callcommunity.messages (
 
 INSERT INTO callcommunity.tasks ( title, dated, hour, caller, sms, message, contacts, repeated )
 VALUES ( "Titulo 1 teste", "2018-1-1", "8:00", true, true, "Mensagem de teste", "[ name: 'nome de teste']", "[ dom: true, ter: true]" );
+
+/*
+* Host = mysql.hostinger.com.br
+* Database = u339404720_call
+* user = u339404720_call
+* password = callcommunity
+*
+*
+*/

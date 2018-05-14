@@ -43,10 +43,10 @@ class Crud
     {
         if ( !empty ( $table ) ) {
             $rows = array ( );
-            $condition = ( empty ( $condition ) ) ? "WHERE" : $condition." AND ";
+            $condition = ( empty ( $condition ) ) ? "WHERE" : $condition;
             
             $result = self::$instance->connect->query ( 
-                "SELECT {$fields} FROM {$table} {$condition} enable = true", 
+                "SELECT {$fields} FROM {$table} {$condition} AND enable = true", 
                 MYSQLI_USE_RESULT 
             );
 
@@ -79,7 +79,7 @@ class Crud
         return self::$instance->data = self::$instance->model->digest ( $data );
     }
 
-    public function run ( ): array 
+    public function run ( )
     {
 
         $ins = self::$instance;
@@ -93,7 +93,7 @@ class Crud
         $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : NULL;
         
         $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : NULL;
-        $condition = implode ( " AND ", explode ( ",", $condition ) );
+        $condition = ( NULL !== $condition ) ? implode ( " AND ", explode ( ",", $condition ) ) : $condition;
         
         $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : NULL;
         

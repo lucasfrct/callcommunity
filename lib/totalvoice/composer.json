@@ -1,0 +1,5 @@
+{
+    "require": {
+        "total-voice/php-client": "1.*"
+    }
+}

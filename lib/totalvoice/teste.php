@@ -1,24 +1,12 @@
-<?php 
+<?php
 
-require_once "TotalVoiceAPI.class.php";
+include_once ( "vendor/autoload.php" );
 
+// Considero que já existe um autoloader compatível com a PSR-4 registrado
 
-$api = new TotalVoiceAPI("{{access-token}}");
+use TotalVoice\Client as TotalVoiceClient;
 
-$api->debugOn();
+$client = new TotalVoiceClient('{{7338d6b3a783543e6c0788bf92ad34a6}}');
+$response = $client->sms->enviar('12991285145', 'SUA MENSAGEM');
 
-$api->returnAssoc();
-
-//print_r($api->enviaSMS("**********", "Esta é uma mensagem de testes"));
-
-
-//print_r($api->enviaTTS("**********", "Isto é um texto falado"));
-
-
-//print_r($api->enviaAudio("**********", "https://api.evoline.com.br/painel/demo-song.mp3"));
-
-
-print_r($api->enviaChamada("**********", "**********"));
-
-
-echo "\n";
+echo $response->getContent(); // {}/

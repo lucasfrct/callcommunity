@@ -10,6 +10,8 @@ class Connect
 	public static $exception = Array ( );
 	private $host = array( "host"=> "127.0.0.1", "port"=> "3306", "user"=> "root", "password"=> "" );
 	private $database = "callcommunity";
+	#private $host = array( "host"=> "mysql.hostinger.com.br", "port"=> "", "user"=> "u339404720_call", "password"=> "callcommunity" );
+	#private $database = "u339404720_call";
 	private $mysqli = null;
 
 	# Testa se o servidor esta online

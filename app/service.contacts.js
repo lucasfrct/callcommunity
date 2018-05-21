@@ -9,7 +9,8 @@
 
 		var $contacts = this;
 
-		var $uri = "lib/crud/Service.php";	
+		var $uri = "lib/crud/Service.php";
+		//var $uri = "http://gosimplesolutions.com.br/lib/crud/Service.php";
 
 		$contacts.create = contactCreate;
 
@@ -69,7 +70,11 @@
 				url: $uri,
 				method: "POST",
 				data: "callcommunity="+JSON.stringify ( $query ),
-				headers : { 'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8" },
+				headers : { 
+					'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
+					'Access-Control-Allow-Origin' : '*',
+					'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
+				},
 				responseType: 'text',
 			} )
 			.then ( function ( $data ) {

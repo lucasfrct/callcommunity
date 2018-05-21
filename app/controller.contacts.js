@@ -17,6 +17,7 @@
 
 		$scope.$watch ( "upRead", function ( $up ) {
 			$serviceContacts.read ( "*", function ( $data ) {
+				console.log ( $data );
 				$scope.contacts = $data;
 			} );
 		}, true );

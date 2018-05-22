@@ -19,6 +19,8 @@
 		
 		$tasks.delete = taskDelete;
 
+		$tasks.run = runtask;
+
 		function taskCreate ( $task = null, $fn = null ) {
 		
 			var $create = { 
@@ -79,6 +81,36 @@
 			var $delete = { action: "delete", table: "tasks", id: $task.id };
 
 			query ( $delete, $fn );
+		};
+
+		function runtask ( ) {
+			console.log ( "------------------RUN TASK! ---------------" );
+			
+			var $data = { 
+				numero_destino : "12991285145",
+				mensagem: "teste Total Voice JSON 2",
+				resposta_usuario: true,
+				multi_sms: true,
+				data_criacao: "2017-03-30T17:17:14-03:00"
+			};
+
+			$http ( {
+				url: "https://api.totalvoice.com.br/sms",
+				method: "POST",
+				data: $data,
+				headers : { 
+					'Content-Type': "application/json",
+					"Accept": "application/json",
+					"Access-Token" : "7338d6b3a783543e6c0788bf92ad34a6"
+				},
+				responseType: 'text',
+			} )
+			.then ( function ( $data ) {
+				console.log ( $data.data );
+			}, function ( $error ) {
+				alert ( "error" );
+			} );
+
 		};
 
 		function query ( $query = null, $fn = null ) {

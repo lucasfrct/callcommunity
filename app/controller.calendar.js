@@ -149,7 +149,10 @@
 				 } );
 			};
 		};
-		
+
+		$scope.taskRun = function ( ) {
+			$serviceTasks.run ( );
+		}
 		
 		$scope.contactToggle = function ( ) {
 			toggleClass ( ".contacts.window",  "active" );

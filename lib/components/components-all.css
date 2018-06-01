@@ -4,7 +4,7 @@ html {
     background-color: #F5F5F5;
     color: #424242;
     font-family: Verdana, Arial, Sans-serif !important;
-    font-size: 62.5% !important;
+    font-size: 12pt;
     font-weight: normal !important;
     line-height: 140% !important;
     min-height: 100vh !important;
@@ -130,9 +130,10 @@ body ul {
 body ol li,
 body ul li {
     display: inline-block;
-    font-size: 1.4em;
+    font-size: 1em;
     min-height: initial;
     width: 100%;
+    white-space: normal;
 }
 
 body ol li > a,
@@ -148,11 +149,11 @@ body ul li > a:hover,
 body ul li > a:focus,
 body ul li > a:active {
     width: 100%;
-    padding: 0.5em;
+    padding: 0.3em;
+    white-space: normal;
 }
 
 /*RESET TABLES*/
-
 body table,
 body table thead,
 body table tbody,
@@ -217,8 +218,9 @@ body table tr th,
 body table tr td {
     display: table-cell;
     vertical-align: middle;
-    font-size: 1.4em;
-    padding: 0.5em;
+    font-size: 1em;
+    padding: 0.4em;
+    white-space: normal;
 }
 
 body table tr th:not( :last-child ),
@@ -234,68 +236,65 @@ body h2,
 body h3, 
 body h4, 
 body h5, 
-body h6 {
+body h6,
+body h7,
+body h8,
+body .h1,
+body .h2,
+body .h3,
+body .h4,
+body .h5,
+body .h6,
+body .h7,
+body .h8 {
     margin: 0 !important;
-    line-height: 1em;
+    line-height: 1.4em;
     font-weight: normal;
-    padding: 0.5em;
+    padding: 0.3em;
     padding-left: 7px;
     display: block;
     color: inherit;
+    white-space: normal;
 }
 
-body h1 {
-    font-size: 3.4em;
-}
-
-body h2 {
-    font-size: 3em;
-}
-
-body h3 {
+body h1,
+body .h1 {
     font-size: 2.6em;
 }
 
-body h4 {
+body h2,
+body .h2 {
     font-size: 2.2em;
 }
 
-body h5 {
+body h3,
+body .h3 {
     font-size: 1.8em;
 }
 
-body h6 {
-    font-size: 1.6em;
+body h4,
+body .h4 {
+    font-size: 1.5em;
 }
 
-body pre h1,
-body p h1 {
-    font-size: 2.43em;
+body h5,
+body .h5 {
+    font-size: 1.2em;
 }
 
-body pre h2,
-body p h2 {
-    font-size: 2.15em;
+body h6,
+body .h6 {
+    font-size: 1.1em;
 }
 
-body pre h3,
-body p h3 {
-    font-size: 1.86em;
+body h7,
+body .h7 {
+    font-size: 0.9em;
 }
 
-body pre h4,
-body p h4 {
-    font-size: 1.54em;
-}
-
-body pre h5,
-body p h5 {
-    font-size: 1.29em;
-}
-
-body pre h6,
-body p h6 {
-    font-size: 1.15em;
+body h8,
+body .h8 {
+    font-size: 0.8em;
 }
 
 body pre, 
@@ -303,32 +302,29 @@ body p {
     background-color: #FDFDFD;
     color: #424242; /* #616161 */
     font-family: inherit;
-    font-size: 1.4em;
+    font-size: 1em;
     word-break: keep-all;
     word-wrap: break-word;
     font-weight: inherit;
     line-height: 140%;
-    padding: 1em;
+    padding: 0.6em;
     text-align: left;
-}
-
-body pre p {
-    font-size: 1em;
+    white-space: normal;
 }
 
 body xmp {
     display: inline-block;
-    font-size: 1.4em;
+    font-size: 1em;
     margin: 0;
     padding: 0;
     background-color: transparent;
     color: inherit;
     font-family: inherit;
+    white-space: normal;
 }
 
-body pre xmp,
-body p xmp {
-    font-size: 1em;
+body button {
+    cursor: pointer;
 }
 
 body div::after, 
@@ -416,11 +412,20 @@ body hr, body .hr {
 
 body .radius,
 body .circle {
+    display: inline-block;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     border-radius: 50%;
+}
+
+body .radius-2 {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
 }
 
 body .radius-4 {
@@ -438,6 +443,21 @@ body .radius-8 {
     -o-border-radius: 8px;
     border-radius: 8px;
 }
+
+body input,
+body textarea,
+body select {
+    background-color: #FFFFFF;
+    border: 0;
+    border-radius: 0;
+    font-size: 1em;
+    display: inline-block;
+    outline: 0;
+    padding: 0.6em;
+    width: calc( 100% - 1px );
+    white-space: normal;
+}
+
 
 /*component-line.css*/
 
@@ -463,6 +483,195 @@ html .line-double {
     border-style: double !important;
 }
 
+/*component-window.css*/
+
+body .window {
+	min-height: calc( 480px / 6 );
+	width: 100%;
+	min-width: 160px;
+	position: absolute;
+}
+
+body .window {
+	opacity: 0;
+	-webkit-transform: scale( 0.001, 0.001 );
+	-moz-transform: scale( 0.001, 0.001 );
+	-ms-transform: scale( 0.001, 0.001 );
+	-o-transform: scale( 0.001, 0.001 );
+	transform: scale( 0.001, 0.001 );
+	-webkit-transition: opacity 0.3s linear, transform 0.3s ease-in-out, z-index 0.01s linear 0.31s;
+	-moz-transition: opacity 0.3s linear, transform 0.3s ease-in-out, z-index 0.001s linear 0.31s;
+	-ms-transition: opacity 0.3s linear, transform 0.3s ease-in-out, z-index 0.001s linear 0.31s;
+	-o-transition: opacity 0.3s linear, transform 0.3s ease-in-out, z-index 0.001s linear 0.31s;
+	transition: opacity 0.3s linear, transform 0.3s ease-in-out, z-index 0.001s linear 0.31s;
+	will-change: opacity, transform, z-index, transition;
+	z-index: 0;
+}
+
+body .active {
+	opacity: 1;
+	-webkit-transform: scale( 1, 1 );
+	-moz-transform: scale( 1, 1 );
+	-ms-transform: scale( 1, 1 );
+	-o-transform: scale( 1, 1 );
+	transform: scale( 1, 1 );
+	-webkit-transition: opacity 0.2s linear, transform 0.3s ease-in-out, z-index 0.001s linear;
+	-moz-transition: opacity 0.2s linear, transform 0.3s ease-in-out, z-index 0.001s linear;
+	-ms-transition: opacity 0.2s linear, transform 0.3s ease-in-out, z-index 0.001s linear;
+	-o-transition: opacity 0.2s linear, transform 0.3s ease-in-out, z-index 0.001s linear;
+	transition: opacity 0.2s linear, transform 0.3s ease-in-out, z-index 0.01s linear;
+	will-change: opacity, transform, z-index, transition;
+	z-index: 1;
+}
+
+body .modal {
+	-webkit-align-items: center !important;
+	align-items: center !important;
+	background-color: rgba( 0, 0 , 0, 0.6 ) !important;
+	display: -webkit-flex !important;
+	display: flex !important;
+	height: 100vh !important;
+	-webkit-justify-content: center !important;
+	justify-content: center !important;
+	min-height: 120px;
+	min-width: 160px;
+	overflow: hidden !important;
+	position: fixed !important;
+	width: 100vW !important;
+	z-index: -1 !important;
+}
+
+body .alert,
+body .modal {
+	opacity: 0;
+	position: fixed;
+	-webkit-transform: translate( 0, -100vh );
+	-moz-transform: translate( 0, -100vh );
+	-ms-transform: translate( 0, -100vh );
+	-o-transform: translate( 0, -100vh );
+	transform: translate( 0, -100vh );
+	-webkit-transition: opacity 0.1s ease-in-out 0.3s, transform 0.3s ease-in-out, z-index 0.01s linear 0.4s;
+	-moz-transition: opacity 0.1s ease-in-out 0.3s, transform 0.3s ease-in-out, z-index 0.01s linear 0.4s;
+	-ms-transition: opacity 0.1s ease-in-out 0.3s, transform 0.3s ease-in-out, z-index 0.01s linear 0.4s;
+	-o-transition: opacity 0.1s ease-in-out 0.3s, transform 0.3s ease-in-out, z-index 0.01s linear 0.4s;
+	transition: opacity 0.1s ease-in-out 0.3s, transform 0.3s ease-in-out, z-index 0.01s linear 0.4s;
+	will-change: opacity, transform, z-index, transition;
+	z-index: -1 !important;
+}
+
+body .alert.active,
+body .modal.active {
+	opacity: 1;
+	-webkit-transform: translate( 0, 0 ) !important;
+	-moz-transform: translate( 0, 0 ) !important;
+	-ms-transform: translate( 0, 0 ) !important;
+	-o-transform: translate( 0, 0 ) !important;
+	transform: translate( 0, 0 ) !important;
+	-webkit-transition: opacity 0.05s ease-in-out, transform 0.3s ease-in-out 0.01s, z-index 0.01s linear;
+	-moz-transition: opacity 0.05s ease-in-out, transform 0.3s ease-in-out 0.01s, z-index 0.01s linear;
+	-ms-transition: opacity 0.05s ease-in-out, transform 0.3s ease-in-out 0.01s, z-index 0.01s linear;
+	-o-transition: opacity 0.05s ease-in-out, transform 0.3s ease-in-out 0.01s, z-index 0.01s linear;
+	transition: opacity 0.05s ease-in-out, transform 0.3s ease-in-out 0.01s, z-index 0.01s linear;
+	will-change: opacity, transform, z-index, transition;
+	z-index: 1000000000 !important;
+}
+
+body .alert .close,
+body .modal .close {
+	cursor: pointer;
+	float: right !important;
+	right: 0 !important;
+	margin-left: calc( 100% - 32px );
+	top: 0;
+	z-index: inherit;
+}
+
+body .alert > .close,
+body .modal > * .close {
+	position: absolute !important;
+}
+
+body .alert {
+	background-color: rgba( 255, 0, 0, 0.9 );
+	border: solid 1px #F00;
+	color: #FFF;
+	height: 40vh;
+	min-height: 240px;
+	min-width: 240px;
+	width: 100vw;
+}
+
+body .alert.active {
+	z-index: 100000 !important;
+}
+
+body .alert > .dialog {
+	background-color: transparent;
+}
+
+body .modal > .close {
+	position: fixed;
+}
+
+body .dialog {
+	background: #F0F0F0;
+	height: 50%;
+	min-height: 240px;
+	min-width: 160px;
+	position: relative;
+	width: 90%;
+	z-index: 1;
+}
+
+/*col-sm devices*/
+@media ( min-width: 576px ) {
+	body .alert {
+		height: 50vw;
+		margin: 25vw 5vw;
+		width: 90vw;
+	}
+}
+
+/*col-md devices*/
+@media ( min-width: 768px ) {
+	body .alert {
+		height: 40vw;
+		margin: 15vw 20vw;
+		width: 60vw;
+	}
+
+	body .modal > .dialog {
+		width: 80%;
+	}
+}
+
+/*col-lg devices*/
+@media ( min-width: 992px ) {
+	body .alert {
+		height: 30vw;
+		margin: 15vw 25vw;
+		width: 50vw;
+	}
+
+	body .modal > .dialog {
+		width: 70%;
+	}
+}
+
+/*col-xl devices*/
+@media ( min-width: 1200px ) {
+	body .alert {
+		height: 20vw;
+		margin: 15vw 30vw;
+		width: 40vw;
+	}
+
+	body .modal > .dialog {
+		width: 50%;
+		height: 30%;
+	}
+}
+
 body * [ class*="col-" ] {
     border: none;
     bottom: 0;
@@ -486,7 +695,7 @@ Minimum screen = 320px x 480px for screen ( VGA - 720px x 480px )
 */
 
 /* Extra Small Phones - Small Devices (portrait phones, 320px - 575px) */
-@media ( min-width: 320px ) {
+@media ( min-width: 32px ) {
     body .col-xs-1 {
         width: calc( ( 100% / 12 ) * 1 ); 
     }
@@ -629,6 +838,14 @@ Minimum screen = 320px x 480px for screen ( VGA - 720px x 480px )
 
     body .col-xs-pull-12 {
         margin-right: 100%;
+    }
+
+    body .col-xs-hidden {
+        display: none;
+    }
+
+    body .col-xs-visible {
+        display: inline-block;
     }
 }
 
@@ -784,6 +1001,14 @@ Minimum screen = 576px x 540px for screen ( VGA - 720px x 480px )
     body .col-sm-pull-12 {
         margin-right: 100%;
     }
+
+    body .col-sm-hidden {
+        display: none;
+    }
+
+    body .col-sm-visible {
+        display: inline-block;
+    }
 }
 
 /*
@@ -937,6 +1162,14 @@ Minimum screen = 768px x 600px for screen ( SVGA - 800px x 600px )
 
     body .col-md-pull-12 {
         margin-right: 100%;
+    }
+
+    body .col-md-hidden {
+        display: none;
+    }
+
+    body .col-md-visible {
+        display: inline-block;
     }
 }
 
@@ -1092,6 +1325,14 @@ Minimum screen = 992px x 720px for screen ( SVGA - 800px x 600px )
     body .col-lg-pull-12 {
         margin-right: 100%;
     }
+
+    body .col-lg-hidden {
+        display: none;
+    }
+
+    body .col-lg-visible {
+        display: inline-block;
+    }
 }
 
 /*
@@ -1246,6 +1487,14 @@ Minimum screen = 1200px X 1050px for screen ( Full HD - 1920px - 1080px )
     body .col-xl-pull-12 {
         margin-right: 100%;
     }
+
+    body .col-xl-hidden {
+        display: none;
+    }
+
+    body .col-xl-visible {
+        display: inline-block;
+    }
 }
 
 body * [ class*="row-" ] {
@@ -1271,130 +1520,130 @@ Here contains 24 wide rows.
 Minimum screen = 320px x 480px for screen ( VGA - 720px x 480px )
 */
 
-/* Extra Phone - Extra Small Devices ( Small Phones, 480px - 599px) */
-@media ( min-height: 480px ) {
+/* Extra Phone - Extra Small Devices ( Small Phones, 480px - 540px) */
+@media ( min-height: 48px ) {
     body .row-xs-fluid {
         height: auto !important;
     }
 
     body .row-xs-1 {
         height: calc( 100vh / 24 );
-        min-height: calc( 100vh / 24 );
+        min-height: calc( 480px / 24 );
     }
 
     body .row-xs-2 {
         height: calc( ( 100vh / 24 ) * 2 );
-        min-height: calc( ( 100vh / 24 ) * 2 );
+        min-height: calc( ( 480px / 24 ) * 2 );
     }
 
     body .row-xs-3 {
         height: calc( ( 100vh / 24 ) * 3 );
-        min-height: calc( (100vh / 24 ) * 3 );
+        min-height: calc( (480px / 24 ) * 3 );
     }
 
     body .row-xs-4 {
         height: calc( ( 100vh / 24 ) * 4 );
-        min-height: calc( ( 100vh / 24 ) * 4 );
+        min-height: calc( ( 480px / 24 ) * 4 );
     }
 
     body .row-xs-5 {
         height: calc( ( 100vh / 24 ) * 5 );
-        min-height: calc( ( 100vh / 24 ) * 5 );
+        min-height: calc( ( 480px / 24 ) * 5 );
     }
 
     body .row-xs-6 {
         height: calc( ( 100vh / 24 ) * 6 );
-        min-height: calc( ( 100vh / 24 ) * 6 );
+        min-height: calc( ( 480px / 24 ) * 6 );
     }
 
     body .row-xs-7 {
         height: calc( ( 100vh / 24 ) * 7 );
-        min-height: calc( ( 100vh / 24 ) * 7 );
+        min-height: calc( ( 480px / 24 ) * 7 );
     }
 
     body .row-xs-8 {
         height: calc( ( 100vh / 24 ) * 8 );
-        min-height: calc( ( 100vh / 24 ) * 8 );
+        min-height: calc( ( 480px / 24 ) * 8 );
     }
 
     body .row-xs-9 {
         height: calc( ( 100vh / 24 ) * 9 );    
-        min-height: calc( ( 100vh / 24 ) * 9 );
+        min-height: calc( ( 480px / 24 ) * 9 );
     }
 
     body .row-xs-10 {
         height: calc( ( 100vh / 24 ) * 10 );
-        min-height: calc( ( 100vh / 24 ) * 10 );
+        min-height: calc( ( 480px / 24 ) * 10 );
     }
 
     body .row-xs-11 {
         height: calc( ( 100vh / 24 ) * 11 );
-        min-height: calc( ( 100vh / 24 ) * 11 );
+        min-height: calc( ( 480px / 24 ) * 11 );
     }
 
     body .row-xs-12 {
         height: calc( ( 100vh / 24 ) * 12 );
-        min-height: calc( ( 100vh / 24 ) * 12 );
+        min-height: calc( ( 480px / 24 ) * 12 );
     }
 
     body .row-xs-13 {
         height: calc( ( 100vh / 24 ) * 13 );
-        min-height: calc( ( 100vh / 24 ) * 13 );
+        min-height: calc( ( 480px / 24 ) * 13 );
     }
 
     body .row-xs-14 {
         height: calc( ( 100vh / 24 ) * 14 );
-        min-height: calc( ( 100vh / 24 ) * 14 );
+        min-height: calc( ( 480px / 24 ) * 14 );
     }
 
     body .row-xs-15 {
         height: calc( ( 100vh / 24 ) * 15 );
-        min-height: calc( ( 100vh / 24 ) * 15 );
+        min-height: calc( ( 480px / 24 ) * 15 );
     }
 
     body .row-xs-16 {
         height: calc( ( 100vh / 24 ) * 16 );
-        min-height: calc( ( 100vh / 24 ) * 16 );
+        min-height: calc( ( 480px / 24 ) * 16 );
     }
 
     body .row-xs-17 {
         height: calc( ( 100vh / 24 ) * 17 );
-        min-height: calc( ( 100vh / 24 ) * 17 );
+        min-height: calc( ( 480px / 24 ) * 17 );
     }
 
     body .row-xs-18 {
         height: calc( ( 100vh / 24 ) * 18 );
-        min-height: calc( ( 100vh / 24 ) * 18 );
+        min-height: calc( ( 480px / 24 ) * 18 );
     }
 
     body .row-xs-19 {
         height: calc( ( 100vh / 24 ) * 19 );
-        min-height: calc( ( 100vh / 24 ) * 19 );
+        min-height: calc( ( 480px / 24 ) * 19 );
     }
 
     body .row-xs-20 {
         height: calc( ( 100vh / 24 ) * 20 );
-        min-height: calc( ( 100vh / 24 ) * 20 );
+        min-height: calc( ( 480px / 24 ) * 20 );
     }
 
     body .row-xs-21 {
         height: calc( ( 100vh / 24 ) * 21 );
-        min-height: calc( ( 100vh / 24 ) * 21 );
+        min-height: calc( ( 480px / 24 ) * 21 );
     }
 
     body .row-xs-22 {
         height: calc( ( 100vh / 24 ) * 22 );
-        min-height: calc( ( 100vh / 24 ) * 22 );
+        min-height: calc( ( 480px / 24 ) * 22 );
     }
 
     body .row-xs-23 {
         height: calc( ( 100vh / 24 ) * 23 );
-        min-height: calc( ( 100vh / 24 ) * 23 );
+        min-height: calc( ( 480px / 24 ) * 23 );
     }
 
     body .row-xs-24 {
         height: calc( 100vh - 0.2px );
-        min-height: calc( 480px - 0.2px );
+        min-height: calc( 480pxpx - 0.2px );
     }
 
     body .row-xs-offset-1 {
@@ -1597,7 +1846,7 @@ Here contains 24 wide rows.
 Minimum screen = 576px x 540px for screen ( VGA - 720px x 480px )
 */
 
-/* Phones - Small Devices (Phones, 600px - 680px) */
+/* Phones - Small Devices (Phones, 540px - 599px) */
 @media ( min-height: 540px ) {
     body .row-sm-fluid {
         height: auto !important;
@@ -1922,7 +2171,7 @@ Here contains 24 wide rows.
 Minimum screen = 768px x 600px for screen ( SVGA - 800px x 600px )
 */
 
-/* Tablets - Middle Devices (Tablets, 680px > 767px) */
+/* Tablets - Middle Devices (Tablets, 600px > 719px) */
 @media ( min-height: 600px ) {
     body .row-md-fluid {
         height: auto !important;
@@ -2248,7 +2497,7 @@ Here contains 24 wide rows.
 Minimum screen = 992px x 720px for screen ( SVGA - 800px x 600px )
 */
 
-/* Desktops = Large Devices (Desktops, 768px > 900px) */
+/* Desktops = Large Devices (Desktops, 720px > 1049px) */
 @media ( min-height: 720px ) {
     body .row-lg-fluid {
         height: auto !important;
@@ -2926,7 +3175,7 @@ body [data-btn] {
 	-ms-border-radius: 4px;
 	border-radius: 4px;
 	bottom: 0;
-	color: #767676;
+	color: #424242;
 	font-size: 14px; /*standart 14px*/
 	cursor: pointer;
 	display: inline-block;
@@ -3210,6 +3459,8 @@ body [data-btn="close"] {
 	color: #F00;
 	font-size: 28px;
 	padding: 0;
+	height: 28px;
+	width: 28px;
 }
 
 body [data-btn="close"]::before {
@@ -3475,7 +3726,7 @@ body [ data-shape="backspace" ]::after {
 	left: 0;
 	top: 0;
 	border-color: currentColor;
-	border-width: 1px;
+	border-width: 2px;
 	border-style: solid;
 }
 
@@ -3489,27 +3740,30 @@ body [ data-shape="backspace" ]::after {
 }
 
 body [ data-shape="backspace" ] {
-	position: relative;
-	width: 14px;
-	height: 14px;
 	border-left: transparent;
 	color: inherit;
+	font-weight: 900;
+	height: 14px;
 	left: 14px;
+	position: relative;
+	text-align: center;
+	width: 14px;
 }
 
 body [ data-shape="backspace" ]::before {
-	content: "\d7";
-	font-size: 18px;
-	line-height: 0;
-	top: 5px;
-	left: -1px;
 	border: none;
+	content: "\d7";
+	font-size: 12px;
+	left: 0px;
+	line-height: 12px;
+	top: 0px;
+	text-align: center;
 }
 
 body [ data-shape="backspace" ]::after {
-	width: 9px;
-	height: 9px;
-	top: 1px;
+	width: 8px;
+	height: 8px;
+	top: 0px;
 	left: -5px;
 	border-top: none;
 	border-right: none;
@@ -3524,31 +3778,153 @@ body [ data-shape="backspace" ]::after {
 
 
 body [data-shape="calendar-flip"] {
-	display: inline-block;
-	font-size: 12px;
 	border: solid 2px currentColor;
 	border-top-width: 5px;
-	width: 24px;
-	height: 24px;
-	text-align: center;
-	padding: 2px 2px;
-	top: 0px;
-	margin-top: 14px;
-	margin-left: 7px;
 	color: #767676;
+	display: inline-block;
+	font-size: 12px;
+	height: 24px;
+	line-height: 12px;
+	margin: 3px 7px 2px 7px;
+	padding: 2px 2px;
+	text-align: center;
+	top: 0px;
+	width: 24px;
 }
 
 body [data-shape="calendar-flip"]::before {
-	content: "";
-	display: block;
-	width: 9px;
-	height: 4px;
 	border-left: solid 4px currentColor;
 	border-right: solid 4px currentColor;
+	content: "";
+	display: block;
+	height: 4px;
+	left: 2px;
 	position: absolute;
 	top: -8px;
+	width: 9px;
+}
+
+/*component-shape-sandwich*/
+
+body [data-shape="sandwich"]::before, 
+body [data-shape="sandwich"]::after,
+body [data-shape="sandwich"] {
+	background-color: currentColor;
+	cursor: pointer;
+	left: 0;
+}
+
+
+body [data-shape="sandwich"] {
+	height: 4px;
+	width: 24px;
+	margin: 8px 2px;
+}
+
+body [data-shape="sandwich"]::before, 
+body [data-shape="sandwich"]::after {
+	content: "";
+	display: block;
+	height: inherit;
+	position: relative;
+	-webkit-transform: rotate( 0deg );
+	-moz-transform: rotate( 0deg );
+	-ms-transform: rotate( 0deg );
+	-o-transform: rotate( 0deg );
+	transform: rotate( 0deg );
+	-webkit-transform-origin: 14% 50%;
+	-moz-transform-origin: 14% 50%;
+	-ms-transform-origin: 14% 50%;
+	-o-transform-origin: 14% 50%;
+	transform-origin: 14% 50%;
+	-webkit-transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	-moz-transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	-ms-transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	-o-transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	width: inherit;
+	will-change: background-color, transform, transform-origin, trasition;
+}
+
+body [data-shape="sandwich"]::before { 
+	top: -6px;
+} 
+
+body [data-shape="sandwich"]::after {
+	top: 2px;
+}
+
+body [data-shape="sandwich"].active {
+	background-color: transparent;
+}
+
+body [data-shape="sandwich"].active::before {
+	-webkit-transform: rotate( 45deg );
+	-moz-transform: rotate( 45deg );
+	-ms-transform: rotate( 45deg );
+	-o-transform: rotate( 45deg );
+	transform: rotate( 45deg );
 	left: 2px;
 }
+
+body [data-shape="sandwich"].active::after {
+	-webkit-transform: rotate( -45deg );
+	-moz-transform: rotate( -45deg );
+	-ms-transform: rotate( -45deg );
+	-o-transform: rotate( -45deg );
+	transform: rotate( -45deg );
+	left: 2px;
+}
+
+/*component-piccker.css*/
+
+body [data-shape="picker"] {
+	color: #000;
+	display: block;
+	font-size: 14px;
+	border: solid 1px currentColor;
+	width: calc( 100% - 2px );
+	min-height: 300px;
+
+}
+
+/*
+body [data-shape="picker"] [data-shape="picker-header"] {
+	font-size: 14px;
+	border-bottom: solid 1px #959595;
+	background-color: #FFF;
+	height: 48px;
+	min-height: 48px;
+	width: 100%;
+	margin: 0;
+}
+
+body [data-shape="picker"] [data-shape="picker-header"] [data-shape="sandwich"] {
+	margin-left: 7px; 
+}
+
+body [data-shape="picker"] [data-shape="picker-header"] [data-shape="mouth"] {
+	font-size: 14px;
+	width: 70%;
+}
+
+/* header menu*/
+
+/* header menu day */
+
+/*header menu month*/
+
+/* header month */
+
+/* header day */
+
+/* Week collum D, S, T. Q, Q, S, S*/
+
+/* fab button Add */
+
+/* menu fab up */
+
+/* munu fab down */
 
 /*
 component-animation-reset.css

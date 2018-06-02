@@ -1,2 +1,2 @@
 angular
-	.module ( "callcommunity", [ "ngTouch", "ngCookies" ] );
+	.module ( "callcommunity", [ "ngTouch", "ngCookies", "ngRoute" ] );

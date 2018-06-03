@@ -1,1 +1,19 @@
-<h1>login</h1>
+<link rel="stylesheet" type="text/css" href="vendor/css/login.css">
+<main class="row-xs-24 col-xs-12 background-primary">
+	<section class="row-xs-18 row-xs-offset-4 text-center" ng-controller="login">
+		<form class="login">
+			<legend>Call Community</legend>
+			<h4>{{ login.info }}</h4>
+			<input class="login-email" type="email" name="email" placeholder="nome@example.com" 
+				ng-model="login.email"
+				ng-hide="login.valid"
+				ng-class="login.class">
+			<input class="login-pass" type="password" name="password" placeholder="Palavra-passe" 
+				ng-model="login.password"
+				ng-show="login.valid" 
+				ng-class="login.class">
+			<button type="submit" ng-click="submitLogin ( );">{{ login.btn }}</button>
+			<a href="">Não consegue aceder a conta?</a>
+		</form>
+	</section>
+</main>

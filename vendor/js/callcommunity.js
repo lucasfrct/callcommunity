@@ -1,6 +1,6 @@
-function toggleClass ( $element, $class ) {
+/*function toggleClass ( $element, $class ) {
 	document.querySelector ( $element ).classList.toggle ( $class );
-};
+};*/
 
 function query ( $http = null, $uri = null , $fn = null, $fnError = null ) {
 	$http

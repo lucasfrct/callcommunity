@@ -1,0 +1,67 @@
+body .login {
+	width: calc( 100% - 28px );
+	color: #212121;
+	background-color: #FFF;
+	padding: 21px;
+	border: solid 1px #AAA;
+	max-width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body .login legend {
+	text-align: left;
+	color: #767676;
+}
+
+body .login h4 {
+	text-align: left;
+	margin: 14px 7px 0px 7px !important;
+}
+
+body .login input {
+	font-size: 1.2em;
+	padding: 14px;
+}
+
+body .login button {
+	padding: 14px;
+	background-color: #00838F;
+	color: #FFF;
+}
+
+body .login a {
+	font-size: 0.9em;
+	text-align: left;
+	left: 0;
+	display: block;
+	padding: 7px 7px 7px 14px;
+	color: #1565C0;
+}
+
+body .login-email.invalid,
+body .login-pass.invalid {
+	animation: shake 0.82s cubic-bezier( 0.36, 0.07, 0.19, 0.97 ) both;
+	transform: translate3d( 0, 0, 0 );
+	backface-visibility: hidden;
+	perspective: 1000px;
+	border-color: #F00;
+	background-color: rgba( 255, 0, 0, 0.1 );
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d( -1px, 0, 0 );
+  }
+  
+  20%, 80% {
+    transform: translate3d( 2px, 0, 0 );
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d( -4px, 0, 0 );
+  }
+
+  40%, 60% {
+    transform: translate3d( 4px, 0, 0 );
+  }

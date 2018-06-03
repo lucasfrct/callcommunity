@@ -11,9 +11,15 @@
 				templateUrl: "preload.html",
 			} )
 
-			.when ( "login", {
-				tamplateUrl: "/login.html",
+			.when ( "/login", {
+				templateUrl: "login.html",
+				controller: "login",
 			} )
+			
+			.when ( "/tasks", {
+				templateUrl: "tasks.html",
+			} );
+
 
 			/*.otherwise( {
             	redirectTo: 'callcommunity/index.html'

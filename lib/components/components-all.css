@@ -159,13 +159,18 @@ body table thead,
 body table tbody,
 body table tfoot,
 body table tr th,
-body table tr td {
+body table tr td,
+body form,
+body legend,
+body fieldset,
+body input,
+body select,
+body textarea {
     border: 0;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     position: relative;
-
 }
 
 body table {
@@ -428,7 +433,12 @@ body .radius-2 {
     border-radius: 2px;
 }
 
-body .radius-4 {
+body .radius-4,
+body form,
+body form fieldset, 
+body form input,
+body form select,
+body form textarea {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
@@ -444,20 +454,64 @@ body .radius-8 {
     border-radius: 8px;
 }
 
+body form,
+body fieldset,
+body legend {
+    background-color: #F2F2F2;
+}
+
+body fieldset,
+body form legend {
+    background: transparent;
+}
+
+body form legend,
+body form fieldset {
+    margin: 7px 14px;
+}
+
+body form legend {
+    font-weight: 500;
+    font-size: 1.2em;
+    text-align: center;
+}
+
 body input,
+body select,
 body textarea,
-body select {
-    background-color: #FFFFFF;
-    border: 0;
-    border-radius: 0;
+body form button {
+    border: solid 1px #CCC;
     font-size: 1em;
-    display: inline-block;
-    outline: 0;
-    padding: 0.6em;
-    width: calc( 100% - 1px );
+    margin: 0;
+    padding: 2px 7px;
+    position: relative;
+    width: auto;
+    background-color: #FFFFFF;
     white-space: normal;
 }
 
+body form input,
+body form select,
+body form textarea,
+body form button {
+    margin: 7px 14px;
+    width: calc( 100% - 28px );
+}
+
+body form fieldset input,
+body form fieldset select,
+body form fieldset textarea,
+body form fieldset button {
+    margin: 7px 0;
+    width: 100%;
+}
+
+body form [type="checkbox"],
+body form [type="radio"] {
+    width: auto;
+    margin: 7px 7px 7px 14px;
+    top: 1px;
+}
 
 /*component-line.css*/
 

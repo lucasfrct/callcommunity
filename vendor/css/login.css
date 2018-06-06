@@ -4,7 +4,7 @@ body .login {
 	background-color: #FFF;
 	padding: 21px;
 	border: solid 1px #AAA;
-	max-width: 480px;
+	max-width: 420px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -22,6 +22,7 @@ body .login h4 {
 body .login input {
 	font-size: 1.2em;
 	padding: 14px;
+	position: relative;
 }
 
 body .login button {
@@ -39,29 +40,125 @@ body .login a {
 	color: #1565C0;
 }
 
-body .login-email.invalid,
-body .login-pass.invalid {
-	animation: shake 0.82s cubic-bezier( 0.36, 0.07, 0.19, 0.97 ) both;
-	transform: translate3d( 0, 0, 0 );
-	backface-visibility: hidden;
-	perspective: 1000px;
+body .login .login-email-cache {
+	background-color: #DDD;
+	border-bottom: solid 1px #AAA;
+	border-left: solid 3px #00838F;
+	color: #848484;
+	padding: 0px 3px;
+	width: calc( 100% - 28px );
+	font-size: 0.9em;
+	overflow: hidden;
+}
+
+body .login .login-load,
+body .login .login-load::before,
+body .login .login-load::after {
+	font-size: 0;
+	display: block;
+	margin: 0;
+	padding: 0;
+	height: 5px;	
+}
+
+body .login .login-load {
+	background-color: #80DEEA;
+	color: #00838F;
+	left: 15px;
+	margin-bottom: -5px;
+	overflow: hidden;
+	position: relative;
+	width: calc( 100% - 30px );
+}
+
+body .login .login-load::before,
+body .login .login-load::after {
+	animation: load 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out
+	background-color: transparent;
+	border-left: solid 5px currentColor;
+	content: "";
+	display: inherit;
+	height: inherit;
+	left: -5px;
+	position: absolute;
+	width: 100%;
+}
+
+ body .login .login-load::after {
+ 	animation-delay: 0.5s;
+ 	animation-duration: 0.9s;
+ }
+
+body .login .login-email.error,
+body .login .login-password.error {
 	border-color: #F00;
 	background-color: rgba( 255, 0, 0, 0.1 );
 }
 
+body .login-email.invalid,
+body .login-password.invalid {
+	animation: shake 0.82s cubic-bezier( 0.36, 0.07, 0.19, 0.97 ) both;
+	transform: translate3d( 0, 0, 0 );
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
 @keyframes shake {
-  10%, 90% {
-    transform: translate3d( -1px, 0, 0 );
-  }
-  
-  20%, 80% {
-    transform: translate3d( 2px, 0, 0 );
-  }
+	10%, 90% {
+		-webkit-transform: translate3d( -1px, 0, 0 );
+		-moz-transform: translate3d( -1px, 0, 0 );
+		-ms-transform: translate3d( -1px, 0, 0 );
+		-o-transform: translate3d( -1px, 0, 0 );
+		transform: translate3d( -1px, 0, 0 );
+	}
 
-  30%, 50%, 70% {
-    transform: translate3d( -4px, 0, 0 );
-  }
+	20%, 80% {
+		-webkit-transform: translate3d( 2px, 0, 0 );
+		-moz-transform: translate3d( 2px, 0, 0 );
+		-ms-transform: translate3d( 2px, 0, 0 );
+		-o-transform: translate3d( 2px, 0, 0 );
+		transform: translate3d( 2px, 0, 0 );
+	}
 
-  40%, 60% {
-    transform: translate3d( 4px, 0, 0 );
-  }
+	30%, 50%, 70% {
+		-webkit-transform: translate3d( -4px, 0, 0 );
+		-moz-transform: translate3d( -4px, 0, 0 );
+		-ms-transform: translate3d( -4px, 0, 0 );
+		-o-transform: translate3d( -4px, 0, 0 );
+		transform: translate3d( -4px, 0, 0 );
+	}
+
+	40%, 60% {
+		-webkit-transform: translate3d( 4px, 0, 0 );
+		-moz-transform: translate3d( 4px, 0, 0 );
+		-ms-transform: translate3d( 4px, 0, 0 );
+		-o-transform: translate3d( 4px, 0, 0 );
+		transform: translate3d( 4px, 0, 0 );
+	}
+}
+
+@keyframes load {
+	0% {
+		transform: translateX( 0% );
+	}
+
+	75% {
+		opacity: 1;
+	}
+
+	80% {
+		transform: translateX( 100% );
+		opacity: 0
+	}
+
+	99% {
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX( 0% );
+		opacity: 1;
+	}
+}

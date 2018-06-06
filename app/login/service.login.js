@@ -3,52 +3,66 @@
 
 	angular
 		.module ( "callcommunity" )
-		.service ( "servicelogin", [ "$http", ServiceLogin ] );
+		.service ( "servicelogin", [ "$http", "$timeout", ServiceLogin ] );
 	
-	function ServiceLogin ( $http ) {
+	function ServiceLogin ( $http, $timeout ) {
 
-		var $login = this;
+		var $serviceLogin = this;
 
-		var $uri = "app/login/login.php";
+		$serviceLogin.uri = "app/login/login.php";
 
-		$login.queryEmail = queryEmail;
+		$serviceLogin.queryEmail = queryEmail;
 
-		function queryEmail ( $login = null, $fn = null ) {
+		$serviceLogin.queryPassword = queryPassword;
+
+		function queryEmail ( $email = null, $fn = null ) {
 		
 			var $loginEmail = { 
-				action: "login", 
+				action: "login-email", 
 				table: "user",
 				data: {
-					email: $login.email,
-				}
+					email: $email,
+				},
 			};
 
-			query ( $loginEmail, $fn );
+			var $headers = {
+				user: "",
+				password: "",
+				token: "1234",
+			};
+
+			query ( $loginEmail, $fn, $headers );
 		};
 
-		function queryPassword ( $login = null, $fn = null ) {
+		function queryPassword ( $email = null, $password = null, $fn = null ) {
 		
+			var $headers = {
+				user: $email,
+				password: $password,
+				token: "1234",
+			};
+			
 			var $loginPassword = { 
-				action: "login", 
+				action: "login-email", 
 				table: "user",
-				data: {
-					email: $login.email,
-					password: $login.password,
-				}
+				data: { },
 			};
 
-			query ( $loginPassword, $fn );
+			query ( $loginPassword, $fn, $headers );
 		};
 
-		function query ( $query = null, $fn = null ) {
+		function query ( $query = null, $fn = null, $headers = { token: "", user: "", password: "" } ) {
 			$http ( {
-				url: $uri,
+				url: $serviceLogin.uri,
 				method: "POST",
 				data: "callcommunity="+JSON.stringify ( $query ),
 				headers : { 
 					'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
 					'Access-Control-Allow-Origin' : '*',
 					'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
+					'Access-Token': $headers.token || "",
+					'Access-user': $headers.user || "",
+					'Access-Password': $headers.password || "",
 				},
 				responseType: 'text',
 			} )

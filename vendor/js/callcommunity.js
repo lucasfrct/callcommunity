@@ -1,20 +1,4 @@
-/*function toggleClass ( $element, $class ) {
-	document.querySelector ( $element ).classList.toggle ( $class );
-};*/
-
-function query ( $http = null, $uri = null , $fn = null, $fnError = null ) {
-	$http
-		.get ( $uri )
-		.then ( function ( $response ) {
-			if ( $fn ) {
-				$fn ( $response.data );
-			};
-		}, function ( $error ) {
-			if ( $fnError ) {
-				$fnError ( $error );
-			};
-		} );
-};
+var $TokenAplication = sha1 ( "lucascosta" );
 
 function cookieGet ( $cookies, $variable ) {
 	var $get = $cookies.get ( $variable );

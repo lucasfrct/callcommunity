@@ -15,71 +15,62 @@
 
 		$serviceLogin.queryPassword = queryPassword;
 
+		console.log ( )
+
 		function queryEmail ( $email = null, $fn = null ) {
 		
-			var $loginEmail = { 
-				action: "login-email", 
+			var $data = { 
+				action: "check-email",
 				table: "user",
-				data: {
-					email: $email,
-				},
+				data: { email: $email, },
+				headers: { },
 			};
 
-			var $headers = {
-				user: "",
-				password: "",
-				token: "1234",
-			};
-
-			query ( $loginEmail, $fn, $headers );
+			query ( $data, $fn );
 		};
 
 		function queryPassword ( $email = null, $password = null, $fn = null ) {
-		
-			var $headers = {
-				user: $email,
-				password: $password,
-				token: "1234",
-			};
 			
-			var $loginPassword = { 
-				action: "login-email", 
+			var $data = { 
+				action: "login", 
 				table: "user",
-				data: { },
+				data: { email: $email },
+				headers: { email: $email, password: $password },
 			};
 
-			query ( $loginPassword, $fn, $headers );
+			query ( $data, $fn );
 		};
 
-		function query ( $query = null, $fn = null, $headers = { token: "", user: "", password: "" } ) {
+		function query ( $data = null, $fn = null ) {
+
+			var $headers = { 
+				'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
+				'Access-Control-Allow-Origin' : '*',
+				'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
+				'Access-Token': $TokenAplication,
+				'Access-user': $data.headers.email || "",
+				'Access-Password': $data.headers.password || "",
+			};
+
+			delete $data.headers;
+
 			$http ( {
 				url: $serviceLogin.uri,
 				method: "POST",
-				data: "callcommunity="+JSON.stringify ( $query ),
-				headers : { 
-					'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
-					'Access-Control-Allow-Origin' : '*',
-					'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
-					'Access-Token': $headers.token || "",
-					'Access-user': $headers.user || "",
-					'Access-Password': $headers.password || "",
-				},
+				data: "callcommunity="+JSON.stringify ( $data ),
+				headers : $headers,
 				responseType: 'text',
 			} )
 			.then ( function ( $data ) {
 				if ( null !== $fn ) {
-					$data = $data.data;
-					if ( angular.isArray ( $data ) ) {
-						$data = $data.map ( function ( $item, $index ) { 
-							$item.index = $index;
-							return $item;
-						} );
-					};
-
-					$fn ( $data );
+					$timeout ( function ( ) {
+						$fn ( $data.data );
+					}, 500 );
 				};
 			}, function ( $error ) {
-				$fn ( $error );
+				if ( null !== $fn ) {
+					$fn ( $error );
+				};
 			} );
 		};
 	};

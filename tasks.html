@@ -1,206 +1,186 @@
-<!DOCTYPE html>
-<html lang="pt-br" ng-app="callcommunity">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" >
-	<title>Call Community - Tasks</title>
-	<link rel="icon" href="vendor/img/icon.png" sizes="32x32">
-	<link rel="stylesheet" type="text/css" href="lib/components/components-all.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css/callcommunity.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css/tasks.css">
+<link rel="stylesheet" type="text/css" href="vendor/css/tasks.css">
 
-	<script type="text/javascript" src="app/module.js"></script>
-	<script type="text/javascript" src="app/tasks/service.tasks.js"></script>
-	<script type="text/javascript" src="app/tasks/controller.tasks.js"></script>
-	<script type="text/javascript" src="app/contacts/service.contacts.js"></script>
-	<script type="text/javascript" src="app/multimedia/service.multimedia.js"></script>
-	<script type="text/javascript" src="app/messages/service.messages.js"></script>
-	<script type="text/javascript" src="vendor/js/tasks.js"></script>
-</head>
-<body class="">
-	<header class="row-xs-2 col-xs-12 background-secondary">
-		<div class="row-xs-2 col-xs-2"></div>
-		<div class="row-xs-2 col-xs-8 text-center"><h3>Calendar</h3></div>
-		<div class="row-xs-2 col-xs-2"></div>
-	</header>
-	<main class="calendar row-xs-20 col-xs-12" ng-controller="calendar">
+<header class="row-xs-2 col-xs-12 background-secondary">
+	<div class="row-xs-2 col-xs-2"></div>
+	<div class="row-xs-2 col-xs-8 text-center"><h3>Calendar</h3></div>
+	<div class="row-xs-2 col-xs-2"></div>
+</header>
+<main class="calendar row-xs-20 col-xs-12" ng-controller="calendar">
 
-		<section class="window active row-xs-20">
-			<div class="calendar-resume col-xs-12 row-xs-2">
-				<button class="col-xs-2 row-xs-2" >
-					<span>{{ currentDay }}</span>
-					<strong>{{ currentDayWeek }}</strong>
-				</button>
-				<div class="col-xs-4 row-xs-2">{{ currentMonth }}</div>
-				<div class="col-xs-6 row-xs-2">
-					<input type="date" name="current-date"  ng-model="currentDate" >
+	<section class="window active row-xs-20">
+		<div class="calendar-resume col-xs-12 row-xs-2">
+			<button class="col-xs-2 row-xs-2" >
+				<span>{{ currentDay }}</span>
+				<strong>{{ currentDayWeek }}</strong>
+			</button>
+			<div class="col-xs-4 row-xs-2">{{ currentMonth }}</div>
+			<div class="col-xs-6 row-xs-2">
+				<input type="date" name="current-date"  ng-model="currentDate" >
+			</div>
+		</div>
+
+		<div class="calendar-current-day col-xs-12 row-xs-16">
+			<ul class="col-xs-12 row-xs-offset-1 row-xs-15">
+				<li tabindex="8"  data-task="{{ tasksList.hour8; }}"  ng-dblclick="taskLoad ( '8:00' );"></li>
+				<li tabindex="9"  data-task="{{ tasksList.hour9; }}"  ng-dblclick="taskLoad ( '9:00' );"></li>
+				<li tabindex="10" data-task="{{ tasksList.hour10; }}" ng-dblclick="taskLoad ( '10:00' );"></li>
+				<li tabindex="11" data-task="{{ tasksList.hour11; }}" ng-dblclick="taskLoad ( '11:00' );"></li>
+				<li tabindex="12" data-task="{{ tasksList.hour12; }}" ng-dblclick="taskLoad ( '12:00' );"></li>
+				<li tabindex="13" data-task="{{ tasksList.hour13; }}" ng-dblclick="taskLoad ( '13:00' );"></li>
+				<li tabindex="14" data-task="{{ tasksList.hour14; }}" ng-dblclick="taskLoad ( '14:00' );"></li>
+				<li tabindex="15" data-task="{{ tasksList.hour15; }}" ng-dblclick="taskLoad ( '15:00' );"></li>
+				<li tabindex="16" data-task="{{ tasksList.hour16; }}" ng-dblclick="taskLoad ( '16:00' );"></li>
+				<li tabindex="17" data-task="{{ tasksList.hour17; }}" ng-dblclick="taskLoad ( '17:00' );"></li>
+			</ul>
+		</div>
+
+		<div class="calendar-task-add col-xs-12 row-xs-2">
+			<button name="taskNew" data-btn="tertiary" ng-click="taskToggle ( );">Nova Tarefa</button>
+		</div>
+	</section>
+
+	<section class="calendar-task window col-xs-12 row-xs-20">
+		<div class="calendar-task-header col-xs-12 row-xs-5 background-primary">
+			<button  name="close" data-btn="close" ng-click="taskToggle ( );"></button>
+			<button name="save" data-btn="tertiary" ng-click="taskSave ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.message.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Salvar</button>
+			<input class="row-xs-offset-1" type="text" name="title" placeholder="título da tarefa" ng-model="taskNew.title" >
+		</div>
+		<div class="calendar-task-body col-xs-12 row-xs-15">
+			<div class="calendar-task-agendador col-xs-12 row-xs-2">
+				<div class="col-xs-2 row-xs-2"></div>
+				<div class="col-xs-7 row-xs-2">
+					<input type="date" name="date" ng-model="taskNew.date"></div>
+				<div class="col-xs-3 row-xs-2">
+					<select name="hour" ng-model="taskNew.hour"> 
+						<option value="8:00" selected>8:00</option>
+						<option value="9:00">9:00</option>
+						<option value="10:00">10:00</option>
+						<option value="11:00">11:00</option>
+						<option value="12:00">12:00</option>
+						<option value="13:00">13:00</option>
+						<option value="14:00">14:00</option>
+						<option value="15:00">15:00</option>
+						<option value="16:00">16:00</option>
+						<option value="17:00">17:00</option>
+					</select>
 				</div>
 			</div>
-
-			<div class="calendar-current-day col-xs-12 row-xs-16">
-				<ul class="col-xs-12 row-xs-offset-1 row-xs-15">
-					<li tabindex="8"  data-task="{{ tasksList.hour8; }}"  ng-dblclick="taskLoad ( '8:00' );"></li>
-					<li tabindex="9"  data-task="{{ tasksList.hour9; }}"  ng-dblclick="taskLoad ( '9:00' );"></li>
-					<li tabindex="10" data-task="{{ tasksList.hour10; }}" ng-dblclick="taskLoad ( '10:00' );"></li>
-					<li tabindex="11" data-task="{{ tasksList.hour11; }}" ng-dblclick="taskLoad ( '11:00' );"></li>
-					<li tabindex="12" data-task="{{ tasksList.hour12; }}" ng-dblclick="taskLoad ( '12:00' );"></li>
-					<li tabindex="13" data-task="{{ tasksList.hour13; }}" ng-dblclick="taskLoad ( '13:00' );"></li>
-					<li tabindex="14" data-task="{{ tasksList.hour14; }}" ng-dblclick="taskLoad ( '14:00' );"></li>
-					<li tabindex="15" data-task="{{ tasksList.hour15; }}" ng-dblclick="taskLoad ( '15:00' );"></li>
-					<li tabindex="16" data-task="{{ tasksList.hour16; }}" ng-dblclick="taskLoad ( '16:00' );"></li>
-					<li tabindex="17" data-task="{{ tasksList.hour17; }}" ng-dblclick="taskLoad ( '17:00' );"></li>
+			<div class="calendar-task-contacts col-xs-12 row-xs-11">
+				<div class="col-xs-2 row-xs-11">
+					<div class="col-xs-12 row-xs-9">
+						<label name="caller"><input name="Ligar" type="checkbox" ng-model="taskNew.caller"></label>
+						<label name="sms" ><input name="SMS" type="checkbox" ng-model="taskNew.sms"></label>
+						<button name="add" data-btn="secondary" ng-click="contactToggle ( );">Add</button>
+					</div>
+					<button name="delete" data-btn="secondary" ng-click="taskDelete ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.message.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Del</button>
+				</div>
+				<ul class="calendar-task-cantacts-list col-xs-10 row-xs-11 list">
+					<li ng-show="taskNew.caller">
+						<span name="close" data-btn="close" ng-click="taskNew.audio = null;" ng-show="taskNew.audio.selected"></span>
+						<strong ng-show="taskNew.audio.selected">{{ taskNew.audio.title }}</strong>
+						<em ng-show="taskNew.audio.selected">{{ taskNew.audio.uri }}</em>
+						<button name="audio" data-btn="tertiary" ng-click="audioToggle ( );" ng-hide="taskNew.audio.selected">Add um audio</button>
+					</li>
+					<li ng-show="taskNew.sms">
+						<span name="close" data-btn="close" ng-click="taskNew.message= null;" ng-show="taskNew.message.selected"></span>
+						<strong ng-show="taskNew.message.selected">{{ taskNew.message.title }}</strong>
+						<em name="msg" ng-show="taskNew.message.selected">{{ taskNew.message.text }}</em>
+						<button name="text" data-btn="tertiary" ng-click="messageToggle ( );" ng-hide="taskNew.message.selected">Add um texto</button>
+					</li>
+					<li ng-repeat="contact in taskNew.contacts" >
+						<span name="close" data-btn="close" ng-click="taskNew.contacts.splice ( $index, 1 );"></span>
+						<strong>{{ contact.name }}</strong>
+						<em>{{ contact.cel }} - {{ contact.condominium }}</em>
+					</li>
 				</ul>
 			</div>
+			<div class="calendar-task-set-week col-xs-12 row-xs-2">
+				<label><input type="checkbox" name="dom" ng-model="taskNew.repeat['dom']"></label>
+				<label><input type="checkbox" name="seg" ng-model="taskNew.repeat['seg']"></label>
+				<label><input type="checkbox" name="ter" ng-model="taskNew.repeat['ter']"></label>
+				<label><input type="checkbox" name="qua" ng-model="taskNew.repeat['qua']"></label>
+				<label><input type="checkbox" name="qui" ng-model="taskNew.repeat['qui']"></label>
+				<label><input type="checkbox" name="sex" ng-model="taskNew.repeat['sex']"></label>
+				<label><input type="checkbox" name="sab" ng-model="taskNew.repeat['sab']"></label>
+			</div>
+		</div>
+	</section>
 
-			<div class="calendar-task-add col-xs-12 row-xs-2">
-				<button name="taskNew" data-btn="tertiary" ng-click="taskToggle ( );">Nova Tarefa</button>
-			</div>
-		</section>
-
-		<section class="calendar-task window col-xs-12 row-xs-20">
-			<div class="calendar-task-header col-xs-12 row-xs-5 background-primary">
-				<button  name="close" data-btn="close" ng-click="taskToggle ( );"></button>
-				<button name="save" data-btn="tertiary" ng-click="taskSave ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.message.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Salvar</button>
-				<input class="row-xs-offset-1" type="text" name="title" placeholder="título da tarefa" ng-model="taskNew.title" >
-			</div>
-			<div class="calendar-task-body col-xs-12 row-xs-15">
-				<div class="calendar-task-agendador col-xs-12 row-xs-2">
-					<div class="col-xs-2 row-xs-2"></div>
-					<div class="col-xs-7 row-xs-2">
-						<input type="date" name="date" ng-model="taskNew.date"></div>
-					<div class="col-xs-3 row-xs-2">
-						<select name="hour" ng-model="taskNew.hour"> 
-							<option value="8:00" selected>8:00</option>
-							<option value="9:00">9:00</option>
-							<option value="10:00">10:00</option>
-							<option value="11:00">11:00</option>
-							<option value="12:00">12:00</option>
-							<option value="13:00">13:00</option>
-							<option value="14:00">14:00</option>
-							<option value="15:00">15:00</option>
-							<option value="16:00">16:00</option>
-							<option value="17:00">17:00</option>
-						</select>
-					</div>
-				</div>
-				<div class="calendar-task-contacts col-xs-12 row-xs-11">
-					<div class="col-xs-2 row-xs-11">
-						<div class="col-xs-12 row-xs-9">
-							<label name="caller"><input name="Ligar" type="checkbox" ng-model="taskNew.caller"></label>
-							<label name="sms" ><input name="SMS" type="checkbox" ng-model="taskNew.sms"></label>
-							<button name="add" data-btn="secondary" ng-click="contactToggle ( );">Add</button>
-						</div>
-						<button name="delete" data-btn="secondary" ng-click="taskDelete ( );" ng-disabled="!taskNew.title || !taskNew.date || !taskNew.hour || !( taskNew.caller || taskNew.sms ) || !( taskNew.audio.selected || taskNew.message.selected ) || !taskNew.contacts || taskNew.contacts >= 0">Del</button>
-					</div>
-					<ul class="calendar-task-cantacts-list col-xs-10 row-xs-11 list">
-						<li ng-show="taskNew.caller">
-							<span name="close" data-btn="close" ng-click="taskNew.audio = null;" ng-show="taskNew.audio.selected"></span>
-							<strong ng-show="taskNew.audio.selected">{{ taskNew.audio.title }}</strong>
-							<em ng-show="taskNew.audio.selected">{{ taskNew.audio.uri }}</em>
-							<button name="audio" data-btn="tertiary" ng-click="audioToggle ( );" ng-hide="taskNew.audio.selected">Add um audio</button>
-						</li>
-						<li ng-show="taskNew.sms">
-							<span name="close" data-btn="close" ng-click="taskNew.message= null;" ng-show="taskNew.message.selected"></span>
-							<strong ng-show="taskNew.message.selected">{{ taskNew.message.title }}</strong>
-							<em name="msg" ng-show="taskNew.message.selected">{{ taskNew.message.text }}</em>
-							<button name="text" data-btn="tertiary" ng-click="messageToggle ( );" ng-hide="taskNew.message.selected">Add um texto</button>
-						</li>
-						<li ng-repeat="contact in taskNew.contacts" >
-							<span name="close" data-btn="close" ng-click="taskNew.contacts.splice ( $index, 1 );"></span>
-							<strong>{{ contact.name }}</strong>
-							<em>{{ contact.cel }} - {{ contact.condominium }}</em>
-						</li>
-					</ul>
-				</div>
-				<div class="calendar-task-set-week col-xs-12 row-xs-2">
-					<label><input type="checkbox" name="dom" ng-model="taskNew.repeat['dom']"></label>
-					<label><input type="checkbox" name="seg" ng-model="taskNew.repeat['seg']"></label>
-					<label><input type="checkbox" name="ter" ng-model="taskNew.repeat['ter']"></label>
-					<label><input type="checkbox" name="qua" ng-model="taskNew.repeat['qua']"></label>
-					<label><input type="checkbox" name="qui" ng-model="taskNew.repeat['qui']"></label>
-					<label><input type="checkbox" name="sex" ng-model="taskNew.repeat['sex']"></label>
-					<label><input type="checkbox" name="sab" ng-model="taskNew.repeat['sab']"></label>
-				</div>
-			</div>
-		</section>
-
-		<section class="contacts window calendar-task-window col-xs-12 row-xs-20">
-			<div class="col-xs-12 row-xs-2">
-				<button name="close" data-btn="close" ng-click="contactToggle ( );"></button>
-				<input type="search" name="contact-search" placeholder="digite o nome" ng-model="search">
-			</div>
-			<div class="col-xs-12 row-xs-16 list">
-				<label data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts | filter: search">
-					<input type="checkbox" ng-model="contact.selected">
-					<strong>{{ contact.name }}</strong>
-					<em>{{ contact.tel }} - {{ contact.condominium }}</em>
-				</label>
-			</div>
-			<div class="col-xs-12 row-xs-2">
-				<button name="add-contatos" data-btn="tertiary" ng-click="contactAdd ( );">Adicionar estes Contatos</button>
-			</div>
-		</section>
-
-		<section class="multimedia window calendar-task-window col-xs-12 row-xs-20">
-			<div class="col-xs-12 row-xs-2">
-				<button name="close" data-btn="close" ng-click="audioToggle ( );"></button>
-				<input type="search" name="contact-search" placeholder="digite o título" ng-model="audioSearch">
-			</div>
-			<div class="col-xs-12 row-xs-16 list">
-				<label data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: audioSearch">
-					<input type="radio" name="audio" ng-model="audio.selected" ng-value="true" >
-					<strong>{{ audio.title }}<audio ng-src="{{audio.uri}}" preload="metadata" controls></strong>
-					<em>{{ audio.description }} - {{ audio.uri }}</em>
-				</label>
-			</div>
-			<div class="col-xs-12 row-xs-2">
-				<button name="add-contatos" data-btn="tertiary" ng-click="audioAdd ( );">Adicionar este Audio</button>
-			</div>
-		</section>
-
-		<section class="messages window calendar-task-window col-xs-12 row-xs-20">
-			<div class="col-xs-12 row-xs-2">
-				<button name="close" data-btn="close" ng-click="messageToggle ( );"></button>
-				<input type="search" name="contact-search" placeholder="digite o título" ng-model="messageSearch">
-			</div>
-			<div class="col-xs-12 row-xs-16 list">
-				<label data-first-letter="{{ message.title.substring ( 1, 0 ); }}" ng-repeat="message in messages | filter: messageSearch">
-					<input type="radio" name="message" ng-model="message.selected" ng-value="true" >
-					<strong>{{ message.title }}</strong>
-					<em>{{ message.text }}</em>
-				</label>
-			</div>
-			<div class="col-xs-12 row-xs-2">
-				<button name="add-contatos" data-btn="tertiary" ng-click="messageAdd ( );">Adicionar esta Mensagem</button>
-			</div>
-		</section>
-
-		<section class="modal window col-xs-12 row-xs-24">
-			<div class="col-xs-12 row-xs-offset-4 text-center" style="color: #FFF;">
-				<h2>Aguarde, processando...</h2>
-			</div>
-		</section>
-
-		<!-- WINDOW LIST COM SELECT E CLOSE -->
-		<!--section class="window active row-xs-20 list">
-			<label data-first-letter="L">
-				<input type="checkbox" name="">
-				<span name="close" data-btn="close"></span>
-				<strong>Lucas Costa</strong>
-				<em>Descrição</em>
+	<section class="contacts window calendar-task-window col-xs-12 row-xs-20">
+		<div class="col-xs-12 row-xs-2">
+			<button name="close" data-btn="close" ng-click="contactToggle ( );"></button>
+			<input type="search" name="contact-search" placeholder="digite o nome" ng-model="search">
+		</div>
+		<div class="col-xs-12 row-xs-16 list">
+			<label data-first-letter="{{ contact.name.substring ( 1, 0 ); }}" ng-repeat="contact in contacts | filter: search">
+				<input type="checkbox" ng-model="contact.selected">
+				<strong>{{ contact.name }}</strong>
+				<em>{{ contact.tel }} - {{ contact.condominium }}</em>
 			</label>
-		</section-->
+		</div>
+		<div class="col-xs-12 row-xs-2">
+			<button name="add-contatos" data-btn="tertiary" ng-click="contactAdd ( );">Adicionar estes Contatos</button>
+		</div>
+	</section>
 
-	</main>
-	<footer class="row-xs-2 background-secondary">
-		<nav class="col-xs-12 row-xs-2">
-			<ul class="menu-footer col-xs-12 row-xs-2">
-				<li><a href="calendar.html">Calendário</a></li>
-				<li><a href="contacts.html">Contatos</a></li>
-				<li><a href="multimedia.html">Audios</a></li>
-				<li><a href="messages.html">Mensagens</a></li>
-			</ul>
-		</nav>
-	</footer>
-</body>
-</html>
+	<section class="multimedia window calendar-task-window col-xs-12 row-xs-20">
+		<div class="col-xs-12 row-xs-2">
+			<button name="close" data-btn="close" ng-click="audioToggle ( );"></button>
+			<input type="search" name="contact-search" placeholder="digite o título" ng-model="audioSearch">
+		</div>
+		<div class="col-xs-12 row-xs-16 list">
+			<label data-first-letter="{{ audio.title.substring ( 1, 0 ); }}" ng-repeat="audio in multimedia | filter: audioSearch">
+				<input type="radio" name="audio" ng-model="audio.selected" ng-value="true" >
+				<strong>{{ audio.title }}<audio ng-src="{{audio.uri}}" preload="metadata" controls></strong>
+				<em>{{ audio.description }} - {{ audio.uri }}</em>
+			</label>
+		</div>
+		<div class="col-xs-12 row-xs-2">
+			<button name="add-contatos" data-btn="tertiary" ng-click="audioAdd ( );">Adicionar este Audio</button>
+		</div>
+	</section>
+
+	<section class="messages window calendar-task-window col-xs-12 row-xs-20">
+		<div class="col-xs-12 row-xs-2">
+			<button name="close" data-btn="close" ng-click="messageToggle ( );"></button>
+			<input type="search" name="contact-search" placeholder="digite o título" ng-model="messageSearch">
+		</div>
+		<div class="col-xs-12 row-xs-16 list">
+			<label data-first-letter="{{ message.title.substring ( 1, 0 ); }}" ng-repeat="message in messages | filter: messageSearch">
+				<input type="radio" name="message" ng-model="message.selected" ng-value="true" >
+				<strong>{{ message.title }}</strong>
+				<em>{{ message.text }}</em>
+			</label>
+		</div>
+		<div class="col-xs-12 row-xs-2">
+			<button name="add-contatos" data-btn="tertiary" ng-click="messageAdd ( );">Adicionar esta Mensagem</button>
+		</div>
+	</section>
+
+	<section class="modal window col-xs-12 row-xs-24">
+		<div class="col-xs-12 row-xs-offset-4 text-center" style="color: #FFF;">
+			<h2>Aguarde, processando...</h2>
+		</div>
+	</section>
+
+	<!-- WINDOW LIST COM SELECT E CLOSE -->
+	<!--section class="window active row-xs-20 list">
+		<label data-first-letter="L">
+			<input type="checkbox" name="">
+			<span name="close" data-btn="close"></span>
+			<strong>Lucas Costa</strong>
+			<em>Descrição</em>
+		</label>
+	</section-->
+
+</main>
+<footer class="row-xs-2 background-secondary">
+	<nav class="col-xs-12 row-xs-2">
+		<ul class="menu-footer col-xs-12 row-xs-2">
+			<li><a href="calendar.html">Calendário</a></li>
+			<li><a href="contacts.html">Contatos</a></li>
+			<li><a href="multimedia.html">Audios</a></li>
+			<li><a href="messages.html">Mensagens</a></li>
+		</ul>
+	</nav>
+</footer>

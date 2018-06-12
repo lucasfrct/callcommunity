@@ -7,56 +7,81 @@
 
 	function ControllerLogin ( $scope, $location, $servicelogin, $timeout, $window ) {
 		$scope.login = {
-			init: false,
-			emailCache: "",
+			status: false,
+			load: false,
+			cache: { email: "", login: "" },
 			email: "",
 			password: "",
-			info: "Iniciar sessão", // E-mail inválido // Iniciando sessão // Senha inválida //
-			action: "Seguinte", // Iniciar sessão
-			load: false,
+			messages: [ 
+				"", 
+				"Iniciar sessão", 
+				"E-mail inválido", 
+				"Intoduza a senha", 
+				"Senha inválida", 
+				"Seginte", 
+				"Login em progessão", 
+				"Iniciando a sessão",
+			],
+			info: "",
+			action: "",
 		};
 
-		$scope.submitLogin = function ( ) {
-			if ( !$scope.login.emailCache && !$scope.login.init ) {
+		$scope.login.info = $scope.login.messages [ 1 ];
+		$scope.login.action = $scope.login.messages [ 5 ];
 
-				$scope.login.load = true;
-				
+		$scope.submitLogin = function ( ) {
+			
+			$scope.login.load = true;
+
+			if ( !$scope.login.status && !$scope.login.cache.email ) {
+
 				$servicelogin.queryEmail ( $scope.login.email , function ( $status ) {
 					
 					$scope.login.load = false;
 
-					if ( $status ) {
-						$scope.login.emailCache = $scope.login.email;
-						$scope.login.info = "Introduza a senha";
-						$scope.login.action = "Iniciar sessão";
+					if ( "true" == $status ) {
+						$scope.login.cache.email = $scope.login.email;
+						$scope.login.info = $scope.login.messages [ 3 ];
+						$scope.login.action = $scope.login.messages [ 1 ];
 
 						inputValid ( ".login-email" );
 
 					} else {
-						$scope.login.info = "E-mail inválido";
+						$scope.login.info = $scope.login.messages [ 2 ];
+						$scope.login.cache.email = "";
 
 						inputInvalid ( ".login-email" );
 					};
 				} );
 			};
 
-			if ( $scope.login.emailCache &&  !$scope.login.init ) {
+			if ( !$scope.login.status && $scope.login.cache.email ) {
 
-				$scope.login.load = true;
+				$scope.login.cache.password = $scope.login.password;
 
-				$servicelogin.queryPassword ( $scope.login.email, sha1 ( $scope.login.password.trim ( ) ), function ( $status ) {
+				$servicelogin.queryPassword ( $scope.login.cache.email, sha1 ( $scope.login.cache.password.trim ( ) ), function ( $status ) {
+					
 					$scope.login.load = false;
-
-					if ( $status ) {
-						$scope.login.init = true;
-						$scope.login.info = "";
-						$scope.login.action = "Login em progresso";
+					
+					if ( "true" == $status ) {
+						$scope.login.status = true;
+						$scope.login.info = $scope.login.messages [ 7 ]
+						$scope.login.action = $scope.login.messages [ 0 ];
 
 						inputValid ( ".login-password" );
 
-						$location.path ( "/tasks" );
+						$scope.login.load = true;
+						
+						$timeout ( function ( ) {
+							$scope.login.load = false;
+							$location.path ( "/tasks" );
+						}, 1000 );
+
 					} else {
-						$scope.login.info = "Senha inválida";
+						$scope.login.info = $scope.login.messages [ 4 ];;
+						$scope.login.status = false;
+						$scope.login.password = "";
+						$scope.login.cache.password = "";
 						
 						inputInvalid ( ".login-password" );
 					};
@@ -71,7 +96,7 @@
 
 		setTimeout ( function ( ) {
 			removeClass ( $element, "invalid" );
-		}, 830 );
+		}, 900 );
 	};
 
 	function inputValid ( $element ) {

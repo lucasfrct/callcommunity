@@ -3,9 +3,10 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "login", [ "$scope", "$location", "servicelogin", "$timeout", "$window", ControllerLogin ] );
+		.controller ( "login", [ "$rootScope", "$scope", "$location", "servicelogin", "$timeout", "$window", "$cookies", ControllerLogin ] );
 
-	function ControllerLogin ( $scope, $location, $servicelogin, $timeout, $window ) {
+	function ControllerLogin ( $rootScope, $scope, $location, $servicelogin, $timeout, $window, $cookies ) {
+		
 		$scope.login = {
 			status: false,
 			load: false,
@@ -74,7 +75,11 @@
 						
 						$timeout ( function ( ) {
 							$scope.login.load = false;
+
+							$rootScope.authenticateUser = $scope.login.cache;
+							
 							$location.path ( "/tasks" );
+
 						}, 1000 );
 
 					} else {
@@ -82,6 +87,7 @@
 						$scope.login.status = false;
 						$scope.login.password = "";
 						$scope.login.cache.password = "";
+						$rootScope.athenticateUser = null;
 						
 						inputInvalid ( ".login-password" );
 					};

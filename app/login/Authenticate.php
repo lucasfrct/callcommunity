@@ -6,10 +6,10 @@ class Authenticate
 	private $status = false;
 	private $token = "0000";
 	private $accessToken = "";
-	private $user = "";
-	private $accessUser = "";
-	private $password = "";
-	private $accessPassword = "";
+	private $user = "null";
+	private $accessUser = "null";
+	private $password = "null";
+	private $accessPassword = "null";
 	public $msg = "Acesso negado.";
 
 	public function setToken ( string $token = "null" ) : string
@@ -42,28 +42,45 @@ class Authenticate
 		return $this->accessPassword = ( isset ( $_SERVER [ $accessPassword ]) ) ? $_SERVER [ $accessPassword ] : "";
 	}
 
-	public function Access ( ) {
-		
-		if ( !$this->status && $this->getAccessToken ( ) === $this->token ) {
+	public function checkToken ( ) 
+	{
+		return ( $this->getAccessToken ( ) === $this->token ) ? TRUE : FALSE;
+	}
 
-			if ( !$this->status && $this->getAccessUser ( ) === $this->user && $this->getAccessPassword ( ) === $this->password ) {
-				$this->status = true;
-				$this->msg = "Acesso Permitido";
-			} else {
-				$this->msg = "Acesso Negado";
-				$this->status = false;
-			};
+	public function checkUser ( ) 
+	{
+		return ( $this->checkToken ( ) && $this->getAccessUser ( ) === $this->user ) ? TRUE : FALSE;
+	}
+
+	public function access ( ) {
+		
+		if ( !$this->status && $this->checkUser ( ) && $this->getAccessPassword ( ) === $this->password ) {
+
+			$this->status = true;
+			$this->msg = "Acesso Permitido";
 
 		} else {
+			
+			$this->msg = "Acesso Negado";
 			$this->status = false;
+		
 		};
 
-		return json_encode ( $this->status );
+		return $this->status;
 	}
 };
 
-$author = new Authenticate;
+/*
+$_SERVER [ "HTTP_ACCESS_TOKEN" ] = "1010";
+$_SERVER [ "HTTP_ACCESS_USER" ] = "lucas";
+$_SERVER [ "HTTP_ACCESS_PASSWORD" ] = "costa";
 
-echo $author->Access ( );
-echo "<br>";
+$author = new Authenticate;
+$author->setToken ( "1010" );
+$author->setUser ( "lucas" );
+$author->setPassword ( "costa" );
+$author->checkToken ( );
+$author->checkUser ( );
+$author->access ( );
 echo $author->msg;
+*/

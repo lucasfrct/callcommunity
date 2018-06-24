@@ -10,7 +10,7 @@
 
 		var $serviceLogin = this;
 
-		$serviceLogin.uri = "app/login/login.php";
+		$serviceLogin.uri = "app/login/ServiceLogin.php";
 
 		$serviceLogin.queryEmail = queryEmail;
 
@@ -81,7 +81,7 @@
 			.then ( function ( $data ) {
 				if ( null !== $fn ) {
 					$timeout ( function ( ) {
-						$fn ( $data.data );
+						$fn ( $data.data.trim ( ) );
 					}, 500 );
 				};
 			}, function ( $error ) {

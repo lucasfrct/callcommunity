@@ -3,9 +3,12 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "login", [ "$rootScope", "$scope", "$location", "servicelogin", "$timeout", "$window", "$cookies", ControllerLogin ] );
+		.controller ( 
+			"login", 
+			[ "$rootScope", "$scope", "$location", "servicelogin", "$timeout", "$interval", "$window", "$cookies", ControllerLogin ] 
+		);
 
-	function ControllerLogin ( $rootScope, $scope, $location, $servicelogin, $timeout, $window, $cookies ) {
+	function ControllerLogin ( $rootScope, $scope, $location, $servicelogin, $timeout, $interval, $window, $cookies ) {
 		
 		$scope.login = {
 			status: false,
@@ -42,6 +45,7 @@
 			
 			$scope.login.load = true;
 
+			//Login-check-email
 			if ( !$scope.login.status && !$scope.login.reset && !$scope.login.cache.email ) {
 
 				$scope.login.rescue  =$scope.login.messages [ 9 ];
@@ -50,7 +54,7 @@
 					
 					$scope.login.load = false;
 
-					if ( "true" == $status ) {
+					if ( "true" === $status ) {
 						$scope.login.cache.email = $scope.login.email;
 						$scope.login.info = $scope.login.messages [ 3 ];
 						$scope.login.action = $scope.login.messages [ 1 ];
@@ -72,10 +76,11 @@
 				$scope.login.cache.password = $scope.login.password;
 
 				$servicelogin.queryPassword ( $scope.login.cache.email, $scope.login.cache.password, function ( $status ) {
-					
+
 					$scope.login.load = false;
 					
-					if ( "true" == $status ) {
+					if ( "true" === $status ) {
+						
 						$scope.login.status = true;
 						$scope.login.info = $scope.login.messages [ 2 ]
 						$scope.login.action = $scope.login.messages [ 0 ];
@@ -94,6 +99,7 @@
 						}, 1000 );
 
 					} else {
+						
 						$scope.login.info = $scope.login.messages [ 5 ];
 						$scope.login.status = false;
 						$scope.login.password = "";
@@ -101,7 +107,9 @@
 						$rootScope.athenticateUser = null;
 						
 						inputInvalid ( ".login-password" );
+
 					};
+
 				} );
 			};
 
@@ -110,11 +118,7 @@
 
 					$scope.login.load = false;
 
-					console.log ( "RESET LOGIN" );
-					console.log ( $scope.login.email );
-					console.log ( $data );
-
-					if ( "true" == $data ) {
+					if ( "true" === $data ) {
 						
 						$scope.login.status = true;
 						$scope.login.cache.email = $scope.login.email;
@@ -122,6 +126,22 @@
 						$scope.login.rescue = $scope.login.messages [ 11 ];
 						
 						inputValid ( ".login-email" );
+
+						$scope.login.info = 30;
+
+						var $count = $interval ( function ( ) { 
+							$scope.login.info = $scope.login.info - 1;
+
+							if ( $scope.login.info <= 0 ) {
+								$interval.cancel ( $count );
+							};
+
+						}, 1000 );
+
+						$timeout ( function ( ) { 
+							$location.path ( "/" );
+						}, 30000 );
+
 					} else {
 						
 						$scope.login.info  =$scope.login.messages [ 4 ];

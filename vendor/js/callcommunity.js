@@ -1,4 +1,4 @@
-var $TokenAplication = sha1 ( "lucascosta" );
+var $TokenAplication = sha1 ( "1010" );
 
 function cookieGet ( $cookies, $variable ) {
 	var $get = $cookies.get ( $variable );

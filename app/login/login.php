@@ -1,7 +1,9 @@
 <?php 
 
 $tokenAplication = sha1 ( "lucascosta" );
+
 $loginEmail = "admin@admin.com";
+
 $loginPassword = sha1 ( "admin" );
 
 $checkToken = function ( $token ) use ( $tokenAplication ) {

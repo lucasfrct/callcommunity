@@ -1,5 +1,6 @@
 ( function ( ) { 
 	"use strict";
+	// dependency: js MD5, js SHA1, js SHA3
 
 	angular
 		.module ( "callcommunity" )
@@ -15,15 +16,27 @@
 
 		$serviceLogin.queryPassword = queryPassword;
 
-		console.log ( )
+		$serviceLogin.reset = resetPassword;
+
+		function resetPassword ( $email = "", $fn = null ) {
+
+			var $data = { 
+				action: "login-reset",
+				table: "user",
+				data: { },
+				headers: { email: String ( $email ) },
+			};
+
+			query ( $data, $fn );
+		};
 
 		function queryEmail ( $email = null, $fn = null ) {
 		
 			var $data = { 
-				action: "check-email",
+				action: "login-check-email",
 				table: "user",
-				data: { email: $email, },
-				headers: { },
+				data: { },
+				headers: { email: String ( $email ) },
 			};
 
 			query ( $data, $fn );
@@ -32,13 +45,17 @@
 		function queryPassword ( $email = null, $password = null, $fn = null ) {
 			
 			var $data = { 
-				action: "login", 
+				action: "login-check-password", 
 				table: "user",
-				data: { email: $email },
-				headers: { email: $email, password: $password },
+				data: { },
+				headers: { email: $email, password: encripty ( String ( $password ) ) },
 			};
 
 			query ( $data, $fn );
+		};
+
+		function encripty ( $string = "" ) {
+			return String ( sha3_512 ( base64Encode ( md5 ( sha1 ( String ( $string ).trim ( ) ) ) ) ) );
 		};
 
 		function query ( $data = null, $fn = null ) {
@@ -55,11 +72,11 @@
 			delete $data.headers;
 
 			$http ( {
-				url: $serviceLogin.uri,
+				url: String ( $serviceLogin.uri ),
 				method: "POST",
-				data: "callcommunity="+JSON.stringify ( $data ),
+				data: String ( "callcommunity="+JSON.stringify ( $data ) ),
 				headers : $headers,
-				responseType: 'text',
+				responseType: "text",
 			} )
 			.then ( function ( $data ) {
 				if ( null !== $fn ) {

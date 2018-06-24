@@ -10,31 +10,41 @@
 		$scope.login = {
 			status: false,
 			load: false,
+			reset: false,
 			cache: { email: "", login: "" },
 			email: "",
 			password: "",
 			messages: [ 
-				"", 
-				"Iniciar sessão", 
-				"E-mail inválido", 
-				"Intoduza a senha", 
-				"Senha inválida", 
-				"Seginte", 
-				"Login em progessão", 
-				"Iniciando a sessão",
+				"", //0                                                     
+				"Iniciar sessão", //1 
+				"Iniciando a sessão", //2
+				"Intoduza a senha", //3
+				"E-mail inválido", //4
+				"Senha inválida", //5
+				"Seginte",  //6
+				"Enviar pedido", //7
+				"Login em progressão", //8 
+				"Não consegue aceder a conta?", //9
+				"Recuperação de senha: digite seu email", //10
+				"Em instantes um link de recuperação será enviado para o email informado.", //11
+				"Email de recuperação:", //12
 			],
 			info: "",
 			action: "",
+			rescue: "",
 		};
 
 		$scope.login.info = $scope.login.messages [ 1 ];
-		$scope.login.action = $scope.login.messages [ 5 ];
+		$scope.login.action = $scope.login.messages [ 6 ];
+		$scope.login.rescue  =$scope.login.messages [ 9 ];
 
 		$scope.submitLogin = function ( ) {
 			
 			$scope.login.load = true;
 
-			if ( !$scope.login.status && !$scope.login.cache.email ) {
+			if ( !$scope.login.status && !$scope.login.reset && !$scope.login.cache.email ) {
+
+				$scope.login.rescue  =$scope.login.messages [ 9 ];
 
 				$servicelogin.queryEmail ( $scope.login.email , function ( $status ) {
 					
@@ -48,7 +58,7 @@
 						inputValid ( ".login-email" );
 
 					} else {
-						$scope.login.info = $scope.login.messages [ 2 ];
+						$scope.login.info = $scope.login.messages [ 4 ];
 						$scope.login.cache.email = "";
 
 						inputInvalid ( ".login-email" );
@@ -56,17 +66,18 @@
 				} );
 			};
 
-			if ( !$scope.login.status && $scope.login.cache.email ) {
+			if ( !$scope.login.status && !$scope.login.reset && $scope.login.cache.email ) {
 
+				$scope.login.rescue  =$scope.login.messages [ 9 ];
 				$scope.login.cache.password = $scope.login.password;
 
-				$servicelogin.queryPassword ( $scope.login.cache.email, sha1 ( $scope.login.cache.password.trim ( ) ), function ( $status ) {
+				$servicelogin.queryPassword ( $scope.login.cache.email, $scope.login.cache.password, function ( $status ) {
 					
 					$scope.login.load = false;
 					
 					if ( "true" == $status ) {
 						$scope.login.status = true;
-						$scope.login.info = $scope.login.messages [ 7 ]
+						$scope.login.info = $scope.login.messages [ 2 ]
 						$scope.login.action = $scope.login.messages [ 0 ];
 
 						inputValid ( ".login-password" );
@@ -83,7 +94,7 @@
 						}, 1000 );
 
 					} else {
-						$scope.login.info = $scope.login.messages [ 4 ];;
+						$scope.login.info = $scope.login.messages [ 5 ];
 						$scope.login.status = false;
 						$scope.login.password = "";
 						$scope.login.cache.password = "";
@@ -93,6 +104,42 @@
 					};
 				} );
 			};
+
+			if ( !$scope.login.status && $scope.login.reset ) {
+				$servicelogin.reset ( $scope.login.email, function ( $data ) {
+
+					$scope.login.load = false;
+
+					console.log ( "RESET LOGIN" );
+					console.log ( $scope.login.email );
+					console.log ( $data );
+
+					if ( "true" == $data ) {
+						
+						$scope.login.status = true;
+						$scope.login.cache.email = $scope.login.email;
+						$scope.login.info = $scope.login.messages [ 12 ];
+						$scope.login.rescue = $scope.login.messages [ 11 ];
+						
+						inputValid ( ".login-email" );
+					} else {
+						
+						$scope.login.info  =$scope.login.messages [ 4 ];
+						$scope.login.rescue  =$scope.login.messages [ 10 ];
+						$scope.login.cache.email = "";
+						
+						inputInvalid ( ".login-email" );
+					};
+
+				}  );	
+			};
+		};
+
+		$scope.resetPassword = function ( ) {
+			$scope.login.reset = true;
+			$scope.login.info = $scope.login.messages [ 10 ];
+			$scope.login.action = $scope.login.messages [ 7 ];
+			$scope.login.rescue  =$scope.login.messages [ 11 ];
 		};
 	};
 

@@ -14,7 +14,7 @@
 				ng-show="login.cache.email && !login.status "
 				ng-focus-on="login.cache.email">
 			<button type="submit" ng-click="submitLogin ( );" ng-disabled ="login.status" ng-hide="login.status">{{ login.action }}</button>
-			<a href="" ng-hide="login.status">Não consegue aceder a conta?</a>
+			<a href="" ng-click="resetPassword ( );">{{ login.rescue }}</a>
 		</form>
 	</section>
 </main>

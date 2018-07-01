@@ -1,0 +1,20 @@
+<link rel="stylesheet" type="text/css" href="vendor/css/user.css">
+<main class="row-xs-24 col-xs-12 background-primary">
+	<section class="row-xs-18 row-xs-offset-5 text-center" ng-controller="user">
+		<form class="">
+			<legend>Call Community</legend>
+			<h4>{{ message [ 0 ]; }}</h4>
+			<div class="login-email-cache" ng-show="login.cache.email">{{ login.cache.email }}</div> 
+			<div class="login-load" ng-show="login.load"></div>
+			<input class="login-email" type="email" name="email" placeholder="nome@example.com" autofocus="" 
+				ng-model="login.email"
+				ng-hide="login.cache.email">
+			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
+				ng-model="login.password"
+				ng-show="login.cache.email && !login.status "
+				ng-focus-on="login.cache.email">
+			<button type="submit" ng-click="submitLogin ( );" ng-disabled ="login.status" ng-hide="login.status">{{ login.action }}</button>
+			<a href="" ng-click="resetPassword ( );">{{ login.rescue }}</a>
+		</form>
+	</section>
+</main>

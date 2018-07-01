@@ -15,6 +15,11 @@
 				templateUrl: "login.html",
 				controller: "login",
 			} )
+
+			.when ( "/create-user", {
+				templateUrl: "create-user.html",
+				controller: "user",
+			} )
 			
 			.when ( "/tasks", {
 				templateUrl: "tasks.html",

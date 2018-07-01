@@ -363,3 +363,39 @@ body .messages .list > * > em {
 	margin: 7px 0;
 }
 
+body form {
+    width: calc( 100% - 28px );
+    color: #212121;
+    background-color: #FFF;
+    padding: 21px;
+    border: solid 1px #AAA;
+    max-width: 420px;
+    min-width: 292px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body form legend {
+	text-align: left;
+	color: #767676;
+}
+
+
+body form h4 {
+	text-align: left;
+	margin: 14px 7px 0px 7px !important;
+}
+
+body form input {
+	font-size: 1.2em;
+	padding: 14px;
+	position: relative;
+}
+
+body form button {
+	padding: 14px;
+	background-color: #00838F;
+	color: #FFF;
+}
+
+

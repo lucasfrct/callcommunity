@@ -6,8 +6,9 @@
 		.run ( [ "$rootScope", "$location", "$cookies", RunEvents ] );
 
 	function RunEvents ( $rootScope, $location, $cookies ) {
-		var $visitorRoutes = [ "/", "/login" ];
-		var $userRoutes = [ "/", "/login", "/tasks", "/contacts", "/multimedia", "messages" ];
+		
+		var $visitorRoutes = [ "/", "/login", "/create-user", ];
+		var $userRoutes = [ "/", "/login", "/tasks", "/contacts", "/multimedia", "messages", ];
 
 		$rootScope.authenticateUser = null;
 
@@ -15,12 +16,12 @@
 
 		function ChangeRoute ( ) {
 
-			console.log ( $rootScope.authenticateUser );
+			//console.log ( $rootScope.authenticateUser );
 			
 			if ( null == $rootScope.authenticateUser && -1 != $visitorRoutes.indexOf ( $location.path ( ) ) ) {
-				console.log ( "router - Visitante permitido: "+$location.path ( ) );
+				//console.log ( "router - Visitante permitido: "+$location.path ( ) );
 			} else if ( null != $rootScope.authenticateUser && -1 != $userRoutes.indexOf ( $location.path ( ) ) ) {
-				console.log ( "router - Usuário permitido: "+$location.path ( ) );
+				//console.log ( "router - Usuário permitido: "+$location.path ( ) );
 			} else {
 				console.log ( "Router - Acesso negado. ------>" );
 				$location.path ( "/login" );

@@ -28,9 +28,10 @@
 				"Enviar pedido", //7
 				"Login em progressão", //8 
 				"Não consegue aceder a conta?", //9
-				"Recuperação de senha: digite seu email", //10
+				"Recuperação de senha:", //10
 				"Em instantes um link de recuperação será enviado para o email informado.", //11
 				"Email de recuperação:", //12
+				"Criar conta", //13
 			],
 			info: "",
 			action: "",

@@ -16,9 +16,9 @@
 				controller: "login",
 			} )
 
-			.when ( "/create-user", {
-				templateUrl: "create-user.html",
-				controller: "user",
+			.when ( "/sigin", {
+				templateUrl: "sigin.html",
+				controller: "sigin",
 			} )
 			
 			.when ( "/tasks", {

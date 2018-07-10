@@ -513,6 +513,36 @@ body form [type="radio"] {
     top: 1px;
 }
 
+body form {
+    width: calc( 100% - 28px );
+    color: #212121;
+    background-color: #FFF;
+    padding: 21px;
+    border: solid 1px #AAA;
+    max-width: 420px;
+    min-width: 292px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body form legend {
+    text-align: left;
+    color: #767676;
+}
+
+body form input {
+    font-size: 1.2em;
+    padding: 14px;
+    position: relative;
+}
+
+body form button {
+    padding: 14px;
+    background-color: #00838F;
+    color: #FFF;
+}
+*/
+
 /*component-line.css*/
 
 html .line,
@@ -4163,6 +4193,65 @@ body [data-animation="loader"]::after {
 		-o-transform: rotate(360deg);
 		-ms-transform: rotate(360deg);
 		transform: rotate(360deg);
+	}
+}
+
+body [data-animation="line-load"],
+body [data-animation="line-load"]::before,
+body [data-animation="line-load"]::after {
+	height: 5px;
+	display: inline-block;
+}
+
+body [data-animation="line-load"] {
+	background-color: #80DEEA;
+	color: #00838F;
+	margin: 3px 7px;
+	overflow: hidden;
+	width: calc( 100% - 14px );
+}
+
+body [data-animation="line-load"]::before,
+body [data-animation="line-load"]::after {
+	animation: lineLoad 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out
+	background-color: transparent;
+	border-left: solid 7px currentColor;
+	content: "";
+	display: inherit;
+	height: inherit;
+	left: -7px;
+	position: absolute;
+	width: 100%;
+}
+
+ body [data-animation="line-load"]::after {
+ 	animation-delay: 0.5s;
+ 	animation-duration: 0.9s;
+ }
+
+ @keyframes lineLoad {
+	0% {
+		transform: translateX( 0% );
+	}
+
+	75% {
+		opacity: 1;
+	}
+
+	80% {
+		transform: translateX( 100% );
+		opacity: 0
+	}
+
+	99% {
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX( 0% );
+		opacity: 1;
 	}
 }
 

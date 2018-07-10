@@ -3,9 +3,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "user", [ "$scope", createUser ] );
+		.controller ( "sigin", [ "$scope", Sigin ] );
 
-	function createUser ( $scope ) {
+	function Sigin ( $scope ) {
 
 		$scope.menssage = [ 
 			"Criar um usuário",

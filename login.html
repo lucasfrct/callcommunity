@@ -5,7 +5,7 @@
 			<legend>Call Community</legend>
 			<h4>{{ login.info }}</h4>
 			<div class="login-email-cache" ng-show="login.cache.email">{{ login.cache.email }}</div> 
-			<div class="login-load" ng-show="login.load"></div>
+			<span class="login-load" data-animation="line-load" ng-show="!login.load"></span>
 			<input class="login-email" type="email" name="email" placeholder="nome@example.com" autofocus="" 
 				ng-model="login.email"
 				ng-hide="login.cache.email">

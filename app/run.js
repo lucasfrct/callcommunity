@@ -7,8 +7,8 @@
 
 	function RunEvents ( $rootScope, $location, $cookies ) {
 		
-		var $visitorRoutes = [ "/", "/login", "/create-user", ];
-		var $userRoutes = [ "/", "/login", "/tasks", "/contacts", "/multimedia", "messages", ];
+		var $visitorRoutes = [ "/", "/login", "/sigin", ];
+		var $userRoutes    = [ "/", "/login", "/sigin", "/tasks", ];
 
 		$rootScope.authenticateUser = null;
 

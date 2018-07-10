@@ -51,45 +51,12 @@ body .login .login-email-cache {
 	overflow: hidden;
 }
 
-body .login .login-load,
-body .login .login-load::before,
-body .login .login-load::after {
-	font-size: 0;
-	display: block;
-	margin: 0;
-	padding: 0;
-	height: 5px;	
-}
 
 body .login .login-load {
-	background-color: #80DEEA;
-	color: #00838F;
-	left: 15px;
+	width: calc( 100% - 28px );
+	margin: 0;
 	margin-bottom: -5px;
-	overflow: hidden;
-	position: relative;
-	width: calc( 100% - 30px );
 }
-
-body .login .login-load::before,
-body .login .login-load::after {
-	animation: load 1s;
-	animation-iteration-count: infinite;
-	animation-timing-function: ease-in-out
-	background-color: transparent;
-	border-left: solid 5px currentColor;
-	content: "";
-	display: inherit;
-	height: inherit;
-	left: -5px;
-	position: absolute;
-	width: 100%;
-}
-
- body .login .login-load::after {
- 	animation-delay: 0.5s;
- 	animation-duration: 0.9s;
- }
 
 body .login .login-email.error,
 body .login .login-password.error {
@@ -136,29 +103,5 @@ body .login-password.invalid {
 		-ms-transform: translate3d( 4px, 0, 0 );
 		-o-transform: translate3d( 4px, 0, 0 );
 		transform: translate3d( 4px, 0, 0 );
-	}
-}
-
-@keyframes load {
-	0% {
-		transform: translateX( 0% );
-	}
-
-	75% {
-		opacity: 1;
-	}
-
-	80% {
-		transform: translateX( 100% );
-		opacity: 0
-	}
-
-	99% {
-		opacity: 0;
-	}
-
-	100% {
-		transform: translateX( 0% );
-		opacity: 1;
 	}
 }

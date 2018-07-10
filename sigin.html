@@ -1,0 +1,22 @@
+<link rel="stylesheet" type="text/css" href="vendor/css/sigin.css">
+<main class="row-xs-24 col-xs-12 background-primary">
+	<section class="row-xs-20 row-xs-offset-2 text-center" ng-controller="sigin">
+		<form class="">
+			<legend>Call Community</legend>
+			<h4> h4 </h4>
+			<div class="login-email-cache" ng-show="login.cache.email">{{ login.cache.email }}</div>
+			<div class="login-load" ng-show="login.load"></div>
+			<input class="login-email" type="text" name="email" placeholder="Nome" autofocus="" 
+				ng-model="user.name">
+			<div class="login-load" ng-show="login.load"></div>
+			<input class="login-email" type="email" name="email" placeholder="nome@example.com"
+				ng-model="user.email">
+			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
+				ng-model="login.password">
+			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
+				ng-model="login.password">
+			<button type="submit" ng-click=";" ng-disabled ="" ng-hide="">{{  }}</button>
+			<a href="" ng-click="">{{  }}</a>
+		</form>
+	</section>
+</main>

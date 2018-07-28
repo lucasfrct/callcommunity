@@ -1,5 +1,11 @@
-body .error-password {
+body .error-input {
     color: #F00;
+    border-color: currentcolor;
+    outline-color: currentcolor;
+}
+
+body .success-input {
+    color: #43A047;
     border-color: currentcolor;
     outline-color: currentcolor;
 }

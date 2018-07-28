@@ -7,15 +7,38 @@
 
 	function Sigin ( $scope ) {
 
-		$scope.menssage = [ 
-			"Criar um usuário",
-		];
+		$scope.sigIn = {
+			message: [
+				"Criar uma nova conta",
+			],
+			load: false,
+			disabled: __disabled,
+			classPasswordConfirm: "error-password",
+		} 
 
 		$scope.user = {
-			email: "",
 			name: "",
-			nick: "",
+            email: "",
 			password: "",
+		};
+
+		function __disabled ( ) {
+			var $status = true;
+			var $comparePassword = checkIdentufyPassword ( );
+			$status = ( 
+				!( $scope.user.name.length >= 3 )
+				|| !( String ( $scope.user.email ).indexOf( "@" ) >= 0 )
+				|| !( $comparePassword )			
+			) ? true : false;
+
+			$scope.sigIn.classPasswordConfirm = ( !$scope.user.password && $comparePassword ) ? "" : "error-password";
+			console.log ( $status  );
+			
+			return $status;
+		};
+
+		function checkIdentufyPassword ( ) {
+			return $scope.user.password.length >= 8 && ( String ( $scope.passwordConfirm ) === String ( $scope.user.password ) );
 		};
 
 	};

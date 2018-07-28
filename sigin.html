@@ -1,22 +1,24 @@
 <link rel="stylesheet" type="text/css" href="vendor/css/sigin.css">
 <main class="row-xs-24 col-xs-12 background-primary">
-	<section class="row-xs-20 row-xs-offset-2 text-center" ng-controller="sigin">
+	<section class="row-xs-20 row-xs-offset-2 text-center">
 		<form class="">
 			<legend>Call Community</legend>
-			<h4> h4 </h4>
-			<div class="login-email-cache" ng-show="login.cache.email">{{ login.cache.email }}</div>
-			<div class="login-load" ng-show="login.load"></div>
-			<input class="login-email" type="text" name="email" placeholder="Nome" autofocus="" 
-				ng-model="user.name">
-			<div class="login-load" ng-show="login.load"></div>
-			<input class="login-email" type="email" name="email" placeholder="nome@example.com"
-				ng-model="user.email">
-			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
-				ng-model="login.password">
-			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
-				ng-model="login.password">
-			<button type="submit" ng-click=";" ng-disabled ="" ng-hide="">{{  }}</button>
-			<a href="" ng-click="">{{  }}</a>
+			
+			<span class="form-message">{{ sigIn.message [ 0 ] }}</span>
+
+			<span data-animation="line-load" ng-show="sigIn.load"></span>
+
+			<input class="" type="text" placeholder="Nome" autofocus ng-model="user.name">
+
+			<input class="" type="email" placeholder="nome@example.com" ng-model="user.email">
+
+			<input class="" type="password" placeholder="Palavra-passe" ng-model="user.password">
+
+			<input class="{{sigIn.classPasswordConfirm}}" type="password" placeholder="Palavra-passe" ng-model="passwordConfirm">
+
+			<button class="radius-4" type="button" ng-click="" ng-disabled="sigIn.disabled ( );" >Criar conta</button>
+
+			<a href="#!/login" class="form-link">Fazer login {{ email.indexOf("@") }}</a>
 		</form>
 	</section>
 </main>

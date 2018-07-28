@@ -52,7 +52,8 @@ body [data-btn] {
 
 body [data-btn="close"],
 body [name="close"],
-body [name="delete"] {
+body [name="delete"],
+body .error {
 	color: #D32F2F;
 }
 
@@ -61,7 +62,8 @@ body [data-btn="close"] {
 	width: 30px;
 }
 
-body [name="save"] {
+body [name="save"], 
+body .success {
 	color: #43A047;
 }
 
@@ -78,6 +80,42 @@ body [type="search"] {
 
 
 
+
+
+
+
+
+
+
+
+body .form-message {
+	text-align: left;
+	width: calc( 100% - 28px );
+	display: inline-block;
+	margin: 7px 0;
+	font-weight: 500;
+	font-size: 1.4em;
+}
+
+body span[ data-animation="line-load" ] {
+	display: block;
+	width: calc( 100% - 28px );
+	margin: 0 auto -5px auto;
+}
+
+body .form-link {  
+	text-align: left;
+	color: #03A9F4 !important;
+	display: block;
+	min-width: 80px;
+	width: calc( 100% - 28px ) !important;
+	margin: 7px auto;
+}
+
+body .form-link:hover,
+body .form-link:focus {
+	color: #1976D2 !important;	
+}
 
 
 
@@ -367,35 +405,27 @@ body form {
     width: calc( 100% - 28px );
     color: #212121;
     background-color: #FFF;
-    padding: 21px;
+    padding: 28px;
     border: solid 1px #AAA;
     max-width: 420px;
     min-width: 292px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 7px auto;
 }
 
 body form legend {
-	text-align: left;
-	color: #767676;
+	width:  calc( 100% - 28px );
+	margin-bottom: 14px;
 }
 
-
-body form h4 {
-	text-align: left;
-	margin: 14px 7px 0px 7px !important;
-}
-
-body form input {
-	font-size: 1.2em;
-	padding: 14px;
-	position: relative;
-}
 
 body form button {
 	padding: 14px;
 	background-color: #00838F;
 	color: #FFF;
 }
+ body form button:disabled {
+ 	background-color: #BBB;
+ 	cursor: not-allowed;
+ }
 
 

@@ -11,15 +11,17 @@
 				templateUrl: "preload.html",
 			} )
 
+			.when ( "/sigin", {
+				templateUrl: "sigin.html",
+				controller: "sigin",
+			} )
+
 			.when ( "/login", {
 				templateUrl: "login.html",
 				controller: "login",
 			} )
 
-			.when ( "/sigin", {
-				templateUrl: "sigin.html",
-				controller: "sigin",
-			} )
+			
 			
 			.when ( "/tasks", {
 				templateUrl: "tasks.html",

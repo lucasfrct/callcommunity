@@ -1,0 +1,5 @@
+body .error-password {
+    color: #F00;
+    border-color: currentcolor;
+    outline-color: currentcolor;
+}

@@ -48,7 +48,8 @@
 				action: "login-check-password", 
 				table: "user",
 				data: { },
-				headers: { email: $email, password: encripty ( String ( $password ) ) },
+				//headers: { email: $email, password: encripty ( String ( $password ) ) },
+				headers: { email: $email, password: ( String ( $password ) ) },
 			};
 
 			query ( $data, $fn );

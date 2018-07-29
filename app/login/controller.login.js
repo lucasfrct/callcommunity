@@ -3,12 +3,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( 
-			"login", 
-			[ "$rootScope", "$scope", "$location", "servicelogin", "$timeout", "$interval", "$window", "$cookies", ControllerLogin ] 
-		);
+		.controller ( "login", [ "$rootScope", "$scope", "$timeout", "$location", "servicelogin", ControllerLogin ] );
 
-	function ControllerLogin ( $rootScope, $scope, $location, $servicelogin, $timeout, $interval, $window, $cookies ) {
+	function ControllerLogin ( $rootScope, $scope, $timeout, $location, $servicelogin ) {
 
 		$scope.login = {
 			status: false,
@@ -16,7 +13,12 @@
 			emailCache: "",
 			message: "Entrar",
 			action: "Seguinte",
-			statusEmail: false,
+			info: "Não consegue aceder a conta?",
+			errorEmail: false,
+			invalidEmail: false,
+			errorPassowrd: false,
+			invalidPassword: false,
+			statusInfo: false,
 			msg: [
 				"Entrar", //0
 				"Seguinte", //1
@@ -24,10 +26,14 @@
 				"Iniciar sessão", //3
 				"E-mail inválido", //4
 				"Senha inválida", //5
-				"Iniciando a sessão." //6
+				"Iniciando a sessão.", //6
+				"Não consegue aceder a conta?", //7
+				"Digite o email para recuperar a conta", //8
+				"Recuperar", //9
+				"Em instantes um link de recuperação será enviado para o email informado.", //10
 			],
 			next: __submit,
-			disabled: __disabled,
+			reset: __reset,
 		};
 
 		$scope.user = {
@@ -40,221 +46,106 @@
 		function __submit ( $user ) {
 
 			//Set email
-			if ( !$scope.login.emailCache && $user.email && $user.email.indexOf ( "@" ) ) {
+			if ( !$scope.login.statusInfo && !$scope.login.emailCache && $user.email && $user.email.indexOf ( "@" ) ) {
 
 				$scope.login.load = true;
 
-				if ( $user.email == "lucasfrct@gmail.com") {
+				$servicelogin.queryEmail ( $user.email, function ( $data ) {
+					
 					$scope.login.load = false;
-					$scope.login.emailCache = $user.email;
-					$scope.login.message = $scope.login.msg [ 2 ];
-					$scope.login.action = $scope.login.msg [ 3 ];
-					$scope.login.statusEmail = false;
-				} else {
-					$scope.login.emailCache = "";
-					$scope.login.message = $scope.login.msg [ 4 ];
-					$scope.login.statusEmail = true;
-				};
+
+					if ( $data == "true" ) {
+						$scope.login.emailCache = $user.email;
+						$scope.login.message = $scope.login.msg [ 2 ];
+						$scope.login.action = $scope.login.msg [ 3 ];
+						$scope.login.errorEmail = false;
+						$scope.login.invalidEmail = false;
+					} else {
+						$scope.login.emailCache = "";
+						$scope.login.message = $scope.login.msg [ 4 ];
+						$scope.login.action = $scope.login.msg [ 1 ];
+						$scope.login.errorEmail = true;
+						$scope.login.invalidEmail = true;
+
+						$timeout ( function ( ) { $scope.login.invalidEmail = false; }, 800 );
+					};
+
+				} );
 
 			};
 
-			//Set senha
-			if ( $scope.login.emailCache && $user.email && $user.password.length >= 8 ) {
+			//Set password
+			if ( !$scope.login.statusInfo && $scope.login.emailCache && $user.email && $user.password.length >= 8 ) {
 				
 				$scope.login.load = true;
-				
-				if ( $user.password == "asdfasdf" ) {
+
+				$servicelogin.queryPassword ( $user.email, $user.password, function ( $data ) { 
+					
 					$scope.login.load = false;
-					$scope.login.status = true;
-					$scope.login.message = $scope.login.msg [ 6 ];
-				} else { 
-					$scope.login.message = $scope.login.msg [ 5 ];
-				};
+
+					if ( $data == "true" ) {
+						$scope.login.status = true;
+						$scope.login.message = $scope.login.msg [ 6 ];
+						$scope.login.errorPassowrd = false;
+						$scope.login.invalidPassword = false;
+						$rootScope.authenticateUser = true;
+						$location.path ( "/tasks" );
+					} else { 
+						$scope.login.message = $scope.login.msg [ 5 ];
+						$scope.login.errorPassowrd = true;
+						$scope.login.invalidPassword = true;
+
+						$timeout ( function ( ) { $scope.login.invalidPassword = false }, 800 );
+					};
+
+				} );
 
 			};
 
+			//Set reset
+			if ( $scope.login.statusInfo && $user.email.indexOf ( "@" ) ) {
+				$scope.login.load = true;
+
+				$servicelogin.reset ( $user.email, function ( $data ) {
+					$scope.login.load = false;
+					console.log ( $data );
+
+					if ( $data == "true" ) {
+						$scope.login.status = true;
+						$scope.login.message = $scope.login.msg [ 10 ];
+						$scope.login.errorEmail = false;
+						$scope.login.invalidEmail = false;
+
+					} else { 
+						$scope.login.status = false;
+						$scope.login.message = $scope.login.msg [ 4 ];
+						$scope.login.errorEmail = true;
+						$scope.login.invalidEmail = true;
+
+						$timeout ( function ( ) { $scope.login.invalidEmail = false; }, 800 );
+					};
+
+				} );
+
+			};
 
 		};
 
-		function __disabled ( ) {
-
+		function __reset ( ) {
+			$scope.login.statusInfo = true;
+			$scope.login.message = $scope.login.msg [ 8 ];
+			$scope.login.action = $scope.login.msg [ 9 ];
+			$scope.login.emailCache = "";
 		};
 
 		function __test ( ) {
 			$scope.user = {
-			email: "admin@admin.com",
-			password: "admin",
-		};
-		};
-
-
-		
-		/*$scope.login = {
-			status: false,
-			load: false,
-			reset: false,
-			cache: { email: "", login: "" },
-			email: "",
-			password: "",
-			messages: [ 
-				"", //0                                                     
-				"Iniciar sessão", //1 
-				"Iniciando a sessão", //2
-				"Intoduza a senha", //3
-				"E-mail inválido", //4
-				"Senha inválida", //5
-				"Seginte",  //6
-				"Enviar pedido", //7
-				"Login em progressão", //8 
-				"Não consegue aceder a conta?", //9
-				"Recuperação de senha:", //10
-				"Em instantes um link de recuperação será enviado para o email informado.", //11
-				"Email de recuperação:", //12
-				"Criar conta", //13
-			],
-			info: "",
-			action: "",
-			rescue: "",
-		};
-
-		$scope.login.info = $scope.login.messages [ 1 ];
-		$scope.login.action = $scope.login.messages [ 6 ];
-		$scope.login.rescue  =$scope.login.messages [ 9 ];
-
-		$scope.submitLogin = function ( ) {
-			
-			$scope.login.load = true;
-
-			//Login-check-email
-			if ( !$scope.login.status && !$scope.login.reset && !$scope.login.cache.email ) {
-
-				$scope.login.rescue  =$scope.login.messages [ 9 ];
-
-				$servicelogin.queryEmail ( $scope.login.email , function ( $status ) {
-					
-					$scope.login.load = false;
-
-					if ( "true" === $status ) {
-						$scope.login.cache.email = $scope.login.email;
-						$scope.login.info = $scope.login.messages [ 3 ];
-						$scope.login.action = $scope.login.messages [ 1 ];
-
-						inputValid ( ".login-email" );
-
-					} else {
-						$scope.login.info = $scope.login.messages [ 4 ];
-						$scope.login.cache.email = "";
-
-						inputInvalid ( ".login-email" );
-					};
-				} );
-			};
-
-			if ( !$scope.login.status && !$scope.login.reset && $scope.login.cache.email ) {
-
-				$scope.login.rescue  =$scope.login.messages [ 9 ];
-				$scope.login.cache.password = $scope.login.password;
-
-				$servicelogin.queryPassword ( $scope.login.cache.email, $scope.login.cache.password, function ( $status ) {
-
-					$scope.login.load = false;
-					
-					if ( "true" === $status ) {
-						
-						$scope.login.status = true;
-						$scope.login.info = $scope.login.messages [ 2 ]
-						$scope.login.action = $scope.login.messages [ 0 ];
-
-						inputValid ( ".login-password" );
-
-						$scope.login.load = true;
-						
-						$timeout ( function ( ) {
-							$scope.login.load = false;
-
-							$rootScope.authenticateUser = $scope.login.cache;
-							
-							$location.path ( "/tasks" );
-
-						}, 1000 );
-
-					} else {
-						
-						$scope.login.info = $scope.login.messages [ 5 ];
-						$scope.login.status = false;
-						$scope.login.password = "";
-						$scope.login.cache.password = "";
-						$rootScope.athenticateUser = null;
-						
-						inputInvalid ( ".login-password" );
-
-					};
-
-				} );
-			};
-
-			if ( !$scope.login.status && $scope.login.reset ) {
-				$servicelogin.reset ( $scope.login.email, function ( $data ) {
-
-					$scope.login.load = false;
-
-					if ( "true" === $data ) {
-						
-						$scope.login.status = true;
-						$scope.login.cache.email = $scope.login.email;
-						$scope.login.info = $scope.login.messages [ 12 ];
-						$scope.login.rescue = $scope.login.messages [ 11 ];
-						
-						inputValid ( ".login-email" );
-
-						$scope.login.info = 30;
-
-						var $count = $interval ( function ( ) { 
-							$scope.login.info = $scope.login.info - 1;
-
-							if ( $scope.login.info <= 0 ) {
-								$interval.cancel ( $count );
-							};
-
-						}, 1000 );
-
-						$timeout ( function ( ) { 
-							$location.path ( "/" );
-						}, 30000 );
-
-					} else {
-						
-						$scope.login.info  =$scope.login.messages [ 4 ];
-						$scope.login.rescue  =$scope.login.messages [ 10 ];
-						$scope.login.cache.email = "";
-						
-						inputInvalid ( ".login-email" );
-					};
-
-				}  );	
+				email: "admin@admin.com",
+				password: "admin1010",
 			};
 		};
 
-		$scope.resetPassword = function ( ) {
-			$scope.login.reset = true;
-			$scope.login.info = $scope.login.messages [ 10 ];
-			$scope.login.action = $scope.login.messages [ 7 ];
-			$scope.login.rescue  =$scope.login.messages [ 11 ];
-		};*/
 	};
 
-	/*function inputInvalid ( $element ) {
-		addClass ( $element, "invalid" );
-		addClass ( $element, "error" );
-
-		setTimeout ( function ( ) {
-			removeClass ( $element, "invalid" );
-		}, 900 );
-	};
-
-	function inputValid ( $element ) {
-		removeClass ( $element, "invalid" );
-		removeClass ( $element, "error" );
-	};*/
 
 } ) ( );

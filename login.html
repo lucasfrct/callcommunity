@@ -14,28 +14,34 @@
 			
 			<span data-animation="line-load" ng-show="login.load"></span>
 			
-			<input type="email" placeholder="nome@example.com" autofocus 
+			<input type="email" placeholder="nome@example.com" autofocus
 				ng-model="user.email"
-				ng-class=" { 'error-input': login.statusEmail }"
-				ng-show="!login.emailCache"
+				ng-class=" { 'error-input': login.errorEmail, 'invalid': login.invalidEmail }"
+				ng-on-focus="login.statusInfo"
+				ng-show="!login.emailCache && !login.status"
 			>
 			
 			<input type="password" placeholder="Palavra-passe" 
 				ng-model="user.password"
-				ng-class="{ 'success-input': ( user.password.length >= 8 ), 'error-input': ( user.password.length > 0 ), }"
+				ng-class="{ 
+					'success-input': ( user.password.length >= 8 && !login.errorPassowrd ), 
+					'error-input': ( user.password.length > 0 ) || login.errorPassowrd, 
+					'invalid': login.invalidPassword,
+				}"
 				ng-on-focus="login.emailCache"
 				ng-show="login.emailCache && !login.status"
 			>
 			
 			<button type="submit" 
 				ng-click="login.next ( user );" 
-				ng-disabled="login.disabled ( )"
 				ng-show="!login.status"
 			>{{ login.action }}</button>
 			
-			<a href=""class="form-link" ng-show="!login.status">Reset senha</a>
+			<a href=""class="form-link" ng-show="!login.status" ng-click="login.reset ( )">{{ login.info }}</a>
             
             <a href="#!/sigin" class="form-link" ng-show="!login.status">Criar uma conta</a>
+
+            <a href="#!/" class="form-link" ng-show="login.status">Fazer login</a>
 
 		</form>
 

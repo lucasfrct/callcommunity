@@ -22,7 +22,7 @@ if ( $_SERVER [ 'REQUEST_METHOD' ] == "POST" && !empty ( $_SERVER [ "HTTP_ACCESS
 		$author = new Authenticate;
 		$author->setToken ( $TokenAplication );
 		$author->setUser ( "admin@admin.com" );
-		$author->setPassword ( "c05542ef95bfc8d230a005178edba6b8ecbf3d4bcf682c5a3b3bac3a606fbb3b6f35c3e2f944af92a8766dab5bd8c5a87ac96ad4bf74a803837e49713b9159f8" );
+		$author->setPassword ( "admin1010" );
 		$response = $author->access ( );
 	};
 

@@ -3,9 +3,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.run ( [ "$rootScope", "$location", "$cookies", RunEvents ] );
+		.run ( [ "$rootScope", "$location", RunEvents ] );
 
-	function RunEvents ( $rootScope, $location, $cookies ) {
+	function RunEvents ( $rootScope, $location ) {
 		
 		var $visitorRoutes = [ "/", "/login", "/sigin", ];
 		var $userRoutes    = [ "/", "/login", "/sigin", "/tasks", ];

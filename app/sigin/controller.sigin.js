@@ -3,12 +3,12 @@
 
 	angular
 		.module ( "callcommunity" )
-		.controller ( "sigin", [ "$scope", "$timeout", "serviceSigin", Sigin ] );
+		.controller ( "sigin", [ "$scope", "$timeout", "servicesigin", Sigin ] );
 
-	function Sigin ( $scope, $timeout ) {
+	function Sigin ( $scope, $timeout, $serviceSigIn ) {
 
 		$scope.sigIn = {
-			message: "",
+			message: "Criar uma nova conta",
 			msg: [
 				"Criar uma nova conta",
 				"Espere um momento...",
@@ -27,8 +27,6 @@
             email: "",
 			password: "",
 		};
-
-		$scope.sigIn.message = $scope.sigIn.msg [ 0 ];
 
 		__test ( );
 
@@ -53,8 +51,10 @@
 			$scope.sigIn.load = true;
 			$scope.sigIn.message = $scope.sigIn.msg [ 1 ];
 
-			$timeout ( function ( ) {
+			$serviceSigIn.save ( $user,  function ( $data ) {
+				
 				__setSigIn ( $scope.sigIn.msg [ 2 ] );
+
 			}, 2000 );
 		};
 

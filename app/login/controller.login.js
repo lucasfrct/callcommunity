@@ -9,8 +9,87 @@
 		);
 
 	function ControllerLogin ( $rootScope, $scope, $location, $servicelogin, $timeout, $interval, $window, $cookies ) {
-		
+
 		$scope.login = {
+			status: false,
+			load: false,
+			emailCache: "",
+			message: "Entrar",
+			action: "Seguinte",
+			statusEmail: false,
+			msg: [
+				"Entrar", //0
+				"Seguinte", //1
+				"Introduza a senha", //2
+				"Iniciar sessão", //3
+				"E-mail inválido", //4
+				"Senha inválida", //5
+				"Iniciando a sessão." //6
+			],
+			next: __submit,
+			disabled: __disabled,
+		};
+
+		$scope.user = {
+			email: "",
+			password: "",
+		};
+
+		__test ( );
+
+		function __submit ( $user ) {
+
+			//Set email
+			if ( !$scope.login.emailCache && $user.email && $user.email.indexOf ( "@" ) ) {
+
+				$scope.login.load = true;
+
+				if ( $user.email == "lucasfrct@gmail.com") {
+					$scope.login.load = false;
+					$scope.login.emailCache = $user.email;
+					$scope.login.message = $scope.login.msg [ 2 ];
+					$scope.login.action = $scope.login.msg [ 3 ];
+					$scope.login.statusEmail = false;
+				} else {
+					$scope.login.emailCache = "";
+					$scope.login.message = $scope.login.msg [ 4 ];
+					$scope.login.statusEmail = true;
+				};
+
+			};
+
+			//Set senha
+			if ( $scope.login.emailCache && $user.email && $user.password.length >= 8 ) {
+				
+				$scope.login.load = true;
+				
+				if ( $user.password == "asdfasdf" ) {
+					$scope.login.load = false;
+					$scope.login.status = true;
+					$scope.login.message = $scope.login.msg [ 6 ];
+				} else { 
+					$scope.login.message = $scope.login.msg [ 5 ];
+				};
+
+			};
+
+
+		};
+
+		function __disabled ( ) {
+
+		};
+
+		function __test ( ) {
+			$scope.user = {
+			email: "admin@admin.com",
+			password: "admin",
+		};
+		};
+
+
+		
+		/*$scope.login = {
 			status: false,
 			load: false,
 			reset: false,
@@ -161,10 +240,10 @@
 			$scope.login.info = $scope.login.messages [ 10 ];
 			$scope.login.action = $scope.login.messages [ 7 ];
 			$scope.login.rescue  =$scope.login.messages [ 11 ];
-		};
+		};*/
 	};
 
-	function inputInvalid ( $element ) {
+	/*function inputInvalid ( $element ) {
 		addClass ( $element, "invalid" );
 		addClass ( $element, "error" );
 
@@ -176,6 +255,6 @@
 	function inputValid ( $element ) {
 		removeClass ( $element, "invalid" );
 		removeClass ( $element, "error" );
-	};
+	};*/
 
 } ) ( );

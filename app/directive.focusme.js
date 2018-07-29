@@ -3,14 +3,14 @@
 
 	angular
 		.module ( "callcommunity" )
-		.directive ( "ngFocusOn", [ "$timeout", NgFocusOn ] );
+		.directive ( "ngOnFocus", [ "$timeout", NgOnFocus ] );
 
-	function NgFocusOn ( $timeout ) {
+	function NgOnFocus ( $timeout ) {
 		return {
 			restrict: "A",
-			scope: { ngFocusOn: "=" },
+			scope: { ngOnFocus: "=" },
 			link: function ( $scope, $element ) {
-				$scope.$watch ( "ngFocusOn", function ( $value ) {
+				$scope.$watch ( "ngOnFocus", function ( $value ) {
 					if ( $value ) {
 						$timeout ( function ( ) {
 							$element [ 0 ].focus ( );

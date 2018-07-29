@@ -88,6 +88,9 @@ body [type="search"] {
 
 
 
+
+
+
 body .form-message {
 	text-align: left;
 	width: calc( 100% - 28px );
@@ -96,6 +99,18 @@ body .form-message {
 	font-weight: 500;
 	font-size: 1.4em;
 }
+
+body .form-cache {
+	background-color: #DDD;
+	border-bottom: solid 1px #AAA;
+	border-left: solid 3px #00838F;
+	color: #848484;
+	padding: 0px 3px;
+	width: calc( 100% - 28px );
+	font-size: 0.9em;
+	overflow: hidden;
+}
+
 
 body span[ data-animation="line-load" ] {
 	display: block;
@@ -116,6 +131,20 @@ body .form-link:hover,
 body .form-link:focus {
 	color: #1976D2 !important;	
 }
+
+body .error-input {
+    color: #F00;
+    border-color: currentcolor;
+    outline-color: currentcolor;
+}
+
+body .success-input {
+    color: #43A047;
+    border-color: currentcolor;
+    outline-color: currentcolor;
+}
+
+
 
 
 

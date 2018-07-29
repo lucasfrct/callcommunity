@@ -1,21 +1,44 @@
 <link rel="stylesheet" type="text/css" href="vendor/css/login.css">
+
 <main class="row-xs-24 col-xs-12 background-primary">
-	<section class="row-xs-18 row-xs-offset-5 text-center" ng-controller="login">
-		<form class="login">
+
+	<section class="row-xs-18 row-xs-offset-5 text-center" >
+
+		<form>
+
 			<legend>Call Community</legend>
-			<h4>{{ login.info }}</h4>
-			<div class="login-email-cache" ng-show="login.cache.email">{{ login.cache.email }}</div> 
-			<span class="login-load" data-animation="line-load" ng-show="!login.load"></span>
-			<input class="login-email" type="email" name="email" placeholder="nome@example.com" autofocus="" 
-				ng-model="login.email"
-				ng-hide="login.cache.email">
-			<input class="login-password" type="password" name="password" placeholder="Palavra-passe" 
-				ng-model="login.password"
-				ng-show="login.cache.email && !login.status "
-				ng-focus-on="login.cache.email">
-			<button type="submit" ng-click="submitLogin ( );" ng-disabled ="login.status" ng-hide="login.status">{{ login.action }}</button>
-			<a href="" ng-click="resetPassword ( );">{{ login.rescue }}</a>
-            <a href="#!/sigin">Criar uma conta</a>
+
+			<span class="form-message" ng-show="login.message">{{ login.message }}</span>
+			
+			<div class="form-cache" ng-show="login.emailCache">{{ login.emailCache }}</div> 
+			
+			<span data-animation="line-load" ng-show="login.load"></span>
+			
+			<input type="email" placeholder="nome@example.com" autofocus 
+				ng-model="user.email"
+				ng-class=" { 'error-input': login.statusEmail }"
+				ng-show="!login.emailCache"
+			>
+			
+			<input type="password" placeholder="Palavra-passe" 
+				ng-model="user.password"
+				ng-class="{ 'success-input': ( user.password.length >= 8 ), 'error-input': ( user.password.length > 0 ), }"
+				ng-on-focus="login.emailCache"
+				ng-show="login.emailCache && !login.status"
+			>
+			
+			<button type="submit" 
+				ng-click="login.next ( user );" 
+				ng-disabled="login.disabled ( )"
+				ng-show="!login.status"
+			>{{ login.action }}</button>
+			
+			<a href=""class="form-link" ng-show="!login.status">Reset senha</a>
+            
+            <a href="#!/sigin" class="form-link" ng-show="!login.status">Criar uma conta</a>
+
 		</form>
+
 	</section>
+
 </main>

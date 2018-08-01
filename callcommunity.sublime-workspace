@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"se",
+				"section\t<section>"
+			],
+			[
+				"cu",
+				"currentcolor"
+			],
+			[
+				"ou",
+				"outline-color\tproperty"
+			],
+			[
+				"border-co",
+				"border-color\tproperty"
+			],
+			[
+				"font",
+				"font-family\tproperty"
+			],
+			[
+				"te",
+				"text-align\tproperty"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"bo",
+				"both"
+			],
+			[
+				"MAR",
+				"margin\tproperty"
+			],
+			[
 				"pa",
 				"pack_propagate\tfunction"
 			],
@@ -30,10 +66,6 @@
 			[
 				"t",
 				"top\tproperty"
-			],
-			[
-				"in",
-				"inline-block\tdisplay"
 			],
 			[
 				"w",
@@ -188,10 +220,6 @@
 				"line-dashed"
 			],
 			[
-				"bo",
-				"border\tproperty"
-			],
-			[
 				"mar",
 				"margin\tproperty"
 			],
@@ -280,10 +308,6 @@
 				"currentColor"
 			],
 			[
-				"cu",
-				"currentColor"
-			],
-			[
 				"u",
 				"uppercase"
 			],
@@ -302,10 +326,6 @@
 			[
 				"a",
 				"attr()"
-			],
-			[
-				"font",
-				"font-size"
 			],
 			[
 				"di",
@@ -390,10 +410,6 @@
 			[
 				"mrg",
 				"margin-bottom"
-			],
-			[
-				"te",
-				"text-align"
 			],
 			[
 				"ac",
@@ -606,15 +622,27 @@
 	[
 		"/C/Server/htdocs/callcommunity",
 		"/C/Server/htdocs/callcommunity/app",
-		"/C/Server/htdocs/callcommunity/app/login"
+		"/C/Server/htdocs/callcommunity/vendor",
+		"/C/Server/htdocs/callcommunity/vendor/css"
 	],
 	"file_history":
 	[
-		"/C/Server/htdocs/callcommunity/app/login/ServiceLogin.php",
-		"/C/Server/htdocs/callcommunity/app/directive.focusme.js",
-		"/C/Server/htdocs/callcommunity/app/module.js",
-		"/C/Server/htdocs/callcommunity/app/routes.js",
 		"/C/Server/htdocs/callcommunity/app/run.js",
+		"/C/Server/htdocs/callcommunity/app/login/controller.login.js",
+		"/C/Server/htdocs/callcommunity/login.html",
+		"/C/Server/htdocs/callcommunity/app/login/ServiceLogin.php",
+		"/C/Server/htdocs/callcommunity/app/login/service.login.js",
+		"/C/Server/htdocs/callcommunity/vendor/css/login.css",
+		"/C/Server/htdocs/callcommunity/sigin.html",
+		"/C/Server/htdocs/callcommunity/app/directive.focusme.js",
+		"/C/Server/htdocs/callcommunity/app/sigin/controller.sigin.js",
+		"/C/Server/htdocs/callcommunity/app/routes.js",
+		"/C/Server/htdocs/callcommunity/vendor/css/callcommunity.css",
+		"/C/Server/htdocs/callcommunity/vendor/css/sigin.css",
+		"/C/Server/htdocs/callcommunity/index.html",
+		"/C/Server/htdocs/callcommunity/app/sigin/service.sigin.js",
+		"/C/Server/htdocs/callcommunity/lib/components/date.js",
+		"/C/Server/htdocs/callcommunity/app/module.js",
 		"/C/Server/htdocs/scripts-python/core-bank-client/exemple.py",
 		"/C/Server/htdocs/scripts-python/core-bank-client/main.py",
 		"/C/Server/htdocs/scripts-python/pong/main.kivy.py",
@@ -637,27 +665,18 @@
 		"/C/Server/htdocs/dmx/app/dmx.module.js",
 		"/C/Server/htdocs/dmx/app/draggable.directive.js[",
 		"/D/Documents/Development/testPython/test.py",
-		"/C/Server/htdocs/callcommunity/login.html",
-		"/C/Server/htdocs/callcommunity/vendor/css/login.css",
 		"/C/Server/htdocs/callcommunity/lib/components/components-all.css",
-		"/C/Server/htdocs/callcommunity/sigin.html",
-		"/C/Server/htdocs/callcommunity/app/sigin/controller.sigin.js",
-		"/C/Server/htdocs/callcommunity/index.html",
-		"/C/Server/htdocs/callcommunity/vendor/css/callcommunity.css",
 		"/C/Server/htdocs/callcommunity/app/create-user/controller.create-user.js",
 		"/C/Server/htdocs/callcommunity/vendor/css/user.css",
 		"/C/Server/htdocs/callcommunity/create-user.html",
-		"/C/Server/htdocs/callcommunity/app/login/controller.login.js",
 		"/C/Server/htdocs/callcommunity/preload.html",
 		"/C/Server/htdocs/callcommunity/app/login/Authenticate.php",
-		"/C/Server/htdocs/callcommunity/app/login/service.login.js",
 		"/C/Server/htdocs/callcommunity/vendor/js/callcommunity.js",
 		"/C/Server/htdocs/callcommunity/app/login/login.php",
 		"/C/Server/htdocs/callcommunity/lib/components/js-base64.min.js",
 		"/C/Server/htdocs/callcommunity/lib/components/js-sha3.min.js",
 		"/C/Server/htdocs/callcommunity/lib/components/components.js",
 		"/C/Server/htdocs/callcommunity/tasks.html",
-		"/C/Server/htdocs/callcommunity/lib/components/date.js",
 		"/C/Server/htdocs/callcommunity/app/login/directive.focusme.js",
 		"/C/Server/htdocs/callcommunity/lib/js-sha1.js",
 		"/C/Server/htdocs/callcommunity/app/login/login.email.json",
@@ -735,9 +754,7 @@
 		"/C/Server/htdocs/callcommunity/multimedia.html",
 		"/C/Server/htdocs/callcommunity/app/controller.multimedia.js",
 		"/C/Server/htdocs/callcommunity/vendor/callcommunity.js",
-		"/C/Server/htdocs/callcommunity/vendor/callcommunity.css",
-		"/C/Server/htdocs/callcommunity/messages.html",
-		"/C/Server/htdocs/callcommunity/vendor/calendar.css"
+		"/C/Server/htdocs/callcommunity/vendor/callcommunity.css"
 	],
 	"find":
 	{
@@ -755,6 +772,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			");\n",
+			"\";\n",
+			");\n",
+			";\n"
 		],
 		"highlight": true,
 		"in_selection": false,

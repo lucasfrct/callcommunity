@@ -1,30 +1,28 @@
 <?php
 #Service.php
-include ( "Autoload.php" );
+include ( "autoload.php" );
 
-use Crud as ServiceCrud;
+use Connect as serviceConnect;
+use Crud as serviceCrud;
+use ICrud as interfaceCrud;
+use Modeldata as serviceModeldata;
 
 class Service
 {
-	private static $crud = null;
+	private static $modeldata = null;
 
-	private static function post ( ) 
+	public static function on ( $modeldata = null ) 
 	{
+		self::$modeldata = $modeldata;
+	}
 
+	public static function requestPost (  ) 
+	{
 		if ( $_SERVER [ "REQUEST_METHOD"] == 'POST' ) {
-			self::$crud->digestJson ( $_POST[ "callcommunity" ] );
-			#echo $_POST[ "callcommunity" ];
-			self::$crud->run ( );
-			echo self::$crud->response ( );
+			echo json_encode ( self::$modeldata->digest ( json_encode ( $_POST ) ) );
 		};
 	}
+};
 
-	public static function on ( Crud $crud = null ) 
-	{
-		self::$crud = $crud;
-		self::post ( );
-
-	}
-}
-
-Service::on ( ServiceCrud::on ( ) );
+Service::on ( new serviceModeldata ( serviceCrud::on ( serviceConnect::on ( "127.0.0.1:3306", "root", "", "test" ) ) ) );
+Service::requestPost ( );

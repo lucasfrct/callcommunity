@@ -15,128 +15,170 @@ body {
 }
 .container { 
     border: solid 1px #9E9E9E;
+    border-left-width: 7px;
     display block; margin: 1px 0; 
-    padding: 7px 14px; 
+    padding: 7px 14px 14px 14px; 
     min-height: 60px; 
     background-color: #EEEEEE;
     font-size: 14px;
+    margin-bottom: 7px;
 }
 
 .container h5 {
-    margin: 0px 0 7px 0;
-    padding: 7px 0;
-    font-size  1em;
+    margin: 0;
+    padding: 3px 0;
+    font-size: 1.2em;
 }
-.container small, .container section {
+
+.container h5 > small {
+    float: right;
+    position: relative;
+    right: 0;
+    font-size: 0.65em;
+}
+
+.container > small, .container > section {
     font-size: 0.9em;
     display: block;
     background-color: #DDD;
     padding: 7px;
-
+    border-left: solid 3px transparent;
 }
-.container small sub {
+
+.container > small {
+    margin: 14px 0 0 0;
+}
+.container > small sub {
     font-size: 0.8em;
 }
-.container small em {
+.container > small em {
     float: right;
     right: 0;
 }
-.container section {
+.container > section {
     background-color: #BBB;
 }
 </style>';
 
 class Tester 
 {
-    private static $offset = 0.000007;
-    private static $success = array ( "#0A0", "rgba(0,190,0,0.1)" );
-    private static $error = array ( "#C00", "rgba(190,0,0,0.1)" );
+    private static $instance = NULL;
+    private $success = array ( "#0A0", "rgba(0,190,0,0.2)" );
+    private $error = array ( "#C00", "rgba(190,0,0,0.2)" );
+    
+    private $unity = Array ( 
+        "status"=> FALSE,
+        "title"=> "", 
+        "timeInit"=> 0,
+        "timeTotal"=> 0,
+        "tester"=> Array ( )
+    );
 
-    private static $status = false;
-    private static $name = null;
-    private static $msg = null;
-    private static $repeat = 1;
+    private $tester = Array (
+        "status"=> FALSE,
+        "timeInit"=> 0,
+        "timeTotal"=> 0,
+        "description"=> ""
+    );
 
-    private static $timeOfTest = 0;
-    private static $timeOfEachTest = 0;
-
-    private static function reset ( ) 
+    private function timeInit ( ) 
     {
-        self::$status = false;
-        self::$name = null;
-        self::$msg = null;
-        self::$repeat = 1;
-        self::$timeOfTest = 0;
-        self::$timeOfEachTest = 0;
-
+        return self::$instance->unity [ "timeInit" ] = microtime ( TRUE );
     }
 
-    private static function assert ( ) 
-    {
-        return "Tester";
+    private function timeTotal ( ) 
+    {   
+        return self::$instance->unity [ "timeTotal"] = ( microtime ( TRUE ) - self::$instance->unity [ "timeInit"] );
     }
 
-    public static function ok ( bool $status = false, string $msg = null ): bool
+    private function unityReset ( ) 
     {
-        self::$msg = $msg;
-        return self::$status = $status;
+        self::$instance->unity [ "status" ] = FALSE;
+        self::$instance->unity [ "title" ] = "Test Undefined!";
+        self::$instance->unity [ "timeTotal" ] = 0;
+        self::$instance->unity [ "tester" ] = Array ( );
+
+        return self::$instance->unity;
     }
 
-    private static function inner ( ) 
+    private function testerReset ( ) 
+    {
+        self::$instance->tester [ "status" ] = FALSE;
+        self::$instance->tester [ "timeInit" ] = 0;
+        self::$instance->tester [ "timeTotal" ] = 0;
+        self::$instance->tester [ "description" ] = "Undefined!";
+
+        return self::$instance->tester;
+    }
+
+    private function inner ( array $unity ) 
     {    
-        $set = ( self::$status !== false ) ? self::$success : self::$error;
+        $set = ( $unity [ "status" ] !== FALSE ) ? self::$instance->success : self::$instance->error;
+
         echo '<div class="container" style="border-color: '.$set [ 0 ].'">
-            <h5>'.self::$name.'</h5>
-            <small>
-                <span>'.round ( self::$timeOfEachTest, 6 ).'ms</span> 
-                <sub>(x'.self::$repeat.')</sub>
-                <em>Tempo total: '.round ( ( self::$timeOfTest / 1000 ), 2 ).'s</em>
+            <h5>'.$unity [ "title" ].'<small>Tempo: '.round ( ( $unity [ "timeTotal" ] * 1000 ), 2 ).' ms</small></h5>';
+        
+        foreach ( $unity [ "tester" ] as $tester ) {
+            $status = ( $tester [ "status" ] !== FALSE ) ? self::$instance->success : self::$instance->error;
+        echo '<small style="border-color: '.$status [ 1 ].'">
+                <span>Tempo Médio: '.round ( ( $tester [ "timeTotal" ] * 1000 ), 2 ).' ms</span> 
+                <em></em>
             </small>
-            <section style="background-color:  '.$set [ 1 ].'">'.self::$msg.'</section>
-        </div>';
-    }
-
-    private static function sum ( array $array = null ): float
-    {
-        return array_reduce ( $array, function ( $previous, $item ) {
-            return $previous += $item;
-        } );
-    }
-
-    public static function on ( string $name = null, Closure $fn = null, int $repeat = 1 ) 
-    {
-        self::reset ( );
-
-        if ( is_string ( $name ) && $fn instanceof Closure && is_numeric ( self::$repeat ) ) {
-
-            self::$name = $name;
-            self::$repeat = $repeat;
-            
-            $timeOfFunctions = array ( );
-            $init = microtime ( 1 );
-            
-            for ( $i = 0; $i < self::$repeat; $i++ ) {
-                $time = microtime ( 1 );
-                $fn ( self::assert ( ) );
-                array_push ( $timeOfFunctions, ( ( microtime ( 1 ) - $time ) * 1000 ) );
-            };
-
-            $timeOfExec = ( ( ( microtime ( 1 ) - $init ) - self::$offset ) * 1000 );
-            $timeOfEachExec = ( $timeOfExec / self::$repeat );
-
-            $totalOfFunctions = self::sum ( $timeOfFunctions );
-            $timeOfEachFunction = ( $totalOfFunctions / count ( $timeOfFunctions ) );
-            
-            self::$timeOfTest = ( ( $timeOfExec + $totalOfFunctions ) / 2 );
-            self::$timeOfEachTest = ( ( $timeOfEachExec + $timeOfEachFunction ) / 2 );
-
-        } else {
-            self::$name = ( empty ( self::$name ) ) ? "Error!" : self::$name;
-            self::$msg = " Erro de Sintaxe. Favor verificar os argumentos de entrada do teste.";
+            <section style="background-color: '.$status [ 1 ].'; border-color: '.$status [ 1 ].'">'.$tester [ "description" ].'</section>';
         };
 
-        self::inner ( );
+        echo '</div>';
     }
-}
 
-#Tester::on ( "test 1", function ( $assert ) { $assert::ok ( true, "msg" ); }, 1000 );
+     public static function ok ( bool $status = FALSE, string $description = NULL ): bool
+    { 
+        self::$instance->unity [ "status" ] = ( $status === TRUE && self::$instance->unity [ "status" ] === TRUE ) ? TRUE : FALSE;
+        self::$instance->testerReset ( );
+
+
+        self::$instance->tester [ "status" ] = $status;
+        self::$instance->tester [ "timeInit" ] = self::$instance->init;
+
+        # Ponto para iniciar o tempo do próximo teste ::ok ( );
+        self::$instance->init = microtime ( TRUE );
+        
+        self::$instance->tester [ "timeTotal" ] = ( self::$instance->init - self::$instance->tester [ "timeInit" ] );
+        self::$instance->tester [ "description" ] = $description;
+
+        array_push ( self::$instance->unity [ "tester" ], self::$instance->tester );
+
+        return self::$instance->tester [ "status" ];
+    }
+
+    public static function equals ( $item1, $item2, string $description = "" ): bool
+    {
+        return self::ok ( serialize ( $item1 ) === serialize ( $item2 ) , $description );
+    }
+
+    public static function on ( string $title = "", Closure $fn = NULL ) 
+    {
+        #instance New class in Singleton
+        if ( self::$instance === NULL ) {
+            self::$instance = new self;
+        };
+
+        if ( ( self::$instance !== NULL && empty ( $title ) ) || ( self::$instance !== NUll && $fn === NULL ) ) {
+            self::$instance->unityReset ( );
+            self::$instance->inner ( self::$instance->unity );
+        };
+
+        if ( self::$instance !== NULL && !empty ( $title ) && is_string ( $title ) && $fn instanceof Closure ) {
+
+            self::$instance->unityReset ( );
+            self::$instance->init = self::$instance->timeInit ( ); 
+            
+            self::$instance->unity [ "status" ] = TRUE;
+            self::$instance->unity [ "title" ] = $title;
+            
+            $fn ( self::$instance );
+
+            self::$instance->timeTotal ( );
+            self::$instance->inner ( self::$instance->unity );
+        };
+    }
+};

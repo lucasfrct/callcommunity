@@ -12,19 +12,17 @@
 			} )
 
 			.when ( "/sigin", {
-				templateUrl: "sigin.html",
+				templateUrl: "app/sigin/sigin.html",
 				controller: "sigin",
 			} )
 
 			.when ( "/login", {
-				templateUrl: "login.html",
+				templateUrl: "app/login/login.html",
 				controller: "login",
 			} )
-
-			
 			
 			.when ( "/tasks", {
-				templateUrl: "tasks.html",
+				templateUrl: "app/tasks/tasks.html",
 			} );
 
 

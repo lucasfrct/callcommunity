@@ -1,177 +1,133 @@
 <?php
 #Crud.php
 
-use Connect as CrudConnect;
-use Modeldata as CrudMedeldata;
+include_once ( "autoload.php" );
 
-class Crud
+use Connect as CrudConnect;
+use ICrud as interfaceCrud;
+
+class Crud implements interfaceCrud
 {
     private static $instance = null;
+    private static $debug = Array ( );
     private $connect = null;
-    private $model = null;
-    private $data = null;
-    private $response = "";
-    public static $message = Array ( ); #array_push (self::$message, "" );
 
-    public static function on ( ): Crud 
+    # addiciona novas notificaçãoes no debug
+    private static function addDebug ( $debug  = null ): void
+    {
+        if ( null != $debug ) {
+            array_push ( self::$debug, $debug );
+        };
+    }
+
+    # reporta uma string do debug
+    public static function debug ( ): string 
+    {
+        return json_encode ( self::$debug );
+    }
+
+    # inicia um instância da classe Crud e injeta a injeção Connect com um objeto MySqli 
+    public static function on ( MySqli $connect = null ): Crud 
     {
         if ( null === self::$instance ) { 
+
             self::$instance = new self ( );
-            self::$instance->connect = CrudConnect::on ( );
-            self::$instance->model = CrudMedeldata::on ( );
-            self::$message = array_merge ( self::$message, CrudConnect::$message );
-            self::$message = array_merge ( self::$message, CrudConnect::$exception );
-            array_push ( self::$message, "New instance Crud" );
+
+            self::$instance->connect = $connect;
+            
+            self::addDebug ( "New instance Crud" );
+            self::addDebug ( "New Injection Connect MySqli" );
         };  
 
         return self::$instance;
     }
 
-    public function create ( string $table = null, string $fields = null, string $values = null ): bool 
+    # Inicia uma consulta diratamneto no objeto MySqli 
+    public function query ( string $sql, $options = MYSQLI_USE_RESULT ) 
+    {
+        self::addDebug ( "Action MySqli Query" );
+        return self::$instance->connect->query ( $sql ); 
+    }
+
+    # insere valores no banco de dados. O campo valores deve conter a seguinte estrutura: 'value','value','value'
+    public function create ( string $table = "", string $fields = "", string $values = "" ): bool 
     {
         if ( !empty ( $table ) && !empty ( $fields ) && !empty ( $values ) ) {
-            return ( 
-                self::$instance->connect->query (  
-                    "INSERT INTO {$table} ( {$fields} ) VALUES ( {$values} )" 
-                ) 
-                && self::$instance->connect->affected_rows > 0 && array_push ( self::$message, "Use Crud create" )
-            ) ? true : false;
+            self::addDebug ( "Action Create");
+            $sql = "INSERT INTO {$table} ( {$fields} ) VALUES ( {$values} )";
+            return ( self::$instance->query ( $sql )  && self::$instance->connect->affected_rows > 0 ) ? true : false;
         };
     } 
 
-    public function read ( string $table = null, string $fields = "*", string $condition = "" ): array 
+    public function read ( string $table = "", string $fields = "*", string $query = "" ): array 
     {
-        if ( !empty ( $table ) ) {
-            $rows = array ( );
-            $condition = ( empty ( $condition ) ) ? "WHERE" : $condition;
+        $rows = array ( );
+        
+        if ( !empty ( $table )  && !empty ( $query ) ) {
             
-            $result = self::$instance->connect->query ( 
-                "SELECT {$fields} FROM {$table} {$condition} AND enable = true", 
-                MYSQLI_USE_RESULT 
-            );
+            $sql = "SELECT {$fields} FROM {$table} WHERE {$query}";
+
+            $result = self::$instance->query ( $sql , MYSQLI_USE_RESULT );
 
             while ( $row = $result->fetch_assoc ( ) ) {  
-                array_push ( $rows, self::$instance->model->parseDatabaseToArray ( $row ) ); 
+                array_push ( $rows, $row ); 
             };
-            
-            array_push (self::$message, "Use crud read" );
-            return $rows;
-        };
-    }
-
-    public function update ( string $table = null, string $set = "", string $condition = "" ): bool 
-    {
-        if ( !empty ( $table ) && !empty ( $set ) && !empty ( $condition ) ) {
-            return  ( 
-                self::$instance->connect->query ( "UPDATE {$table} SET {$set} {$condition}" )
-                && self::$instance->connect->affected_rows > 0 && array_push ( self::$message, "Use Crud update" )
-            ) ? true : false;
-        };
-    }
-
-    public function delete ( string $table = null, string $condition = null ): bool 
-    {
-        return self::$instance->update ( $table, "enable = false", $condition );
-    }
-
-    public function digestJson ( string $data = NULL ): array {
-        array_push ( self::$message, "Use model digest" );
-        return self::$instance->data = self::$instance->model->digest ( $data );
-    }
-
-    public function run ( )
-    {
-
-        $ins = self::$instance;
-
-        $action = $ins->data [ "action" ];
-        
-        $table = $ins->data [ "table" ];
-        
-        $fields = ( isset ( $ins->data [ "fields" ] ) ) ? $ins->data [ "fields" ] : NULL;
-        
-        $id = ( isset ( $ins->data [ "id" ] ) ) ? $ins->data [ "id" ] : NULL;
-        
-        $condition = ( isset ( $ins->data [ "condition" ] ) ) ? $ins->model->parseJsonToItem ( $ins->data [ "condition" ] ) : NULL;
-        $condition = ( NULL !== $condition ) ? implode ( " AND ", explode ( ",", $condition ) ) : $condition;
-        
-        $data = ( isset ( $ins->data [ "data" ] ) ) ? $ins->data [ "data" ] : NULL;
-        
-        #print_r ( $ins->data );
-
-        switch ( $action ) {
-            case "create":
-                $parse = $ins->model->parseJsonToFieldsAndValues ( $data );
-                $ins->response = $ins->create ( $table, $parse [ "fields" ], $parse [ "values" ] );
-                break;
-            case "read":
-                $cond = ( $id == "*" || $id == "" ) ? " id > 0" :  "id = {$id}";
-                $cond = ( NULL !== $condition ) ? "{$cond} AND {$condition}" : $cond;
-                $ins->response = $ins->read ( $table, $fields, "WHERE {$cond}" );
-                break;
-            case "update":
-                $data = $ins->model->parseJsonToItem ( $data );
-                $cond = ( NULL !== $condition ) ? "id = {$id} AND {$condition}" : "id = {$id}";
-                if ( !empty ( $id ) || $id !== NULL ) {
-                    $ins->response = $ins->update ( $table, $data, "WHERE {$cond}" );
-                } else {
-                    $ins->response = false;
-                };
-                break;
-            case "delete": 
-                $cond = ( NULL !== $condition ) ? "id = {$id} AND {$condition}" : "id = {$id}";
-                if ( !empty ( $id ) || $id !== NULL ) {
-                    $ins->response = $ins->delete ( $table, "WHERE {$cond}" );
-                } else {
-                    $ins->response = false;
-                };
-                break;
-            default:
-                break;
         };
 
-        array_push ( self::$message, "Use Crud run" );
+        ( count ( $rows ) > 0 ) ? self::addDebug ( "Action MySqli Read" ) : self::addDebug ( "Action MySqli Read Response Void" );
 
-        return $ins->response;
+        return $rows;
     }
 
-    public function response ( ): string 
-    { 
-        array_push ( self::$message, "return Crud response" );
-        return json_encode ( self::$instance->response );
-    }
-
-    public static function report ( ) {
-        return json_encode ( self::$message );
-    }
-
-    public static function off ( ): bool 
+    public function update ( string $table = "", string $fields = "", string $query = "" ): bool 
     {
-        if ( self::$instance ) {
-            self::$instance = null;
-            CrudConnect::off ( );
-            self::$message = Array ( );
-        };  
+        $update = false;
 
-        return ( null === self::$instance ) ? true : false;
+        if ( !empty ( $table ) && !empty ( $query ) ) {
+            self::addDebug ( "Action MySqli Update" );
+            $update = ( self::$instance->query ( "UPDATE {$table} SET {$fields} WHERE {$query}" ) && self::$instance->connect->affected_rows > 0 ) ? true : false;
+        };
+
+        return $update;
     }
 
-    private function __construct ( ) { }
+    public function delete ( string $table = "", string $query = "" ): bool 
+    {
+        $delete = false;
+        
+        if ( !empty ( $table ) && !empty ( $query ) ) {
+            self::addDebug ( "Action MySqli Delete" );
+            $delete = ( self::$instance->query ( "DELETE FROM {$table} WHERE {$query}" ) && self::$instance->connect->affected_rows > 0 ) ? true : false;
+        };
+        
+        return $delete;
+    }
+
+    public static function off ( )
+    {
+        self::$instance->connect = null;
+        self::addDebug ( "Kill injection Connect" );
+        self::addDebug ( "Off: Kill instance Crud" );
+        return self::$instance = null;
+    }
+
+    private function __construct ( ) { 
+        self::$debug = Array ( );
+    }
     
     private function __clone ( ) { }
     
     private function __wakeup ( ) { } 
 };
 
-#$create = '{ "action": "create", "table":"crud.address", "data": { "idUser": "1", "street":"street1", "city": "city1", "country":"country1" } }';
-#$read = '{ "action": "read", "table":"crud.address", "fields": "*", "id": "" }';
-#$update = '{ "action": "update", "table":"crud.address", "data":{ "street":"s2", "city":"c2" }, "id":"1" }';
-#$delete = '{ "action": "delete", "table": "crud.address", "id":"3" }';
-#$crud = Crud::on ( Connect::on ( ), Modeldata::on ( ) );
-#$crud->digestJson ( $create );
-#echo $crud->run ( );
-#echo $crud->response ( );
-#echo $crud->create ( $table, $fields, $values );
-#echo $crud->read ( $table, $fields, $condition );
-#echo $crud->update ( $table, $set, $condition ); // $set = 'field="value",field="value"'
-#echo $crud->delete ( $table, $condition );
+# Teste de métodos públicos
+#$conn = CrudConnect::on ( "127.0.0.1:3306", "root", "", "test" );
+#echo Connect::debug ( );
+
+#$crud = Crud::on ( $conn );
+#$crud->create ( "test", "user, password", "'admin','admin'" );
+#echo json_encode ( $crud->read ( "test", "user", 'user = "admin"' ) );
+#$crud->update ( "test", "password = 'adminPass'", "id >= 1" );
+#$crud->delete ( "test", "id >= 7" );
+#echo $crud->debug ( );
+#$crud->off ( );

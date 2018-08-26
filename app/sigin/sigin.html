@@ -17,15 +17,20 @@
 			<input type="email" placeholder="nome@example.com" ng-model="user.email" ng-hide="sigIn.end">
 
 			<input type="password" placeholder="Palavra-passe" 
-				ng-class="{ 'error-input': ( user.password.length > 0 ), 'success-input': ( user.password.length >= 8 ) }"
+				ng-class="{ 
+					'error-input': ( user.password.length > 0 ), 
+					'success-input': ( user.password.length >= 8 ) 
+				}"
 				ng-model="user.password"
 				ng-hide="sigIn.end"
 			>
 
 			<input type="password" placeholder="Palavra-passe" 
 				ng-class="{ 
-					'error-input': ( sigIn.passwordConfirm.length > 0 && sigIn.passwordConfirm != user.password ), 
-					'success-input': ( sigIn.passwordConfirm.length >= 8 && sigIn.passwordConfirm == user.password ),
+					'error-input': 
+						( sigIn.passwordConfirm.length > 0 && sigIn.passwordConfirm != user.password ), 
+					'success-input': 
+						( sigIn.passwordConfirm.length >= 8 && sigIn.passwordConfirm == user.password ),
 				}"
 				ng-model="sigIn.passwordConfirm"
 				ng-hide="sigIn.end"

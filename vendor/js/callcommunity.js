@@ -32,3 +32,7 @@ function modalToggle ( $time = 0 ) {
 function upRead ( $scope = null ) {
 	$scope.upRead = !$scope.upRead;
 };
+
+function encripty ( $string = "" ) {
+    return String ( sha3_512 ( base64Encode ( md5 ( sha1 ( String ( $string ).trim ( ) ) ) ) ) );
+};

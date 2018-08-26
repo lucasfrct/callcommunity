@@ -1,87 +1,88 @@
-<?php 
+<?php
 
-/*
-server 0.south-america.pool.ntp.org
-server 1.south-america.pool.ntp.org
-server 2.south-america.pool.ntp.org
-server 3.south-america.pool.ntp.org
-*/
-
-class NTP 
+class NTP
 {
-	private static $instance = NULL;
-	private $url = "time-b.timefreq.bldrdoc.gov";
+    private $debug = Array ( );
+    public $host = "pool.ntp.org";
+    public $socket = NULL;
+    public $timestamp = 0;
 
-	private $server = NULL;
-	public static $date = "";
-	public static $time = "";
-	
-	public static $report = array ( );
-	
-	private function getServer ( ) 
-	{ 
-		try {
-			$server = @fsockopen ( self::$instance->url, 13, $errno, $errstr );
-			if ( !$server ) {
-				array_push ( self::$report, "No response Server" );
-			} else {
-				array_push ( self::$report, "On response Server" );
-				self::$instance->server = fread ( $server, 50 ); 
-		    	fclose ( $server );	
-			};
-			
-		} catch ( Exception $e ) {
-			array_push ( self::$report, "On response Server > ".$e );
-		};
-	}
+    # addiciona novas notificaçãoes no debug
+    private function addDebug ( $debug  = null ) : void
+    {
+        if ( null != $debug ) {
+            array_push ( $this->debug, $debug );
+        };
+    }
 
-	private function getDate ( ) 
-	{
-		if ( preg_match ("/\s+\d+-\d+-\d+\s+/", self::$instance->server, $matches ) ) {
-			self::$date = strval ( implode ( 
-				"-", array_map ( function ( $item ) { 
-						return intval ( $item ); 
-					}, explode ( 
-						"-", "20".trim ( $matches [ 0 ] ) 
-					) 
-				) 
-			) );
-			array_push ( self::$report, "Get date" );
-		};
-		return self::$date;
-	}
+    # reporta uma string do debug
+    public function debug ( ): string 
+    {
+        return json_encode ( $this->debug );
+    }
 
-	private function getHour ( ) 
-	{
-		if ( preg_match ("/\s+\d+:\d+:\d+\s+/", self::$instance->server, $matches ) ){
-		 	
-		 	$time = array_map ( function ( $item ) {
-		 		return intval ( $item );
-		 	}, explode ( ":", trim ( $matches [ 0 ] ) ) );
+    public function __construct ( string $host = "pool.ntp.org", string $timezone = "America/Sao_Paulo" ) 
+    {
+        date_default_timezone_set ( $timezone );
 
-		 	$time[0] = ( $time[0] - 3 );
+        $this->addDebug ( "New Instance" );
+        $this->host  = $host;
+        $this->addDebug ( "Load host: {$host}" );
 
-		 	self::$time = strval ( implode ( ":", $time ) );
+        if ( !empty ( $this->host ) && NULL == $this->socket && $this->ping ( $this->host ) ) {
+            $this->socket = $this->socketUDP ( $this->host );
+            $this->timestamp = $this->parseTimestamp ( $this->socket );
+        };
 
-		 	array_push ( self::$report, "Get Hour" );
-		 };
-		 return self::$time;
-	}
+        return $this;
+    }
 
-	public static function on ( ) {
-		if ( NULL == self::$instance ) {
-			self::$instance = new self;
-		};
+    # Testa se o servidor esta online
+    private function ping ( string $host = "" ) : bool 
+    {       
+        $server = @fsockopen ( "udp://{$host}:123", -1, $errCode, $errStr, 10 );
+        @fclose ( $server );
+        $ping = ( $server ) ? TRUE : FALSE;
+        $this->addDebug ( "Ping : (".( ( $ping ) ? "ON" : "OFF" ).") ".$host );
+        return $ping;
+    }
 
-		self::$instance->getServer ( );
-		self::$instance->getDate ( );
-		self::$instance->getHour ( );
+    private function socketUDP ( string $host = "", $timeout = 10 )
+    {
+        $socket = stream_socket_client ( "udp://{$host}:123", $errno, $errstr, ( int ) $timeout );
+        fwrite ( $socket, "\010".str_repeat ( "\0", 47 ) );
+        $unpack = fread ( $socket, 48 );
+        fclose ( $socket );
+        $this->addDebug ( "Open Socket UDP:  udp://{$host}:123" );
 
-		return self::$instance;
-	}
+        return $unpack;
+    }
+
+    private function parseTimestamp ( $unpack )
+    {
+        $data = unpack ( 'N12', $unpack );
+        $timestamp = sprintf ( '%u', $data[9] );
+        $timestamp -= 2208988800;
+        $this->addDebug ( "parse to Timestamp: {$timestamp}" );
+
+        return $timestamp;
+    } 
+
+    public function date ( string $options = "d/m/Y" )
+    {
+        return date ( $options, $this->timestamp );
+    }
+
+    public function hour ( string $options = "H:i:s" )
+    {
+        return date ( $options, $this->timestamp );
+    }
 };
 
-/*
-echo NTP::on ( )::$;
-echo NTP::on ( )::$time;
-*/
+
+#$ntp = new NTP;
+#echo "<b>HOST:</b> ".$ntp->host."<br>";
+#echo "<b>TIMESTAMP:</b> ".$ntp->timestamp."<br>";
+#echo "<b>DATE:</b> ".$ntp->date ( )."<br>";
+#echo "<b>Hour:</b> ".$ntp->hour ( )."<br><br>";
+#echo $ntp->debug ( );

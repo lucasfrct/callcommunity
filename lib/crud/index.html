@@ -21,20 +21,33 @@
 			background-color: #EEE;
 			border: solid 1px #AAA;
 			margin: 1px 0;
-			padding: 7px 14px;
+			padding: 0px 14px 7px 14px;
 		}
 
 		main > div xmp {
-			background-color: #DDD;
+			background-color: #CDCDCD;
 			padding: 7px;
 			margin: 0;
+			word-wrap: break-word !important;
+			word-break: break-word;
+			display: block;
+			max-width: 100%;
+			white-space: normal;
 		}
 
 		main > div span {
 			margin: 0;
 			padding: 7px;
-			background-color: #CDCDCD;
+			background-color: #DDD;
 			display: block;
+		}
+
+		main > div strong {
+			display: block;
+			margin: 3px 0;
+			padding:  7px;
+			border: solid 1px #DDD;
+			background-color: #CCC;
 		}
 	</style>
 </head>
@@ -43,29 +56,97 @@
 	<main>
 		<a href="test.php">Teste Unitário</a>
 		<div id="create">
-			<h4>Create</h4>
-			<xmp>{ action: "create", table: "tester.test", data: { name: "create teste json"}, };</xmp>
-			<span></span>
+			<h3>Create</h3>
+			<xmp>{ "action": "create", "table": "test", "data": { "user": "modeldata", "password": "model1234", "parent": [ { "name": "p" }, { "name": "pp" }, { "name": "ppp" } ] } };</xmp>
+			<span>O bojeto Json acima é um exemplo de uma inserção de dados no Database. A estrutura do objetos é composta por:
+				<br><br>
+				<b>"action"</b>: parâmetro responsável pela ação que será executada no Database. Os possíveis valores são: <b>"create"</b>, <b>"read"</b>, <b>"update"</b> e <b>"delete"</b>.
+				<br><br>
+				<b>´"table"</b>: parâmetro responsável por assinalar a tabela que sobfrerá umas das acões contidas no <b>"action"</b>.
+				<br><br>
+				<b>"data"</b>: parâmetro que contém os dados que serão enviados para o CRUD. A estrutura é sempre no padrão <b>{ "campoDaTabela": "valorNaTabela" }</b>.
+			</span>
+			<strong></strong>
 		</div>
 		<div id="read">
-			<h4>Read</h4>
-			<xmp>{ action: "read", table: "tester.test", fields: "*", id: "", };</xmp>
-			<span></span>
+			<h3>Read</h3>
+			<xmp>{ "action": "read", "table": "test", "fields": "id, user, parent", "query": "id >= 0" };</xmp>
+			<span>O bojeto Json acima é um exemplo de uma consulta de dados no Database. A estrutura do objetos é composta por:
+				<br><br>
+				<b>"action"</b>: parâmetro responsável pela ação que será executada no Database. Os possíveis valores são: <b>"create"</b>, <b>"read"</b>, <b>"update"</b> e <b>"delete"</b>.
+				<br><br>
+				<b>´"table"</b>: parâmetro responsável por assinalar a tabela que sobfrerá umas das acões contidas no <b>"action"</b>.
+				<br><br>
+				<b>"fields"</b>: parâmetro que informa quais campos na tabela devem ser consultados. Os nomes dos campos devem ser separados por vírgula.
+				<br><br>
+				<b>"query"</b>: parâmetro responsável pela condição de consulta, funciona como uma espécie de filtro.
+			</span>
+			<strong></strong>
 		</div>
 		<div id="update">
-			<h4>Update</h4>
-			<xmp>{ action: "update", table: "tester.test", data: { name: "Update teste Json" }, id: "3", };</xmp>
-			<span></span>
+			<h3>Update</h3>
+			<xmp>{ "action": "update", "table": "test", "data": { "password": "model update" }, "query": "id >= 0" };</xmp>
+			<span>O bojeto Json acima é um exemplo de uma consulta de atualização de dados no Database. A estrutura do objetos é composta por:
+				<br><br>
+				<b>"action"</b>: parâmetro responsável pela ação que será executada no Database. Os possíveis valores são: <b>"create"</b>, <b>"read"</b>, <b>"update"</b> e <b>"delete"</b>.
+				<br><br>
+				<b>´"table"</b>: parâmetro responsável por assinalar a tabela que sobfrerá umas das acões contidas no <b>"action"</b>.
+				<br><br>
+				<b>"fields"</b>: parâmetro que informa quais campos na tabela devem ser atualizado. A estrutura de dados deve ser sempre no padrão "{ campoDaTabela: 'valorNaTabela' }". Atentar sempre para a aspas simples que indica ao database que o valor é uma string. A adição de mais valores deve ser feita separando os dados por vírgula.
+				<br><br>
+				<b>"query"</b>: parâmetro responsável pela condição para a atualização, funciona como filtro ou seletor.
+			</span>
+			<strong></strong>
 		</div>
 		<div id="delete">
-			<h4>Delete</h4>
-			<xmp>{ action: "delete", table: "tester.test", id: "3", };</xmp>
-			<span></span>
+			<h3>Delete</h3>
+			<xmp>{ "action": "delete", "table": "test", "query": "id > 0" };</xmp>
+			<span>O bojeto Json acima é um exemplo de uma consulta que deleta dados no Database. A estrutura do objetos é composta por:
+				<br><br>
+				<b>"action"</b>: parâmetro responsável pela ação que será executada no Database. Os possíveis valores são: <b>"create"</b>, <b>"read"</b>, <b>"update"</b> e <b>"delete"</b>.
+				<br><br>
+				<b>´"table"</b>: parâmetro responsável por assinalar a tabela que sobfrerá umas das acões contidas no <b>"action"</b>.
+				<br><br>
+				<b>"query"</b>: parâmetro responsável pela condição que irá delatar os campos, query funciona como filtro ou seletor também.
+			</span>
+			<strong></strong>
+		</div>
+		<div>
+			<h3>Função Javascript com Jquery para usar o CRUD via JSON</h3>
+			<xmp>
+				function dispatch (  $data = null, $fn = null ) {
+			
+					var $ajax = $.ajax( {
+						method: "POST",
+						url: "Service.php",
+						data: $data,
+					} );
+
+					$ajax.done ( function ( $data ) {
+						if ( $fn ) {
+							$fn ( JSON.parse ( $data ) );
+						};
+					} );	
+				};
+			</xmp><br>
+			<xmp>
+				var $create = { 
+					action: "create", 
+					table: "test", 
+					data: { user: "dispatch", password: "dispatch", parent: [ "a", "b", "c" ] },
+				};
+			</xmp><br>
+			<xmp>
+
+				dispatch ( $create, function ( $data ) {
+					console.log ( JSON.stringify ( $data ) );
+				} );
+			</xmp>
 		</div>
 	</main>
 	<script>
 
-		$.ajax( { method: "GET", url: "test.php", } );
+		//$.ajax( { method: "GET", url: "test.php", } );
 
 		function dispatch (  $data = null, $fn = null ) {
 			
@@ -84,48 +165,45 @@
 
 		var $create = { 
 			action: "create", 
-			table: "tester.test", 
-			data: { name: "create teste json"}, 
+			table: "test", 
+			data: { user: "dispatch", password: "dispatch", parent: [ "a", "b", "c" ] },
 		};
 
 		dispatch ( $create, function ( $data ) {
-			$("#create > span").text( JSON.stringify ( $data ) );
+			$("#create > strong").text( JSON.stringify ( $data ) );
 		} );
-
 
 		$read = { 
 			action: "read", 
-			table: "tester.test", 
-			fields: "*", 
-			id: "",
+			table: "test", 
+			fields: "user, parent", 
+			query: "id > 0",
 		};
 
 		dispatch ( $read, function ( $data ) {
-			$("#read > span").text( JSON.stringify ( $data ) );
+			$("#read > strong").text( $data );
 		} );
 
 		$update = { 
-			action: "update", 
-			table: "tester.test", 
-			data: { name: "Update teste Json" }, 
-			id: "3", 
+			action: "update",
+			table: "test",
+			data: { password: "update" },
+			query: "id > 0",
 		};
 
 		dispatch ( $update, function ( $data ) {
-			$("#update > span").text( JSON.stringify ( $data ) );
+			$("#update > strong").text( JSON.stringify ( $data ) );
 		} );
 
 		$delete = { 
 			action: "delete", 
-			table: "tester.test", 
-			id: "3", 
+			table: "test", 
+			query: "id > 0", 
 		};
 
 		dispatch ( $delete, function ( $data ) {
-			$("#delete > span").text( JSON.stringify ( $data ) );
+			$("#delete > strong").text( JSON.stringify ( $data ) );
 		} );
-
-		$.ajax( { method: "GET", url: "test.php", } );
 
 	</script>
 </body>

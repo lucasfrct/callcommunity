@@ -1,83 +1,58 @@
 <?php
 #Modeldata.php
+include_once ( "autoload.php" );
+
+use Crud as Crud;
+use ICrud as interfaceCrud;
 
 class Modeldata 
 {
-    private static $instance = null;
+    private $debug = Array ( );
+    private $crud = null;
+    
+    public $action = "";
+    public $table = "";
+    public $data = "";
+    public $fields = "";
+    public $query = "";
 
-    public static function on ( ): Modeldata 
+    # addiciona novas notificaçãoes no debug
+    private function addDebug ( $debug  = null ): void
     {
-        if ( null === self::$instance ) {
-            self::$instance = new self ( );
-        };
-
-        return self::$instance;
-    }
-
-    public function parseBool ( $data = null ) 
-    {
-        switch ( $data ) {
-            case "true":
-                return true;
-                break;
-            case 'true':
-                return true;
-                break;
-            case "false":
-                return false;
-                break;
-            case 'false':
-                return false;
-                break; 
-            default:
-                return $data;
-                break;
+        if ( null != $debug ) {
+            array_push ( $this->debug, $debug );
         };
     }
 
-    public function parseJsonToItem ( $data = null ): string 
+    # reporta uma string do debug
+    public function debug ( ): string 
     {
-        $itens = array ( );
-
-        foreach ( $data as $field => $value ) {
-            $value = self::$instance->parseBool ( $value );
-            array_push ( $itens, "{$field} = '".self::$instance->parseArrayToDatabase ( $value )."'" );
-        };
-
-        return implode ( ",", $itens );
+        return json_encode ( $this->debug );
     }
 
-    public function parseArrayToDatabase ( $data = null ) 
-    {
-        if ( is_array ( $data ) && count ( $data ) > 0 ) {
-            $data = serialize ( $data );
-        };
-
-        return $data;
-    }
-
-    public function parseDatabaseToArray ( $data = null ) 
-    {
-
-        $data = array_map ( function ( $item ) {
-            if ( $item == serialize ( false ) || @unserialize ( $item ) !== false ) {
-                return unserialize ( $item );
-            } else {
-                return $item;
+    # faz parse pra dados booleanos
+    private function parseBool ( $bool = "" ) 
+    {   
+        if ( !is_array ( $bool ) ) {
+            switch ( strtolower ( $bool ) ) {
+                case "true":
+                    $this->addDebug ( "Parseboool : true" );
+                    return true;
+                    break;
+                case "false":
+                    $this->addDebug ( "Parseboool : false" );
+                    return false;
+                    break;
+                default:
+                    return $bool;
+                    break;
             };
-        }, $data );
-        /*$data = array_map ( function ( $item, $index ) {
-                if ( ( $data == serialize ( false ) || @unserialize ( $data ) !== false ) ) {
-                    $data = unserialize ( $data );
-                }
-                return $item;
-            }, $data
-        );*/
-        return $data;
+        };
+        return $bool;
+    }
 
-    } 
-
-    public function parseJsonToFieldsAndValues ( array $data = null ): array 
+    # transforma um array para estrutura de campo e valores separados
+    private function parseJsonToFieldsAndValues ( array $data = null ): array 
     {
         $parse = array ( "fields" => array ( ) , "values" => array ( ) );
 
@@ -86,136 +61,170 @@ class Modeldata
                 array_push ( $parse [ "fields" ], ( string ) $field );
             };
             if ( isset ( $parse [ "values" ] ) ) {
-                array_push ( $parse [ "values" ], "'".self::$instance->parseArrayToDatabase ( $value )."'" );
+                $value = $this->arraySerialize ( $this->parseBool ( $value ) );
+                array_push ( $parse [ "values" ], "'".$value."'" );
             };
         };
-
 
        $parse [ "fields" ] = implode ( ",", $parse [ "fields" ] );
        $parse [ "values" ] = implode ( ",", $parse [ "values" ] );
        return $parse;
     }
 
-    public function digest ( string $data = null ): array 
+    # transforma uma arrya para estrutura de campo = 'valor'
+    private function parseJsonToFields ( array $data = null ): string
+    {   
+        $values = array ( );
+
+        foreach ( $data as $field => $value ) {
+            $value = $this->arraySerialize ( $this->parseBool ( $value ) );
+            array_push ( $values, "{$field} = '{$value}'" );
+        };
+
+        return implode ( ",", $values );
+    } 
+
+    # detecta se o dados éw uma array e serializa para uma string
+    private function arraySerialize ( $data = "" )
     {
-        return json_decode ( $data, true );
+        if ( is_array ( $data ) && count ( $data ) > 0 ) {
+            $data = serialize ( $data );
+        };
+
+        return $data;
     }
 
-    private function __construct ( ) { }
+    # detect se é uma string serializada e converte para uma array
+    private function arrayUnserialize ( $data = "" ) 
+    {
+        if ( is_array ( $data ) ) {
+            function filterData ( $item ) {
+                if ( is_array ( $item ) ) {
+                    $item = array_map ( 'filterData', $item ); 
+                };
+                return ( $item == serialize ( false ) || false !== @unserialize ( $item ) ) ?  unserialize ( $item ) : $item;
+            };
+            $data = array_map ( 'filterData', $data );
+        };
+
+        return $data;
+    } 
+
+    # inicia um instância da classe Modeldata e injeta a injeção Connect com um objeto MySqli 
+    public function __construct ( interfaceCrud $crud = null  ) 
+    { 
+        $this->addDebug ( "New instance Modeldata" );
+        
+        if ( null !== $crud ) {
+            $this->crud = $crud;
+            $this->addDebug ( "New instance Crud" );
+        };
+    }
+
+    # passar um string JSON para array e carrega as variáveis para determinar a ação da crud
+    public function digest ( $json ) 
+    {   
+        $this->addDebug ( "Action: digest" );
+        $data = ( is_array ( $json ) ) ? $json : json_decode ( $json, true );
+
+        if ( isset ( $data [ "action" ] ) ) {
+            $this->action = $data [ "action" ];
+            $this->addDebug ( "Load: var action" );
+        };
+
+        if ( isset ( $data [ "table" ] ) ) {
+            $this->table = $data [ "table" ];
+            $this->addDebug ( "Load var table" );
+        };
+
+
+        if ( isset ( $data [ "data" ] ) ) {  
+            $this->data = $data [ "data" ];
+            $this->addDebug ( "Load var data" );
+        };
+
+         if ( isset ( $data [ "fields" ] ) ) {  
+            $this->fields = $data [ "fields" ];
+            $this->addDebug ( "Load var fields" );
+        };
+
+        if ( isset ( $data [ "query" ] ) ) { 
+            $this->query = $data [ "query" ];
+            $this->addDebug ( "Load var query" );
+        };
+
+        return $this->run ( );
+    }
+
+    # envia dados no formato Create para o crud
+    private function create ( ): bool 
+    {   
+        $this->addDebug ( "Action: method Create" );
+        $data = $this->parseJsonToFieldsAndValues ( $this->data );
+        return $this->crud->create ( $this->table, $data [ "fields" ], $data [ "values" ] );
+    }
+
+    # envia dados no formato Read para o crud
+    private function read ( ): string 
+    {
+        $this->addDebug ( "Action: method Read" );
+        return json_encode ( $this->arrayUnserialize ( $this->crud->read ( $this->table, $this->fields, $this->query ) ) );
+    }
+
+    # envia dados no formato Update para o crud
+    private function update ( ): bool
+    {
+        $this->addDebug ( "Action: method Update" );
+        return $this->crud->update ( $this->table, $this->parseJsonToFields ( $this->data ), $this->query );
+    }
+
+    # envia dados no formato Delete para o crud
+    private function delete ( ): bool 
+    {
+        $this->addDebug ( "Action: method Delete" );
+        return $this->crud->delete ( $this->table, $this->query );
+    }
+
+    # Executa ação carregada pelo digest
+    private function run ( ) 
+    {
+        $this->addDebug ( "Action: method run" );
+        switch ( strtolower ( $this->action ) ) {
+            case "create":
+                return $this->create ( );
+                break;
+            case "read":
+                return $this->read ( );
+                break;
+            case "update":
+                return $this->update ( );
+                break;
+            case "delete": 
+                return $this->delete ( );
+                break;
+            default:
+                return "No action!";
+                break;
+        };
+    }
 
     private function __clone ( ) { }
     
     private function __wakeup ( ) { }
 }
-/*
-$json = ' 
-    [ 
-    {
-        "id": 1,
-        "index": null,
-        "title": "Exemplo de tarefa 1", 
-        "date": "2018-4-3", 
-        "hour": "8:00",
-        "caller": true,
-        "sms": true,
-        "audio": { 
-            "title": "Exempço de Áudio 1", 
-            "description": "Exemplo da descrição do audio 1",
-            "uri": "multimedia/audio.mp3", 
-            "source": null, 
-            "selected": true 
-        },
-        "message": { 
-            "title": "Exemplo de mensagem 1", 
-            "text": "Exemplo de texto para mensagem.", 
-            "selected": true
-        },
-        "contacts": [ 
-            { 
-                "id": 1, 
-                "index": null, 
-                "name": "Exemplo de Contato 1", 
-                "tel": "(00) 00000-0000", 
-                "condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
-                "selected": false
-            },
-            { 
-                "id": 2, 
-                "index": null, 
-                "name": "Exemplo de Contato 2", 
-                "tel": "(00) 00000-0000", 
-                "condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
-                "selected": false
-            }
-        ],
-        "repeat": { 
-            "dom": false,
-            "seg": true, 
-            "ter": false,
-            "qua": false, 
-            "qui": false,
-            "sex": false,
-            "sab": false
-        }
-    },
-    {
-        "id": 2,
-        "index": null,
-        "title": "Exemplo de tarefa 2", 
-        "date": "2018-4-3", 
-        "hour": "17:00",
-        "caller": true,
-        "sms": true,
-        "audio": { 
-            "title": "Exempço de Áudio 1", 
-            "description": "Exemplo da descrição do audio 1",
-            "uri": "multimedia/audio.mp3", 
-            "source": null, 
-            "selected": true 
-        },
-        "message": { 
-            "title": "Exemplo de mensagem 1", 
-            "text": "Exemplo de texto para mensagem.", 
-            "selected": true
-        },
-        "contacts": [ 
-            { 
-                "id": 1, 
-                "index": null, 
-                "name": "Exemplo de Contato 1", 
-                "tel": "(00) 00000-0000", 
-                "condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
-                "selected": false
-            },
-            { 
-                "id": 2, 
-                "index": null, 
-                "name": "Exemplo de Contato 2", 
-                "tel": "(00) 00000-0000", 
-                "condominium": "Exemplo de endereço ou comcomínio, Bl:A Ap:122 A", 
-                "selected": false
-            }
-        ],
-        "repeat": { 
-            "dom": false,
-            "seg": true, 
-            "ter": false,
-            "qua": true, 
-            "qui": false,
-            "sex": true,
-            "sab": false
-        }
-    }
-]
-';
 
+# teste dos métodos públicos
+#$model = new Modeldata ( Crud::on ( Connect::on ( "127.0.0.1:3306", "root", "", "test" ) ) );
 
-$model = Modeldata::on ( );
-#echo $model->parseBool ( "parsebool" );
-#$parse = $model->parseJsonToFieldsAndValues ( $json );
-#echo $parse [ "fields" ];
-#echo $parse [ "values" ];
-#var_dump ( $model->parseJsonToItem ( $json ) );
-#var_dump ( $model->digest ( $json ) );
-//print_r ( json_decode ( $json ) );
-*/
+#echo $model->action;
+#echo $model->table;
+#echo $model->data;
+#echo $model->fields;
+#$model->digest ( '{ "action": "create", "table": "test", "data": { "user": "modeldata", "password": "model1234", 
+#    "parent": [ { "name": "p" }, { "name": "pp" }, { "name": "ppp" } ] 
+#} }' );
+#$read = $model->digest ( '{ "action": "read", "table": "test", "fields": "id, user, parent", "query": "id >= 0" }' );
+#echo json_encode ( $read ); // var_dump ( $model->read ( ) );
+#$model->digest ( '{ "action": "update", "table": "test", "data":{ "password": "modelUpdate" }, "query": "id >= 0" }' );
+#$model->digest ( '{ "action": "delete", "table": "test", "query": "id > 0" }' );
+#echo $model->debug ( );

@@ -13,7 +13,7 @@
 				"Criar uma nova conta",
 				"Espere um momento...",
 				"Cadastro realizado com Sucesso.",
-				"Essa conta já está cadastrada.",
+				"Esse email já está cadastrado.",
 			],
 			load: false,
 			passwordConfirm: "",
@@ -44,31 +44,41 @@
 		};
 
 		function __save ( $user ) {
-			//console.log ( $user );
 
 			var $status = false;
-
+			
 			$scope.sigIn.load = true;
 			$scope.sigIn.message = $scope.sigIn.msg [ 1 ];
 
 			$serviceSigIn.save ( $user,  function ( $data ) {
-				
-				__setSigIn ( $scope.sigIn.msg [ 2 ] );
+
+				console.log ( $data );
+				$scope.sigIn.load = false;
+
+				if ( $data == "true" ) {
+					__setSigIn ( $scope.sigIn.msg [ 2 ] );
+				} else {
+					__ErrorSigIn ( );
+				};
 
 			}, 2000 );
 		};
 
 		function __setSigIn ( $msg ) {
-			$scope.sigIn.load = false;
 			$scope.sigIn.message = $msg;
 			$scope.sigIn.end = true;
 		};
 
+		function __ErrorSigIn ( ) {
+			$scope.sigIn.message = $scope.sigIn.msg [ 3 ];
+			$scope.sigIn.end = false;
+		};
+
 		function __test ( ) {
-			$scope.sigIn.passwordConfirm = "asdfasdf";
-			$scope.user.name = "Lucas";
-			$scope.user.email = "lucasfrct@gmail.com";
-			$scope.user.password = "asdfasdf";
+			$scope.user.name = "Administrador";
+			$scope.user.email = "admin@admin.com";
+			$scope.user.password = "administrador";
+			$scope.sigIn.passwordConfirm = "administrador";
 		};
 	};
 

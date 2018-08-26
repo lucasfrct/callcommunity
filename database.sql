@@ -2,7 +2,15 @@ DROP DATABASE IF EXISTS callcommunity;
 
 CREATE DATABASE IF NOT EXISTS callcommunity;
 
-DROP TABLE IF EXISTS callcommunity.tasks, callcommunity.contacts, callcommunity.multimedia, callcommunity.messages ;
+DROP TABLE IF EXISTS callcommunity.login, callcommunity.tasks, callcommunity.contacts, callcommunity.multimedia, callcommunity.messages ;
+
+CREATE TABLE IF NOT EXISTS callcommunity.login (
+	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
+	enable BOOLEAN DEFAULT TRUE,
+	name VARCHAR ( 255 ) NOT NULL,
+	email VARCHAR ( 255 ) NOT NULL,
+	password VARCHAR ( 255 ) NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS callcommunity.tasks (
 	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,

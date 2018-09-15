@@ -1,41 +1,85 @@
 <?php 
+include_once ( "../Authenticate.php" );
+include_once ( "../../lib/crud/autoload.php" );
 
-include ( "Authenticate.php" );
+class Service
+{
+    private $response = FALSE;
+    private $crud = null;
+    private $model = null;
+    private $data = [ ];
+    private $author = null;
+    
+    public function __construct ( )
+    {
+        $this->author = new Authenticate;
+        $this->crud = Crud::on ( Connect::on ( "127.0.0.1:3306", "root", "", "callcommunity" ) );
+        $this->model = new Modeldata ( $this->crud );
+    }
+    
+    public function request ( )
+    {
+        return ( 
+            $_SERVER [ 'REQUEST_METHOD' ] == "POST" 
+            && !empty ( $_SERVER [ "HTTP_ACCESS_TOKEN" ] )
+        ) ? TRUE : FALSE;
+    }
+    
+    public function getData ( ) 
+    {
+        return $this->data = json_decode ( $_POST [ "callcommunity" ], TRUE );
+    }
 
-$TokenAplication = sha1 ( "1010" );
+    public function logInEmail ( )
+    {   
+        if ( $this->request ( ) ) {
+            
+            $this->getData ( );
 
-if ( $_SERVER [ 'REQUEST_METHOD' ] == "POST" && !empty ( $_SERVER [ "HTTP_ACCESS_TOKEN" ] ) ) {
+            if ( $this->data [ "action" ] == "read-login" ) {
 
-	$response = false;
+                $this->data [ "action" ] = "read";
+                $this->data [ "fields" ] = "email";
+                $this->data [ "query" ] = "email = '".$this->data [ "data" ][ "email" ]."' LIMIT 1";
 
-	$data = json_decode ( $_POST [ "callcommunity" ], TRUE );
+                $check  = $this->model->digest ( $this->data );
 
-	if ( $data [ "action" ] === "login-check-email" ) {
-		$author = new Authenticate;
-		$author->setToken ( $TokenAplication );
-		$author->setUser ( "admin@admin.com" );
-		$response = $author->checkUser ( );
-	};
+                if ( count ( json_decode ( $check , true ) ) >= 1 ) {
+                    $this->response = TRUE;
+                };
+            };
+        };
+    }
 
+    public function logInPassword ( )
+    {
+        if ( $this->request ( ) ) {
+            
+            $this->getData ( );
 
-	if ( $data [ "action" ] === "login-check-password" ) {
-		$author = new Authenticate;
-		$author->setToken ( $TokenAplication );
-		$author->setUser ( "admin@admin.com" );
-		$author->setPassword ( "admin1010" );
-		$response = $author->access ( );
-	};
+            if ( $this->data [ "action" ] == "login" && $this->author->checkToken ( ) ) {
 
-	if ( $data [ "action" ] === "login-reset" ) {
-		$author = new Authenticate;
-		$author->setToken ( $TokenAplication );
-		$author->setUser ( "admin@admin.com" );
-		$response = $author->checkUser ( );
-	};
+                $password = $this->author->getHttpAuthenticate ( );
+                $this->data [ "action" ] = "read";
+                $this->data [ "fields" ] = "email, password";
+                $this->data [ "query" ] = "email = '".$this->data [ "data" ][ "email" ]."' AND password = '".$password."' LIMIT 1";
 
-	#echo json_encode ( $data );
-	#echo json_encode ( $_SERVER );
+                $check = $this->model->digest ( $this->data );
+                
+                if ( count ( json_decode ( $check, TRUE ) ) >= 1) {
+                    $this->response = TRUE;
+                };  
+            };
+        };   
+    } 
 
-	echo json_encode ( $response );
-
+    public function response ( )
+    {
+        echo json_encode ( $this->response );
+    }
 };
+
+$serv = new Service;
+$serv->logInEmail ( );
+$serv->logInPassword ( );
+$serv->response ( );

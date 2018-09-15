@@ -81,6 +81,9 @@
 
 				$servicelogin.queryPassword ( $user.email, $user.password, function ( $data ) { 
 					
+					console.log ("password --------------------");
+					console.log ( $data );
+
 					$scope.login.load = false;
 
 					if ( $data == "true" ) {
@@ -141,7 +144,7 @@
 		function __test ( ) {
 			$scope.user = {
 				email: "admin@admin.com",
-				password: "admin1010",
+				password: "administrador",
 			};
 		};
 

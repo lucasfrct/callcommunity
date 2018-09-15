@@ -4,9 +4,9 @@
 
 	angular
 		.module ( "callcommunity" )
-		.service ( "servicelogin", [ "$http", "$timeout", ServiceLogin ] );
+		.service ( "servicelogin", [ "$http", "$timeout", "servicetoken", ServiceLogin ] );
 	
-	function ServiceLogin ( $http, $timeout ) {
+	function ServiceLogin ( $http, $timeout, $serviceToken ) {
 
 		var $serviceLogin = this;
 
@@ -18,79 +18,70 @@
 
 		$serviceLogin.reset = resetPassword;
 
+		function queryEmail ( $email = null, $callback = null ) {
+		
+			var $data = { 
+				action: "read-login",
+				table: "login",
+				data: { email: String ( $email ) },
+				headers: {  },
+			};
+
+			query ( $data, $callback );
+		};
+
+		function queryPassword ( $email = null, $password = null, $callback = null ) {
+			
+			var $data = { 
+				action: "login", 
+				table: "login",
+				data: { email: $email },
+                headers: { authenticate: String ( $email ) + ':' + String ( $password ) },
+			};
+
+			query ( $data, $callback );
+		};
+
 		function resetPassword ( $email = "", $fn = null ) {
 
 			var $data = { 
-				action: "login-reset",
+				action: "reset",
 				table: "user",
-				data: { },
-				headers: { email: String ( $email ) },
+				data: { email: String ( $email ) },
 			};
 
 			query ( $data, $fn );
 		};
 
-		function queryEmail ( $email = null, $fn = null ) {
-		
-			var $data = { 
-				action: "login-check-email",
-				table: "user",
-				data: { },
-				headers: { email: String ( $email ) },
-			};
+		function query ( $data = null, $callback = null ) {
 
-			query ( $data, $fn );
-		};
+            var $headers = { 
+                'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT, DELETE',
+                'Access-Token': $serviceToken.get ( ),
+                'Authenticate': encripty ( $data.headers.authenticate ),
+            };
 
-		function queryPassword ( $email = null, $password = null, $fn = null ) {
-			
-			var $data = { 
-				action: "login-check-password", 
-				table: "user",
-				data: { },
-				//headers: { email: $email, password: encripty ( String ( $password ) ) },
-				headers: { email: $email, password: ( String ( $password ) ) },
-			};
+            delete $data.headers;
 
-			query ( $data, $fn );
-		};
-
-		function encripty ( $string = "" ) {
-			return String ( sha3_512 ( base64Encode ( md5 ( sha1 ( String ( $string ).trim ( ) ) ) ) ) );
-		};
-
-		function query ( $data = null, $fn = null ) {
-
-			var $headers = { 
-				'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
-				'Access-Control-Allow-Origin' : '*',
-				'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT',
-				'Access-Token': $TokenAplication,
-				'Access-user': $data.headers.email || "",
-				'Access-Password': $data.headers.password || "",
-			};
-
-			delete $data.headers;
-
-			$http ( {
-				url: String ( $serviceLogin.uri ),
-				method: "POST",
-				data: String ( "callcommunity="+JSON.stringify ( $data ) ),
-				headers : $headers,
-				responseType: "text",
-			} )
-			.then ( function ( $data ) {
-				if ( null !== $fn ) {
-					$timeout ( function ( ) {
-						$fn ( $data.data.trim ( ) );
-					}, 500 );
-				};
-			}, function ( $error ) {
-				if ( null !== $fn ) {
-					$fn ( $error );
-				};
-			} );
-		};
+            $http ( {
+                url: String ( $serviceLogin.uri ),
+                method: "POST",
+                data: String ( "callcommunity="+JSON.stringify ( $data ) ),
+                headers : $headers,
+                responseType: "text",
+            } )
+            .then ( function ( $data ) {
+                if ( null !== $callback ) {
+                    $callback ( $data.data.trim ( ) );
+                };
+            }, function ( $error ) {
+                if ( null !== $callback ) {
+                    $callback ( $error );
+                };
+            } );
+        };
 	};
 
 } ) ( );

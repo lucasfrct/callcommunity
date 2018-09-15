@@ -37,13 +37,13 @@ class Service
             $this->getData ( );
 
             if ( $this->data [ "action" ] == "sigin" ) {
+                
+                $this->data [ "action" ]  = "read";
+                $this->data [ "fields" ] = "email";
+                $this->data [ "query" ] = "email = '".$this->data [ "data" ][ "email" ]."' LIMIT 1";
 
-                $read [ "action" ] = "read";
-                $read [ "table" ] = $this->data [ "table" ];
-                $read [ "fields" ] = "email";
-                $read [ "query" ] = "email = '".$this->data [ "data" ][ "email" ]."' LIMIT 1";
-
-                $check  = $this->model->digest ( $read );
+                $check  = $this->model->digest ( $this->data );
+                
                 if ( !count ( json_decode ( $check , true ) ) >= 1 ) {
                     $password = $this->author->getHttpAuthenticate ( );
                     if( $this->author->checkToken ( ) && !empty ( $password ) ) {
@@ -55,11 +55,6 @@ class Service
             };
         };
     }
-
-    public function logIn ( )
-    {
-
-    } 
 
     public function response ( )
     {

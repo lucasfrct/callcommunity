@@ -20,7 +20,7 @@
 			disabled: __disabled,
 			save: __save,
 			end: false,
-		} 
+		};
 
 		$scope.user = {
 			name: "",

@@ -8,7 +8,7 @@
 	function RunEvents ( $rootScope, $location ) {
 		
 		var $visitorRoutes = [ "/", "/login", "/sigin", ];
-		var $userRoutes    = [ "/", "/login", "/sigin", "/tasks", ];
+		var $userRoutes    = [ "/", "/login", "/sigin", "/calendar", ];
 
 		$rootScope.authenticateUser = null;
 
@@ -24,7 +24,7 @@
 				//console.log ( "router - Usuário permitido: "+$location.path ( ) );
 			} else {
 				console.log ( "Router - Acesso negado. ------>" );
-				$location.path ( "/login" );
+				//$location.path ( "/login" );
 			};
 
 		};

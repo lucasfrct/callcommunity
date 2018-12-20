@@ -1,10 +1,10 @@
 ( function ( ) { 
-	"use strict";
+    "use strict";
 	// dependency: js MD5, js SHA1, js SHA3
 
 	angular
-		.module ( "callcommunity" )
-		.service ( "servicelogin", [ "$http", "$timeout", "servicetoken", ServiceLogin ] );
+        .module ( "callcommunity" )
+        .service ( "servicelogin", [ "$http", "$timeout", "servicetoken", ServiceLogin ] );
 	
 	function ServiceLogin ( $http, $timeout, $serviceToken ) {
 

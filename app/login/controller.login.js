@@ -92,7 +92,7 @@
 						$scope.login.errorPassowrd = false;
 						$scope.login.invalidPassword = false;
 						$rootScope.authenticateUser = true;
-						$location.path ( "/tasks" );
+						$location.path ( "/calendar" );
 					} else { 
 						$scope.login.message = $scope.login.msg [ 5 ];
 						$scope.login.errorPassowrd = true;
@@ -149,6 +149,5 @@
 		};
 
 	};
-
 
 } ) ( );

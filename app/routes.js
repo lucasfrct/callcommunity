@@ -21,8 +21,8 @@
 				controller: "login",
 			} )
 			
-			.when ( "/tasks", {
-				templateUrl: "app/tasks/tasks.html",
+			.when ( "/calendar", {
+				templateUrl: "app/calendar/calendar.html",
 			} );
 
 

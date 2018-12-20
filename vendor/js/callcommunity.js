@@ -36,3 +36,29 @@ function upRead ( $scope = null ) {
 function encripty ( $string = "" ) {
     return String ( sha3_512 ( base64Encode ( md5 ( sha1 ( String ( $string ).trim ( ) ) ) ) ) );
 };
+
+function uniqueArray ( $origArr ) {
+    var $newArr = [ ];
+    var $origLen = $origArr.length;
+    var $found;
+    var $x;
+    var $y;
+
+    for ( $x = 0; $x < $origLen; $x++ ) {
+        
+        $found = undefined;
+        
+        for ( $y = 0; $y < $newArr.length; $y++ ) {
+            if ( $origArr [ $x ].id == $newArr [ $y ].id ) {
+                $found = true;
+                break;
+            };
+        };
+
+        if ( !$found ) {
+            $newArr.push ( $origArr [ $x ] );
+        };
+    };
+
+    return $newArr;
+};

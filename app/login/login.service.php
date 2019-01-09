@@ -1,13 +1,16 @@
 <?php 
+include_once ( "login.crud.php" );
 
 class Service
 {
     private $data = null;
     private $email = "admin@admin.com";
     private $pass = "admin";
+    private $crud = null;
 
     public function __construct ( )
-    {
+    { 
+        $this->crud = new Crud;
     }
     
     public function request ( )
@@ -27,8 +30,10 @@ class Service
     {   
         if ( $this->request ( ) && count ( $this->getData ( ) ) == 1 ) {
 
-            if ( $this->data [ "email" ] == $this->email ){
-                echo json_encode ( array ( "user"=>"Admin System", "email"=>$this->email ) );
+            $data = $this->crud->email ( $this->data [ "email" ] );
+
+            if ( count ( $data ) == 2 ){
+                echo json_encode ( $data );
             };
 
         };
@@ -38,8 +43,10 @@ class Service
     {
         if ( $this->request ( ) && count ( $this->getData ( ) ) == 2 ) {
 
-            if ( $this->data [ "email" ] == $this->email && $this->data [ "password" ] == $this->pass ){
-                echo json_encode ( array ( "session"=>"001", "tokenAccess"=>"1010" ) );
+            $data = $this->crud->password ( $this->data [ "email" ], $this->data [ "password" ] );
+
+            if ( count ( $data ) == 2 ) {
+                echo json_encode ( $data );
             };
             
         };  

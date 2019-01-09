@@ -62,7 +62,6 @@
 		};
 
 		function checkEmail ( ) {
-			console.log ( "email ------------------" );
 			setload ( );
 
 			$scope.login.email = $scope.login.data;
@@ -81,7 +80,6 @@
 		};
 
 		function checkPassword ( ) {
-			console.log ( "pass ------------------" );
 			setload ( );
 
 			$scope.login.pasword = $scope.login.data;

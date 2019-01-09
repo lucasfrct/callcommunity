@@ -1,0 +1,19 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Arial, Sans-serif !important;
+	min-height: 100vh !important;
+    min-width: 100% !important;
+    vertical-align: baseline !important;
+    word-break: keep-all !important;
+    word-wrap: break-word !important;
+    white-space: normal;
+    box-sizing: border-box;
+}
+
+body * {
+	box-sizing: border-box !important;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}

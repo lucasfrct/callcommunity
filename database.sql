@@ -1,63 +1,51 @@
 DROP DATABASE IF EXISTS callcommunity;
-
 CREATE DATABASE IF NOT EXISTS callcommunity;
 
-DROP TABLE IF EXISTS callcommunity.login, callcommunity.tasks, callcommunity.contacts, callcommunity.multimedia, callcommunity.messages ;
+/* TABLE REGISTERS ***********************************************************/
+DROP TABLE IF EXISTS callcommunity.registers;
+CREATE TABLE IF NOT EXISTS callcommunity.registers (
+	`id` INT ( 11 ) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`user` VARCHAR ( 255 ) NOT NULL,
+	`email` VARCHAR ( 255 ) NOT NULL,
+	`country` VARCHAR ( 255 ),
+	`ddd` INT ( 3 ),
+	`telephone` INT ( 9 ),
+	`password` VARCHAR ( 255 ) NOT NULL
+) ENGINE = MyISAM;
 
-CREATE TABLE IF NOT EXISTS callcommunity.login (
-	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
-	enable BOOLEAN DEFAULT TRUE,
-	name VARCHAR ( 255 ) NOT NULL,
-	email VARCHAR ( 255 ) NOT NULL,
-	password VARCHAR ( 255 ) NOT NULL
-);
+CREATE INDEX email ON callcommunity.registers ( email ( 4 ), telephone ( 4 ) );
+CREATE INDEX telephone ON callcommunity.registers ( telephone ( 4 ) );
+CREATE INDEX password ON callcommunity.registers ( password ( 4 ) );
+/* **************************************************************************** */
 
-CREATE TABLE IF NOT EXISTS callcommunity.tasks (
-	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
-	enable BOOLEAN DEFAULT TRUE,
-	title VARCHAR ( 255 ) NOT NULL,
-	dated VARCHAR ( 255 ) NOT NULL,
-	hour VARCHAR ( 255 ) NOT NULL,
-	caller BOOLEAN DEFAULT FALSE NOT NULL,
-	sms BOOLEAN DEFAULT FALSE NOT NULL,
-	audio LONGTEXT NOT NULL,
-	message LONGTEXT NOT NULL,
-	contacts LONGTEXT NOT NULL,
-	repeated LONGTEXT NOT NULL
-);
+/* TABLE USERS **************************************************************** */
+DROP TABLE IF EXISTS callcommunity.users;
+CREATE TABLE IF NOT EXISTS callcommunity.users ( 
+	`id` INT ( 11 ) NOT NULL,
+	`user` VARCHAR ( 255 ) NOT NULL,
+	`firstName` VARCHAR ( 255 ),
+	`nickName` VARCHAR ( 255 ),
+	`lastName` VARCHAR ( 255 )
+) ENGINE = MyISAM;
+/* *************************************************************************** */
 
-CREATE TABLE IF NOT EXISTS callcommunity.contacts (
-	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
-	enable BOOLEAN DEFAULT TRUE,
-	name VARCHAR ( 255 ) NOT NULL,
-	tel VARCHAR ( 255 ) NOT NULL,
-	condominium LONGTEXT NOT NULL
-);
 
-CREATE TABLE IF NOT EXISTS callcommunity.multimedia (
-	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
-	enable BOOLEAN DEFAULT TRUE,
-	title VARCHAR ( 255 ) NOT NULL,
-	description LONGTEXT NOT NULL,
-	uri VARCHAR ( 255 ) NOT NULL,
-	source MEDIUMBLOB NOT NULL 
-);
+/* TRIGGER INSERT REGISTERS ************************************************** */
+DELIMITER //
+CREATE TRIGGER tgrs_insert_registers AFTER INSERT 
+ON callcommunity.registers 
+FOR EACH ROW
+BEGIN
+	INSERT INTO callcommunity.users ( `id`, `user` ) 
+	VALUES ( NEW.id, NEW.user );
+END //
+DELIMITER ;
+/* **************************************************************************** */
 
-CREATE TABLE IF NOT EXISTS callcommunity.messages (
-	id INT ( 11 ) PRIMARY KEY AUTO_INCREMENT,
-	enable BOOLEAN DEFAULT TRUE,
-	title VARCHAR ( 255 ) NOT NULL,
-	text LONGTEXT NOT NULL
-);
+/* INSERT TABLE REGISTERS ***************************************************** */
+INSERT INTO callcommunity.registers ( `user`, `email`, `country`, `ddd`, `telephone`, `password` ) 
+VALUES ( 'root', 'root@domain.com', "+55", 12, 991285145, 'root' );
 
-INSERT INTO callcommunity.tasks ( title, dated, hour, caller, sms, message, contacts, repeated )
-VALUES ( "Titulo 1 teste", "2018-1-1", "8:00", true, true, "Mensagem de teste", "[ name: 'nome de teste']", "[ dom: true, ter: true]" );
-
-/*
-* Host = mysql.hostinger.com.br
-* Database = u339404720_call
-* user = u339404720_call
-* password = callcommunity
-*
-*
-*/
+INSERT INTO callcommunity.registers ( `user`, `email`, `country`, `ddd`, `telephone`, `password` ) 
+VALUES ( 'admin', 'admin@domain.com', "+55", 12, 991285145, 'admin' );
+/* ***************************************************************************** */

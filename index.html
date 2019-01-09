@@ -3,48 +3,28 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" >
-	<title>Call Community</title>
 	<link rel="icon" href="vendor/img/icon.png" sizes="32x32">
+	<link rel="stylesheet" type="text/css" href="vendor/css/reset.css">
 	
+	<title>Call Community</title>
+
 	<!--  DEPEDENCY CSS -->
-	<link rel="stylesheet" type="text/css" href="lib/components/components-all.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css/callcommunity.css">
 
 	<!-- DEPENDENCY JS -->
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
-	<script type="text/javascript" src="lib/angular/angular-touch.min.js"></script>
-	<script type="text/javascript" src="lib/angular/angular-cookies.min.js"></script>
-	<script type="text/javascript" src="lib/angular/angular-route.min.js"></script>
-	<script type="text/javascript" src="lib/components/js-sha1.min.js"></script>
-	<script type="text/javascript" src="lib/components/js-sha3.min.js"></script>
-	<script type="text/javascript" src="lib/components/js-md5.min.js"></script>
-	<script type="text/javascript" src="lib/components/js-base64.min.js"></script>
-	<script type="text/javascript" src="lib/components/date.js"></script>
-	<script type="text/javascript" src="lib/components/components.js"></script>
-	<script type="text/javascript" src="vendor/js/callcommunity.js"></script>
 
 	<!-- MODULE ANGULAR -->
-	<script type="text/javascript" src="app/module.js"></script>
-	<script type="text/javascript" src="app/routes.js"></script>
-	<script type="text/javascript" src="app/run.js"></script>
+	<script type="text/javascript" src="app/callcommunity.module.js"></script>
 
-	<!-- DIRECTIVES -->
-	<script type="text/javascript" src="app/directive.focusme.js"></script>
+	<!-- COMPONENTS ANGULAR-->
+	<script type="text/javascript" src="app/login/login.service.js"></script>
+	<script type="text/javascript" src="app/login/login.component.js"></script>
 
-	<script type="text/javascript" src="app/service.token.js"></script>
 
-	<!-- CONTROLLERS -->
-	<script type="text/javascript" src="app/login/service.login.js"></script>
-	<script type="text/javascript" src="app/login/controller.login.js"></script>
-
-	<script type="text/javascript" src="app/sigin/service.sigin.js"></script>
-	<script type="text/javascript" src="app/sigin/controller.sigin.js"></script>
-
-	<script type="text/javascript" src="app/calendar/service.calendar.js"></script>
-	<script type="text/javascript" src="app/calendar/controller.calendar.js"></script>
 
 
 </head>
-<body ng-view >
+<body>
+	<login-view></login-view>
 </body>
 </html>

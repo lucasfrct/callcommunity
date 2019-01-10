@@ -1,6 +1,5 @@
 ( function ( ) { 
     "use strict";
-	// dependency: js MD5, js SHA1, js SHA3
 
 	angular
         .module ( "callcommunity" )
@@ -25,16 +24,16 @@
 		};
 
 		function queryPassword ( $email = "", $password = "", $callback = null ) {
-			query ( { email: $email, password: $password }, $callback );
+			query ( { email: $email }, $callback, $password );
 		};
 
 		function resetPassword ( $email = "", $callback = null ) {
 			query ( { reset: "", time: 0, email: $email }, $callback );
 		};
 
-		function query ( $data = null, $callback = null ) {
+		function query ( $data = null, $callback = null, $password = "" ) {
 			if ( null !== $data && null !== $callback ) {
-				var $password = "";
+				console.log ( $password  );
 	            $http ( {
 	                url: $serviceLogin.uri,
 	                method: "POST",

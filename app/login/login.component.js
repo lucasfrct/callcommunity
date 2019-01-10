@@ -6,115 +6,80 @@
 
 	function LoginView ( ) {
 		return {
-			template: 
-				'<link rel="stylesheet" type="text/css" href="app/login/login.css">'
-				+'<form class="login-form">'
-					+'<h4 class="login-title">Gss Technology</h4>'
-					+'<h2 class="login-name">{{login.user}}</h2>'
-					+'<div class="login-email" data-letter="{{ login.email[0] }}" ng-show="login.email">{{ login.email }}</div>'
-					+'<div class="login-data">'
-						+'<input type="{{(toggles.statusShow && login.email ) ? \'password\' : \'text\';}}" placeholder="{{login.placeholder}}" ng-model="login.data" >'
-						+'<span ng-show="login.email" ng-click=" showPassword ( );"></span>'
-					+'</div>'
-					+'<div class="login-details">'
-						+'<span ng-click="recoverPassword ( )">Esquceu-se da palavra-passe?</span>'
-						+'<button type="submit" ng-click="next ( ); ">Seguinte</button>'
-					+'</div>'
-				+'</form>'
-
-			, controller: [ "$scope", "$loginservice", LogionController ],
+			templateUrl: "app/login/login.html",
+			controller: [ "$scope", "$timeout", "$loginservice", logincontroller ],
 		};
 	};
-
-	function LogionController ( $scope, $loginservice ) {
+	
+	function logincontroller ( $scope, $timeout, $loginservice ) {
 		$scope.showPassword = showPassword;
 		$scope.recoverPassword = recoverPassword;
 		$scope.next = next;
 		
-		$scope.element = document.querySelector ( ".login-data" );
-		$scope.form = document.querySelector ( ".login-form" );
-		$scope.toggles = {
-			statusEmail: true,
-			statusPassword: true,
-			statusShow: true,
+		$scope.input = {
+			type: true,
+			error: false,
+			shake: false,
+			load: false,
+			data: "",
+			authorized: false,
 		};
 
 		$scope.login = {
 			user: "",
-			email: "",
-			msg: [ "Introduza o email", "Introduza a palavra-passe" ],
-			placeholder: "Introduza o email" ,
-			password: "",
-			data: "",
+			email: "admin@domain.com",
 		};
 
 		function showPassword ( ) {
-			$scope.toggles.statusShow = ( $scope.toggles.statusShow ) ? false : true;
+			$scope.input.type = !$scope.input.type;
 		};
 
-		function recoverPassword ( ) {
+		function recoverPassword ( $data ) {
 			console.log ( "recover password" );
 		};
 
-		function next ( ) {
-			if ( !$scope.login.email && $scope.login.data ) { checkEmail ( ); };
-			if ( $scope.login.email && $scope.login.data ) { checkPassword ( ); };
+		function next ( $data ) {
+			if ( !$scope.login.email && $data  ) { checkEmail ( $data ); };
+			if ( $scope.login.email ) { checkPassword ( $data ); };
 		};
 
-		function checkEmail ( ) {
-			setload ( );
-
-			$scope.login.email = $scope.login.data;
-			$scope.login.data = "";
-
-			$loginservice.email ( $scope.login.email, function ( $data ) {
-				if ( $data.email == $scope.login.email ) {
+		function checkEmail ( $data ) {
+			$scope.input.load = true;
+			$loginservice.email ( $data, function ( $data ) {
+				$scope.input.load = false;
+				if ( $data [ 0 ] !== false  ) {
+					setSuccess ( );
 					$scope.login.user = $data.user;
-					$scope.login.placeholder = $scope.login.msg [ 1 ];
-					setElement ( );
+					$scope.login.email = $data.email;
+
 				} else {
-					$scope.login.email = "";
-					setInvalid ( );
+					setError ( );
 				};
 			} );
 		};
 
-		function checkPassword ( ) {
-			setload ( );
-
-			$scope.login.pasword = $scope.login.data;
-			$scope.login.data = "";
-
-			$loginservice.password ( $scope.login.email, $scope.login.pasword, function ( $data ) { 
-				
-				if ( $data.session == "001" ) {
-					loginathorized ( );
-					setElement ( );
+		function checkPassword ( $data ) {
+			$loginservice.password ( $scope.login.email, $data, function ( $data ) { 
+				$scope.input.load = false;
+				if ( $data [ 0 ] != false ) {
+					setSuccess ( );
+					$scope.input.authorized = true;
 				} else {
-					$scope.login.pasword = "";
-					setInvalid ( );
+					setError ( );
+					$scope.input.data = "";
 				};
 
 			} );
 		};
 
-		function setElement ( ) {
-			$scope.element.setAttribute ( "class", "login-data" );
+		function setSuccess ( ) {
+			$scope.input.error = false;
+			$scope.input.data = "";
 		}
-
-		function setload ( ) {
-			$scope.element.setAttribute ( "class", "login-data load" );
-		};
-
-		function setInvalid ( ) {
-			$scope.element.setAttribute ( "class", "login-data invalid error" );
-			setTimeout ( function ( ) {
-				$scope.element.setAttribute ( "class", "login-data error" );
-			}, 1000 );
-		};
-
-		function loginathorized ( ) {
-			$scope.form.setAttribute ( "class", "login-form login-authorized" )
+		function setError ( ) {
+			$scope.input.error = true;
+			$scope.input.shake = true;
+			$timeout ( function ( ) { $scope.input.shake = false }, 1000 );
 		};
 	};
 } ) ( );

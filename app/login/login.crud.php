@@ -16,10 +16,8 @@ class Crud
     	if ( !$mysqli->connect_errno ) {
     		$this->mysqli = $mysqli;
             $this->mysqli->set_charset( "utf8" );
-            array_push ( $this->debug, "Success Connect" );
     	} else {
     		$this->mysqli = NULL;
-            array_push ( $this->debug, "Error Connect" );
     	}
     	return $this->mysqli;
     }
@@ -40,19 +38,9 @@ class Crud
         $result = $this->mysqli->query ( $sql ); 
         if ( $this->mysqli->affected_rows > 0 ) {
             $row = $result->fetch_array( );
-            
-            if ( $row [ "email"] == $email ) {
-                return array ( "session"=>"001", "tokenAccess"=>"1010" );
-            } else {
-                return  array ( "false" );
-            };
-
+            return ( $row [ "email"] == $email ) ? TRUE : FALSE;
         } else {
-            return  array ( "false" );
+            return FALSE;
         };
     }
 };
-
-#$c = new Crud;
-#echo json_encode ( $c->email ( "admin@domain.com" ) );
-#echo json_encode ( $c->password ( "admin@domain.com", "admin" ) );

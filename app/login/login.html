@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" href="app/login/login.css">
+<form class="login-form {{ ( input.authorized ) ? 'login-authorized' : ''; }}">
+	<h4 class="login-title">Gss Technology</h4>
+	<h2 class="login-name">{{login.user}}</h2>
+	<div class="login-email" data-letter="{{ login.email[0] }}" ng-show="login.email" >{{ login.email }}</div>
+	<div class="login-data {{ ( input.error ) ? 'error' : ''; }} {{ ( input.shake ) ? 'shake' : ''; }} {{ ( input.load ) ? 'load' : '' }}">
+		<input 
+			type="{{ ( login.email && input.type ) ? 'password' : 'text'; }}"
+			placeholder="{{ ( login.email ) ? 'Introduza a palavra-passe' : 'Introduza o email'; }}" 
+			ng-model="input.data"
+		>
+		<span ng-show="login.email" ng-click=" showPassword ( ); "></span>
+	</div>
+	<div class="login-details">
+		<span ng-click=" recoverPassword ( input.data );">Esquceu-se da palavra-passe?</span>
+		<button type="submit" ng-click=" next ( input.data );" ng-disabled="!(input.data.length >= 8 )" >Seguinte</button>
+	</div>
+</form>

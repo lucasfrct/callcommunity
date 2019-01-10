@@ -1,51 +1,42 @@
 <link rel="stylesheet" type="text/css" href="app/sigin/sigin.css">
-
-<main class="row-xs-24 col-xs-12 background-primary">
-
-	<section class="row-xs-20 row-xs-offset-2 text-center">
-		
-		<form>
-
-			<legend>Call Community</legend>
-			
-			<span class="form-message">{{ sigIn.message }}</span>
-
-			<span data-animation="line-load" ng-show="sigIn.load"></span>
-
-			<input type="text" placeholder="Nome" autofocus ng-model="user.name" ng-hide="sigIn.end">
-
-			<input type="email" placeholder="nome@example.com" ng-model="user.email" ng-hide="sigIn.end">
-
-			<input type="password" placeholder="Palavra-passe" 
-				ng-class="{ 
-					'error-input': ( user.password.length > 0 ), 
-					'success-input': ( user.password.length >= 8 ) 
-				}"
-				ng-model="user.password"
-				ng-hide="sigIn.end"
+<form class="sigin-form {{ ( toggles.authorized ) ? 'sigin-authorized' : ''; }} {{ ( toggles.load ) ? 'load' : '' ;}}">
+	<div>
+		<h4 class="sigin-title" >GSS Technology</h4>
+		<h2 class="sigin-head">Criar um Conta</h2>
+		<div class="sigin-name">
+			<input type="text" placeholder="Nome Próprio" ng-model="sigin.firstName">
+			<input type="text" placeholder="apelido" ng-model="sigin.user">
+		</div>
+		<div class="sigin-email" >
+			<input 
+				type="email" 
+				placeholder="Nome do utilizador"
+				ng-model="sigin.email"
 			>
-
-			<input type="password" placeholder="Palavra-passe" 
-				ng-class="{ 
-					'error-input': 
-						( sigIn.passwordConfirm.length > 0 && sigIn.passwordConfirm != user.password ), 
-					'success-input': 
-						( sigIn.passwordConfirm.length >= 8 && sigIn.passwordConfirm == user.password ),
-				}"
-				ng-model="sigIn.passwordConfirm"
-				ng-hide="sigIn.end"
+			<span class="sigin-notice {{ ( toggles.existEmail ) ? 'email-notice' : '' }}" >{{ msgEmail }}</span>
+		</div>
+		<div class="sigin-password" > 
+			<input 
+				type="{{ ( toggles.showPassword ) ? 'text' : 'password' }}" 
+				placeholder="Palavra-passe"
+				ng-model="password"
+			> 
+			<input 
+				type="{{ ( toggles.showPassword ) ? 'text' : 'password' }}" 
+				placeholder="Confirmar"
+				ng-model="sigin.password" 
 			>
-
-			<button class="radius-4" type="submit" 
-				ng-click="sigIn.save ( user )" 
-				ng-disabled="sigIn.disabled ( );"
-				ng-hide="sigIn.end" 
-			>Criar conta</button>
-
-			<a href="#!/login" class="form-link" >Fazer login {{ email.indexOf("@") }}</a>
-		
-		</form>
-	
-	</section>
-
-</main>
+			<span ng-click=" showPassword ( ); "></span>
+		</div>
+		<span class="sigin-notice" >Utilize 8 ou mais caracteres numa mistura de letras, números e símbolos.</span>
+		<button 
+			class="sigin-btn" 
+			type="submit" 
+			ng-click=" sender ( sigin )"
+			ng-disabled="!(sigin.firstName.length >= 2) || !(sigin.user.length >= 2) || !(sigin.email.length >= 4 ) || !( sigin.password.length >= 8 ) || !( sigin.password == password )"
+		>Seguinte</button>
+	</div>
+	<div class="sigin-img">
+		<span class="sigin-notice">Tecnologia e serviços especializados.</span>
+	</div>
+</form>

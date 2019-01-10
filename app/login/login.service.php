@@ -7,6 +7,7 @@ class Service
     private $email = "admin@admin.com";
     private $pass = "admin";
     private $crud = null;
+    private $token = "1010";
 
     public function __construct ( )
     { 
@@ -18,6 +19,7 @@ class Service
         return ( 
             $_SERVER [ 'REQUEST_METHOD' ] == "POST" 
             && !empty ( $_SERVER [ "HTTP_ACCESS_TOKEN" ] )
+            && $_SERVER [ "HTTP_ACCESS_TOKEN" ] == $this->token
         ) ? TRUE : FALSE;
     }
     
@@ -28,27 +30,25 @@ class Service
 
     public function email ( )
     {   
-        if ( $this->request ( ) && count ( $this->getData ( ) ) == 1 ) {
-
+        if ( 
+            $this->request ( ) 
+            && count ( $this->getData ( ) ) == 1 
+            && empty ( $_SERVER [ "HTTP_AUTHENTICATION" ] )
+        ) {
             $data = $this->crud->email ( $this->data [ "email" ] );
-
-            if ( count ( $data ) == 2 ){
-                echo json_encode ( $data );
-            };
-
+            echo json_encode ( ( count ( $data ) == 2 ) ? $data : array ( FALSE ) );
         };
     }
 
     public function password ( )
     {
-        if ( $this->request ( ) && count ( $this->getData ( ) ) == 2 ) {
-
-            $data = $this->crud->password ( $this->data [ "email" ], $this->data [ "password" ] );
-
-            if ( count ( $data ) == 2 ) {
-                echo json_encode ( $data );
-            };
-            
+        if ( 
+            $this->request ( ) 
+            && count ( $this->getData ( ) ) == 1 
+            && !empty ( $_SERVER [ "HTTP_AUTHENTICATION" ] ) 
+        ) {
+            $status = $this->crud->password ( $this->data [ "email" ], $_SERVER [ "HTTP_AUTHENTICATION" ] );
+            echo json_encode ( ( $status ) ? array ( "session"=>"001", "tokenAccess"=>$this->token ) :  array ( FALSE ) );
         };  
     } 
 };

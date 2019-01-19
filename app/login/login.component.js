@@ -7,13 +7,13 @@
 	function LoginView ( ) {
 		return {
 			templateUrl: "app/login/login.html",
-			controller: [ "$scope", "$timeout", "$loginservice", logincontroller ],
+			controller: [ "$scope", "$session", "$timeout", "$loginservice", logincontroller ],
 		};
 	};
 	
-	function logincontroller ( $scope, $timeout, $loginservice ) {
+	function logincontroller ( $scope, $session, $timeout, $loginservice ) {
 		$scope.showPassword = showPassword;
-		$scope.recoverPassword = recoverPassword;
+		$scope.recoveryPassword = recoveryPassword;
 		$scope.next = next;
 		
 		$scope.input = {
@@ -23,24 +23,43 @@
 			load: false,
 			data: "",
 			authorized: false,
+			reset: false,
 		};
 
 		$scope.login = {
 			user: "",
-			email: "admin@domain.com",
+			email: "",
 		};
 
 		function showPassword ( ) {
 			$scope.input.type = !$scope.input.type;
 		};
 
-		function recoverPassword ( $data ) {
-			console.log ( "recover password" );
+		function recoveryPassword ( $data ) {
+			$scope.input.reset = true;
+			$scope.login.user = "Utilize o email registrado para criar uma nova senha.";
 		};
 
 		function next ( $data ) {
-			if ( !$scope.login.email && $data  ) { checkEmail ( $data ); };
-			if ( $scope.login.email ) { checkPassword ( $data ); };
+			if ( $scope.input.reset == true ) {
+				resetPassword ( $data );
+			} else {
+				if ( !$scope.login.email && $data  ) { checkEmail ( $data ); };
+				if ( $scope.login.email ) { checkPassword ( $data ); };
+			};
+		};
+
+		function resetPassword ( $data ) {
+			$scope.input.load = true;
+			$loginservice.reset ( $data, function ( $data ) { 
+				$scope.input.load = false;
+				if ( $data [ 0 ] !== false  ) {
+					setSuccess ( );
+					$scope.input.authorized = true;
+				} else {
+					setError ( );
+				};
+			} );
 		};
 
 		function checkEmail ( $data ) {
@@ -64,6 +83,11 @@
 				if ( $data [ 0 ] != false ) {
 					setSuccess ( );
 					$scope.input.authorized = true;
+					$timeout ( function ( ) { 
+						$session.set ( $data.session, ( 0.017 * 5 ) ); // 2 houras
+						$session.redirect ( "/task.html" );
+					}, 900 );
+
 				} else {
 					setError ( );
 					$scope.input.data = "";
@@ -81,5 +105,9 @@
 			$scope.input.shake = true;
 			$timeout ( function ( ) { $scope.input.shake = false }, 1000 );
 		};
+
+		//$session.set ( "1010", 0.017 );
+		//console.log ( $session.get ( ) );
+		//$session.kill ( );
 	};
 } ) ( );

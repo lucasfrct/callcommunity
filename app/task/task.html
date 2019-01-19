@@ -1,0 +1,15 @@
+<link rel="stylesheet" type="text/css" href="app/task/task.css">
+<header class="task-header">
+</header>
+<main class="task-view">
+	<section class="task-container">
+		<div data-hour="{{task.hour}}" ng-repeat=" task in taskView">
+			<span 
+				ng-show="task.title" 
+				ng-click="openTask ( task ); "
+				data-title="{{task.title}}" 
+				data-local="{{task.local}}"
+			></span>
+		</div>
+	</section>
+</main>

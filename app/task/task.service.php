@@ -3,9 +3,11 @@ include_once ( "login.crud.php" );
 
 class Service
 {
-    private $token = "1010";
     private $data = null;
+    private $email = "admin@admin.com";
+    private $pass = "admin";
     private $crud = null;
+    private $token = "1010";
 
     public function __construct ( )
     { 
@@ -49,32 +51,8 @@ class Service
             echo json_encode ( ( $status ) ? array ( "session"=>"001", "tokenAccess"=>$this->token ) :  array ( FALSE ) );
         };  
     } 
-
-    public function resetpassword ( ) 
-    {
-        $reset = array ( FALSE );
-        if ( 
-            $this->request ( ) 
-            && count ( $this->getData ( ) ) == 2 
-            && $this->data [ "type" ] == "reset" 
-        ) {
-            $data = $this->crud->email ( $this->data [ "email" ] );
-            if ( count ( $data ) == 2 ) {
-                $this->gerateLinkreset ( );
-                $reset = array ( TRUE );
-            };
-            
-            echo json_encode ( $reset );
-        };
-
-    }
-
-    public function gerateLinkreset ( ) 
-    {
-    }
 };
 
 $service = new Service;
-$service->resetpassword ( );
 $service->email ( );
 $service->password ( );

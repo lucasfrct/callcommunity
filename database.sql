@@ -44,8 +44,8 @@ DELIMITER ;
 
 /* INSERT TABLE REGISTERS ***************************************************** */
 INSERT INTO callcommunity.registers ( `user`, `email`, `country`, `ddd`, `telephone`, `password` ) 
-VALUES ( 'root', 'root@domain.com', "+55", 12, 991285145, 'root' );
+VALUES ( 'root', 'root@domain.com', "+55", 12, 991285145, 'root1234' );
 
 INSERT INTO callcommunity.registers ( `user`, `email`, `country`, `ddd`, `telephone`, `password` ) 
-VALUES ( 'admin', 'admin@domain.com', "+55", 12, 991285145, 'admin' );
+VALUES ( 'admin', 'admin@domain.com', "+55", 12, 991285145, 'admin1234' );
 /* ***************************************************************************** */

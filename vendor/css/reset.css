@@ -18,3 +18,12 @@ body * {
 	padding: 0;
 	position: relative;
 }
+
+body {
+    background-image: url( "../img/community3.jpg" );
+    background-attachment: local;
+    background-origin: border-box;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

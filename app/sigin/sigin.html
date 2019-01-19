@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="app/sigin/sigin.css">
 <form class="sigin-form {{ ( toggles.authorized ) ? 'sigin-authorized' : ''; }} {{ ( toggles.load ) ? 'load' : '' ;}}">
 	<div>
-		<h4 class="sigin-title" >GSS Technology</h4>
+		<h4 class="sigin-title" >Call Community</h4>
 		<h2 class="sigin-head">Criar um Conta</h2>
 		<div class="sigin-name">
 			<input type="text" placeholder="Nome Próprio" ng-model="sigin.firstName">
@@ -10,7 +10,7 @@
 		<div class="sigin-email" >
 			<input 
 				type="email" 
-				placeholder="Nome do utilizador"
+				placeholder="Email do utilizador"
 				ng-model="sigin.email"
 			>
 			<span class="sigin-notice {{ ( toggles.existEmail ) ? 'email-notice' : '' }}" >{{ msgEmail }}</span>

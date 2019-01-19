@@ -3,45 +3,29 @@
 
 	angular
         .module ( "callcommunity" )
-        .service ( "$loginservice", [ "$http", "$timeout", LoginService ] );
+        .service ( "$taskservice", [ "$http", "$timeout", TaskService ] );
 	
-	function LoginService ( $http, $timeout ) {
+	function TaskService ( $http, $timeout ) {
 
-		var $serviceLogin = this;
+		var $taskService = this;
 		
-		$serviceLogin.token = "1010";
+		$taskService.token = "1010";
 
-		$serviceLogin.uri = "app/login/login.service.php";
+		$taskService.uri = "app/login/login.service.php";
 
-		$serviceLogin.email = queryEmail;
-
-		$serviceLogin.password = queryPassword;
-
-		$serviceLogin.reset = resetPassword;
-
-		function queryEmail ( $email = "", $callback = null ) {
-			query ( { email : $email }, $callback );
-		};
-
-		function queryPassword ( $email = "", $password = "", $callback = null ) {
-			query ( { email: $email }, $callback, $password );
-		};
-
-		function resetPassword ( $email = "", $callback = null ) {
-			query ( { type: "reset", email : $email }, $callback );
-		};
-
+		
 		function query ( $data = null, $callback = null, $password = "" ) {
 			if ( null !== $data && null !== $callback ) {
+				console.log ( $password  );
 	            $http ( {
-	                url: $serviceLogin.uri,
+	                url: $taskService.uri,
 	                method: "POST",
 	                data: String ( "loginservice="+JSON.stringify ( $data ) ),
 	                headers : { 
 		                'Content-Type' : "application/x-www-form-urlencoded; charset=UTF-8",
 		                'Access-Control-Allow-Origin' : '*',
 		                'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT, DELETE',
-		                'Access-Token': $serviceLogin.token,
+		                'Access-Token': $taskService.token,
 		                'Authentication': $password,
 	            	},
 	            } )

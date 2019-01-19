@@ -1,0 +1,125 @@
+body {
+    background: none;
+}
+
+.task-header {
+
+}
+
+.task-view {
+	overflow-y: scroll;
+	height: 500px;
+	scrollbar-width: 2px;
+  	scrollbar-color: #DDD;
+}
+
+.task-view::-webkit-scrollbar {
+  width: 2px;
+}
+
+.task-view::-webkit-scrollbar-thumb {
+  background-color: #666;
+}
+
+.task-view::-webkit-scrollbar-track {
+  background-color: #DDD;
+}
+
+.task-container {
+	border: solid 1px #F00;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat( 10, 1fr );
+	height: 500px;
+	min-height: 400px;
+	align-items: center;
+	align-content: center;
+	vertical-align: top;
+}
+
+.task-container > div {
+	border-top: solid 1px #DDD;
+	display: block;
+	height: 100%;
+	position: relative;
+	width: calc( 100% - 56px );
+	margin-left: 52px;
+	font-size: 0;
+	line-height: 0;
+}
+
+.task-container > div::before {
+	content: attr( data-hour )":00";
+	display: block;
+	height: inherit;
+	width: 56px;
+	background-color: transparent;
+	color: #000;
+	font-size: 11px;
+	margin: 0;
+	position: absolute;
+	top: -40px;
+	left: -48px;
+	line-height: 78px;
+	padding: 0 16px 0 0;
+	box-sizing: border-box;
+	text-align: right;
+	border-right: solid 1px #DDD;
+}
+
+.task-container > div:first-child {
+	margin-top: 9px;
+}
+
+.task-container > div:last-child {
+
+}
+
+.task-container > div > span {
+	background-color: #EEE;
+	border: solid 1px #DDD;
+	display: block;
+	font-size: 11px;
+	height: calc( 100% - 2px );
+	width: calc( 100% - 16px );
+	margin: 0;
+	left: 9px;
+	top:  0px;
+	position: relative;
+	box-sizing: border-box;
+	padding: 0;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.task-container > div > span:hover,
+.task-container > div > span:focus {
+	box-shadow: 0 0 2px 1px #999;
+}
+
+.task-container > div:first-child > span {
+	height: calc( ( 100% - 2px ) - 4px );
+}
+
+.task-container > div > span::before {
+	content: attr( data-title );
+	display: block;
+	width: 100%;
+	height: 20px;
+	font-size: 11px;
+	line-height: 20px;
+	font-weight: bold;
+	padding-left: 6px;
+	box-sizing: border-box;
+}
+
+.task-container > div > span::after {
+	content: attr( data-local );
+	display: block;
+	width: 100%;
+	height: calc( 100% - 20px );
+	font-size: 10px;
+	line-height: 10px;
+	box-sizing: border-box;
+	padding-left: 6px; 
+}

@@ -7,11 +7,11 @@
 	function SiginView ( ) {
 		return {
 			templateUrl: "app/sigin/sigin.html", 
-			controller: [ "$scope", "$siginservice", SiginController ],
+			controller: [ "$scope", "$session", "$siginservice", SiginController ],
 		};
 	};
 
-	function SiginController ( $scope, $siginservice ) {
+	function SiginController ( $scope, $session, $siginservice ) {
 		$scope.showPassword = showPassword;
 		$scope.sender = sender;
 		
@@ -23,13 +23,13 @@
 		};
 
 		$scope.sigin = {
-			firstName: "Lucas",
-			user: "lfc",
-			email: "lucasfrct@gmail.com",
-			password: "lucas123",
+			firstName: "",
+			user: "",
+			email: "",
+			password: "",
 		};
 
-		$scope.password = "lucas123";
+		$scope.password = "";
 		$scope.msgEmail = "Pode utilizar letras, números, pontos e no mínimo 4 caracteres";
 
 		function showPassword ( ) {
@@ -46,6 +46,7 @@
 				};
 				if ( $data [ 0 ] == 1 ) {
 					$scope.toggles.authorized = true;
+					$session.redirect ( "/login.html" );
 				} 
 				if ( $data [ 0 ] == 0 ) {
 					alert ( "Ocoreu um erro no sistema, por favor tente mais tarde." );

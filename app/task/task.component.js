@@ -24,12 +24,12 @@
 		
 		$scope.taskView = gerateTaskView ( $scope.tasks );
 
-		function gerateTaskView ( $tasks ) {
+		function gerateTaskView ( $tasks, $init = 8, $end = 17 ) {
 			var $taskView = [ ];
 			var $count = $tasks.length;
 			var $index = 0;
 			var $add = null;
-			for ( var $i = 8; $i <= 17; $i++ ) {
+			for ( var $i = $init; $i <= $end; $i++ ) {
 				if ( $index < $count && $tasks [ $index ].hour == $i ) {
 					$add = $tasks [ $index ]
 					$index++;

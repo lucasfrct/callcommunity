@@ -6,6 +6,33 @@ body {
 
 }
 
+
+.task-nav-grid {
+	display: grid;
+	grid-template-columns: 80px 3fr 2fr 2fr 6fr 5fr;
+	grid-template-rows: 60px;
+	align-items: center;
+	text-align: center;
+}
+
+.task-nav-grid > * {
+	border: solid 1px #F00;
+	box-sizing: border-box;
+	align-items: center;
+	align-content: center;
+	display: inline-block;
+}
+
+.task-nav-grid > li:first-child {
+	background-image: url( "../../vendor/img/hamburguer.svg" );
+	background-attachment: local;
+  	background-origin: border-box;
+  	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: 50% 50%;
+	cursor: pointer;
+}
+
 .task-view {
 	overflow-y: scroll;
 	height: 500px;
@@ -94,7 +121,7 @@ body {
 
 .task-container > div > span:hover,
 .task-container > div > span:focus {
-	box-shadow: 0 0 2px 1px #999;
+	box-shadow: 0 0 1px 1px #999;
 }
 
 .task-container > div:first-child > span {

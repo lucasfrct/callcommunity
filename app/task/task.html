@@ -1,25 +1,32 @@
 <link rel="stylesheet" type="text/css" href="app/task/task.css">
 <header class="task-header">
-	<nav>
-		<ul class="task-nav-grid">
-			<li>menu</li>
-			<li>Agenda</li>
-			<li>hoje</li>
-			<li>< ></li>
-			<li>janeiro</li>
-			<li>pesquisa</li>
+	<nav class="task-nav">
+		<ul>
+			<li><button></button></li>
+			<li><span>31</span><em>Agenda</em></li>
+			<li><button>Hoje</button></li>
+			<li class="task-nav-arrows"><button><</button><button>></button></li>
+			<li><button>Janeiro de 2019</button></li>
+			<li><input  type="text" placeholder="Pesquise aqui..." ></li>
 		</ul>
 	</nav>
 </header>
 <main class="task-view">
+	<section class="task-tool">
+		<button>+</button>
+		<div>
+			<em>sex</em>
+			<span>1</span>
+		</div>
+	</section>
 	<section class="task-container">
 		<div data-hour="{{task.hour}}" ng-repeat=" task in taskView">
-			<span 
+			<!--button 
 				ng-show="task.title" 
 				ng-click="openTask ( task ); "
 				data-title="{{task.title}}" 
 				data-local="{{task.local}}"
-			></span>
+			></button-->
 		</div>
 	</section>
 </main>

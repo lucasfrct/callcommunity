@@ -2,42 +2,128 @@ body {
     background: none;
 }
 
-.task-header {
+.task-header {  }
 
+.task-nav {  
+	border-bottom: solid 1px #DDD;
+	box-shadow: 0 0 2px #BBB;
 }
 
-
-.task-nav-grid {
+.task-nav > * {
+	align-items: center;
 	display: grid;
-	grid-template-columns: 80px 3fr 2fr 2fr 6fr 5fr;
-	grid-template-rows: 60px;
-	align-items: center;
+	grid-template-columns: 60px 3fr 2fr 2fr 3fr 4fr;
+	grid-template-rows: 1fr;
+	height: 60px;
 	text-align: center;
+	width: 100%;
 }
 
-.task-nav-grid > * {
-	border: solid 1px #F00;
+.task-nav > * > * {
 	box-sizing: border-box;
-	align-items: center;
-	align-content: center;
 	display: inline-block;
+	min-width: 60px;
+	font-size: 18px;
+	text-align: center;
+	position: relative;
 }
 
-.task-nav-grid > li:first-child {
+.task-nav > * > * > button,
+.task-nav > * > * > input {
+	cursor: pointer;
+	border: none;
+	height: 100%;
+	font-size: inherit;
+	line-height: inherit;
+	display: inline-block;
+	margin: 1px 2px;
+	padding: 8px 16px;
+	vertical-align: top;
+	border-radius: 4px;
+	background-color: transparent;
+	border:solid 1px #CCC;
+	outline: 0;
+}
+
+.task-nav > * > * > button:hover,
+.task-nav > * > * > button:focus,
+.task-nav > * > * > input:hover,
+.task-nav > * > * > input:focus  {
+	background-color: rgba( 241, 243, 244, 1 );
+	border-color: rgba( 26, 115, 232, 1 );
+}
+
+.task-nav > * > * > input {
+	cursor: auto;
+	background-color: transparent !important;
+	width: auto
+	margin-right 16px;
+	display: block;
+}
+
+.task-nav > * > *:first-child {
+	height: 100%;
+	width: 100%;
+}
+
+.task-nav > * > *:first-child button {
 	background-image: url( "../../vendor/img/hamburguer.svg" );
 	background-attachment: local;
   	background-origin: border-box;
   	background-position: center;
   	background-repeat: no-repeat;
-  	background-size: 50% 50%;
-	cursor: pointer;
+  	background-size: 60% 60%;
+	width: 80%;
+	border: none;
+	border-radius: 50%;
+	height: 80%;
+	vertical-align: top;
+	padding: 0;
+	margin: 10% 0 0 0;
+	top: 0;
+	left: 0;
+	position: relative;
 }
+
+.task-nav > * > * > span {
+	font-size: inherit;
+	line-height: inherit;
+	display: inline-block;
+	margin: 0 2px;
+	padding: 8px 12px;
+	vertical-align: baseline;
+	border-radius: 4px;
+	background-color: rgb( 68, 132, 241 );
+	border:solid 1px #AAA;
+	color: #FFF;
+	margin-right: 8px;
+}
+
+.task-nav > * > * > em {
+	font-weight: normal;
+	font-style: normal;
+}
+
+.task-nav .task-nav-arrows > * {
+	border: none;
+	border-radius: 50%;
+	height: 45px; 
+	padding: 0;
+	width: 45px;
+}
+
+/****************************************************************************************************/
 
 .task-view {
 	overflow-y: scroll;
-	height: 500px;
+	min-height: 500px;
+  	display: block;
+  	margin-top: 10px;
+  	/* border: solid 1px #f00;*/
+	/*
 	scrollbar-width: 2px;
   	scrollbar-color: #DDD;
+  	*/
 }
 
 .task-view::-webkit-scrollbar {
@@ -52,57 +138,125 @@ body {
   background-color: #DDD;
 }
 
+
+
+.task-tool {
+	display: block;
+	border-bottom: solid 1px #DDD;
+	box-shadow: 0 0 2px #BBB;
+	height: 60px;
+	position: relative;
+}
+
+.task-tool button,
+.task-tool div {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	margin: 0px 0 0 4px;
+}
+
+.task-tool button {
+	border-radius: 50%;
+	margin-left: 24px;
+	border: none;
+	font-size: 42px;
+	line-height: 0px;
+	color: rgba( 26, 115, 232, 1 );
+	background-color: #FBFBFB;
+	box-shadow: 0px 1px 3px 1px #CCC;
+	transition: box-shadow 0.3s ease-in-out;
+	outline: 0;
+}
+
+.task-tool button:hover,
+.task-tool button:focus {
+	box-shadow: 0px 2px 12px 2px #AAA;
+	background-color: #F9F9F9;
+}
+
+.task-tool div {
+	top: 36px;
+	text-align: center;
+	z-index: 10;
+}
+
+.task-tool div > * {
+	display: block;
+}
+
+.task-tool div > em {
+	font-size: 16px;
+	line-height: 16px;
+	color: rgba( 26, 115, 232, 1 );
+	margin-top: -18px;
+}
+
+.task-tool div > span {
+	background-color: rgba( 26, 115, 232, 1 );
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	border-radius: 50%;
+	color: #FFF;
+	margin: 0;
+}
+
+/******************************************************************************************/
+
 .task-container {
-	border: solid 1px #F00;
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: repeat( 10, 1fr );
-	height: 500px;
-	min-height: 400px;
+	grid-template-rows: repeat( 10, 40px );
+	max-height: 1200px;
+	min-height: 200px;
 	align-items: center;
-	align-content: center;
 	vertical-align: top;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	/*
+	border: solid 1px #F00;
+	*/
 }
 
-.task-container > div {
-	border-top: solid 1px #DDD;
-	display: block;
+.task-container > * {
+	min-height: 38px;
 	height: 100%;
+	border-bottom: solid 1px #DDD;
 	position: relative;
 	width: calc( 100% - 56px );
-	margin-left: 52px;
+	margin-left: 56px;
 	font-size: 0;
 	line-height: 0;
+	/*
+	box-shadow: 0 0 2px #BBB;
+	*/
 }
 
-.task-container > div::before {
+.task-container > *::before {
+	background-color: transparent;
+	color: #000;
 	content: attr( data-hour )":00";
 	display: block;
 	height: inherit;
-	width: 56px;
-	background-color: transparent;
-	color: #000;
-	font-size: 11px;
+	font-size: 10px;
+	font-weight: 100;
 	margin: 0;
 	position: absolute;
-	top: -40px;
+	width: 56px;
+	top: 0px;
 	left: -48px;
 	line-height: 78px;
 	padding: 0 16px 0 0;
 	box-sizing: border-box;
 	text-align: right;
 	border-right: solid 1px #DDD;
+	box-shadow: 1px 0 4px #F0F0F0;
 }
 
-.task-container > div:first-child {
-	margin-top: 9px;
-}
-
-.task-container > div:last-child {
-
-}
-
-.task-container > div > span {
+.task-container > * > * {
+	/*
 	background-color: #EEE;
 	border: solid 1px #DDD;
 	display: block;
@@ -117,18 +271,21 @@ body {
 	padding: 0;
 	border-radius: 4px;
 	cursor: pointer;
+	*/
 }
 
-.task-container > div > span:hover,
-.task-container > div > span:focus {
+/*
+
+.task-container > div > *:hover,
+.task-container > div > *:focus {
 	box-shadow: 0 0 1px 1px #999;
 }
 
-.task-container > div:first-child > span {
+.task-container > div:first-child > * {
 	height: calc( ( 100% - 2px ) - 4px );
 }
 
-.task-container > div > span::before {
+.task-container > div > *::before {
 	content: attr( data-title );
 	display: block;
 	width: 100%;
@@ -140,7 +297,7 @@ body {
 	box-sizing: border-box;
 }
 
-.task-container > div > span::after {
+.task-container > div > *::after {
 	content: attr( data-local );
 	display: block;
 	width: 100%;

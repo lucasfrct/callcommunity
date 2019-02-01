@@ -1,5 +1,5 @@
 ( function ( ) { 
 	"use strict";
 	angular
-		.module ( "callcommunity", [ ] );
+		.module ( "callcommunity", [ 'ngRoute', 'ngAnimate' ] );
 } ) ( );

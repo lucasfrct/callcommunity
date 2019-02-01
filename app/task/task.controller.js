@@ -2,14 +2,7 @@
 	"use strict";
 	angular
 		.module ( "callcommunity" )
-		.component ( "taskView", TaskView ( ) );
-
-	function TaskView ( ) {
-		return {
-			templateUrl: "app/task/task.html",
-			controller: [ "$scope", "$session", "$taskservice", taskcontroller ],
-		};
-	};
+		.controller ( "taskcontroller", [ "$scope", "$session", "$taskservice", taskcontroller ] );
 	
 	function taskcontroller ( $scope, $session, $taskservice ) {
 		$session.check ( );

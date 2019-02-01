@@ -4,27 +4,34 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" >
 	<link rel="icon" href="vendor/img/icon.png" sizes="32x32">
-	<link rel="stylesheet" type="text/css" href="vendor/css/reset.css">
 	
 	<title>Call Community</title>
 
 	<!--  DEPEDENCY CSS -->
+	<link rel="stylesheet" type="text/css" href="vendor/css/reset.css">
 
 	<!-- DEPENDENCY JS -->
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
-	<script type="text/javascript" src="lib/angular/angular-cookies.min.js"></script>
 	<script type="text/javascript" src="lib/angular/angular-route.min.js"></script>
+	<script type="text/javascript" src="lib/angular/angular-animate.min.js"></script>
 
 	<!-- MODULE ANGULAR -->
 	<script type="text/javascript" src="app/callcommunity.module.js"></script>
+	<script type="text/javascript" src="app/callcommunity.session.service.js"></script>
+	<script type="text/javascript" src="app/callcommunity.route.config.js"></script>
 
 	<!-- COMPONENTS ANGULAR-->
-	<script type="text/javascript" src="app/session.service.js"></script>
 	<script type="text/javascript" src="app/login/login.service.js"></script>
-	<script type="text/javascript" src="app/login/login.component.js"></script>
+	<script type="text/javascript" src="app/login/login.controller.js"></script>
+
+	<script type="text/javascript" src="app/sigin/sigin.service.js"></script>
+	<script type="text/javascript" src="app/sigin/sigin.controller.js"></script>
+
+	<script type="text/javascript" src="app/task/task.service.js"></script>
+	<script type="text/javascript" src="app/task/task.controller.js"></script>
 
 </head>
 <body>
-	<login-view></login-view>
+	<ng-view></ng-view>
 </body>
 </html>

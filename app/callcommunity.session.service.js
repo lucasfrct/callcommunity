@@ -2,15 +2,16 @@
 	"use strict";
 	angular
 		.module ( "callcommunity" )
-		.service ( "$session", [ "$window", SessionService ] );
+		.service ( "$session", [ "$location", SessionService ] );
 	
-	function SessionService ( $window ) {
+	function SessionService ( $location ) {
 		var $session = this;
 		$session.set = sessionSet;
 		$session.get = sessionGet;
 		$session.check = sessionCheck;
 		$session.kill = sessionKill;
 		$session.redirect = sessionRedirect;
+		$session.cleanAll = deleteAllCookies;
 
 		function sessionSet ( $session = null, $hour = 4 ) {
 			var $date = new Date ( );
@@ -44,7 +45,7 @@
 			if ( $sessionCheck.length >= 1 ) {
 				sessionSet ( $sessionCheck, ( 0.017 * 5 ) ); // 2 horas
 			} else {
-				sessionRedirect ( "/login.html" );
+				sessionRedirect ( "/login" );
 			};
 		};
 
@@ -53,19 +54,18 @@
 		};
 
 		function sessionRedirect ( $url = "" ) {
-			$window.location.href = $url;
+			$location.path ( $url );
+		};
+
+		function deleteAllCookies ( ) {
+		    var $cookies = document.cookie.split ( ";" );
+		    for ( var $i = 0; $i < $cookies.length; $i++ ) {
+		        var $cookie = $cookies [ $i ];
+		        var $eqPos = $cookie.indexOf ( "=" );
+		        var $name = $eqPos > -1 ? $cookie.substr ( 0, $eqPos ) : $cookie;
+		        $session.ck = $name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+		    };
 		};
 	};
 
 } ) ( );
-
-function deleteAllCookies ( ) {
-    var $cookies = document.cookie.split ( ";" );
-
-    for ( var $i = 0; $i < $cookies.length; $i++ ) {
-        var $cookie = $cookies [ $i ];
-        var $eqPos = $cookie.indexOf ( "=" );
-        var $name = $eqPos > -1 ? $cookie.substr ( 0, $eqPos ) : $cookie;
-        document.cookie = $name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    };
-};

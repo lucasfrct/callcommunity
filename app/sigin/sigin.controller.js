@@ -2,16 +2,9 @@
 	"use strict";
 	angular
 		.module ( "callcommunity" )
-		.component ( "siginView", SiginView ( ) );
+		.controller ( "sigincontroller", [ "$scope", "$location", "$session", "$siginservice", sigincontroller ] );
 
-	function SiginView ( ) {
-		return {
-			templateUrl: "app/sigin/sigin.html", 
-			controller: [ "$scope", "$session", "$siginservice", SiginController ],
-		};
-	};
-
-	function SiginController ( $scope, $session, $siginservice ) {
+	function sigincontroller ( $scope, $location, $session, $siginservice ) {
 		$scope.showPassword = showPassword;
 		$scope.sender = sender;
 		
@@ -46,7 +39,7 @@
 				};
 				if ( $data [ 0 ] == 1 ) {
 					$scope.toggles.authorized = true;
-					$session.redirect ( "/login.html" );
+					$session.redirect ( "/login" );
 				} 
 				if ( $data [ 0 ] == 0 ) {
 					alert ( "Ocoreu um erro no sistema, por favor tente mais tarde." );

@@ -2,14 +2,9 @@
 	"use strict";
 	angular
 		.module ( "callcommunity" )
-		.component ( "loginView", LoginView ( ) );
-
-	function LoginView ( ) {
-		return {
-			templateUrl: "app/login/login.html",
-			controller: [ "$scope", "$session", "$timeout", "$loginservice", logincontroller ],
-		};
-	};
+		.controller ( "logincontroller", 
+			[ "$scope", "$session", "$timeout", "$loginservice", logincontroller ] 
+		);
 	
 	function logincontroller ( $scope, $session, $timeout, $loginservice ) {
 		$scope.showPassword = showPassword;
@@ -85,7 +80,7 @@
 					$scope.input.authorized = true;
 					$timeout ( function ( ) { 
 						$session.set ( $data.session, ( 0.017 * 5 ) ); // 2 houras
-						$session.redirect ( "/task.html" );
+						$session.redirect ( "/task" );
 					}, 900 );
 
 				} else {
@@ -110,4 +105,5 @@
 		//console.log ( $session.get ( ) );
 		//$session.kill ( );
 	};
+	
 } ) ( );

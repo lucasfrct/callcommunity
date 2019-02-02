@@ -153,7 +153,7 @@ body {
 	display: inline-block;
 	width: 50px;
 	height: 50px;
-	margin: 0px 0 0 4px;
+	margin: 4px 0 0 4px;
 }
 
 .task-tool button {
@@ -172,13 +172,14 @@ body {
 .task-tool button:hover,
 .task-tool button:focus {
 	box-shadow: 0px 2px 12px 2px #AAA;
-	background-color: #F9F9F9;
+	background-color: rgba( 241, 243, 244, 0.4 );
 }
 
 .task-tool div {
-	top: 36px;
+	top: 32px;
 	text-align: center;
 	z-index: 10;
+	transition: margin 0.5s ease-in-out;
 }
 
 .task-tool div > * {
@@ -205,6 +206,7 @@ body {
 /******************************************************************************************/
 
 .task-container {
+	display: inline-block;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: repeat( 10, 40px );
@@ -215,6 +217,8 @@ body {
 	padding: 0;
 	margin: 0;
 	position: relative;
+	vertical-align: top;
+	width: 100%;
 	/*
 	border: solid 1px #F00;
 	*/
@@ -247,63 +251,195 @@ body {
 	width: 56px;
 	top: 0px;
 	left: -48px;
-	line-height: 78px;
+	line-height: 0;
 	padding: 0 16px 0 0;
 	box-sizing: border-box;
 	text-align: right;
 	border-right: solid 1px #DDD;
-	box-shadow: 1px 0 4px #F0F0F0;
+}
+
+.task-container > *:first-child::before {
+	content: "";
 }
 
 .task-container > * > * {
-	/*
-	background-color: #EEE;
-	border: solid 1px #DDD;
+	background-color: rgba( 213, 0, 0, 1 );
+	border: none;
 	display: block;
 	font-size: 11px;
 	height: calc( 100% - 2px );
-	width: calc( 100% - 16px );
-	margin: 0;
-	left: 9px;
-	top:  0px;
+	width: calc( 100% - 32px );
+	margin: 0 0 0 9px;
+	left: 0;
+	top:  0;
 	position: relative;
 	box-sizing: border-box;
 	padding: 0;
 	border-radius: 4px;
 	cursor: pointer;
-	*/
+	box-shadow: 2px 2px 4px #BBB;
+	outline: 0;
 }
 
-/*
-
-.task-container > div > *:hover,
-.task-container > div > *:focus {
-	box-shadow: 0 0 1px 1px #999;
-}
-
-.task-container > div:first-child > * {
-	height: calc( ( 100% - 2px ) - 4px );
+.task-container > div > *::before,
+.task-container > div > *::after {
+	color: #FFF;
+	display: block;
+	width: 100%;
+	font-size: 12px;
+	box-sizing: border-box;
+	vertical-align: top;
+	top: 0;
+	position: absolute;
+	text-align: left;
+	padding-left: 4px;
 }
 
 .task-container > div > *::before {
 	content: attr( data-title );
-	display: block;
-	width: 100%;
-	height: 20px;
-	font-size: 11px;
 	line-height: 20px;
+	height: 18px;
 	font-weight: bold;
-	padding-left: 6px;
-	box-sizing: border-box;
+	margin: 0px 0 0 0;
 }
 
 .task-container > div > *::after {
 	content: attr( data-local );
-	display: block;
+	height: 20px;
+	font-size: 11px;
+	line-height: 11px;;
+	margin: 18px  0 0 0;
+}
+
+/**************************************/
+.task-row-container,
+.task-menu-aside {
+	display: inline-block;
+	vertical-align: top;
+	transition: width, margin, 0.5s ease-in-out;
+	top: 0;
+	margin: 0;
+	left: 0;
+	position: relative;
+}
+
+.task-row-container {
 	width: 100%;
-	height: calc( 100% - 20px );
-	font-size: 10px;
-	line-height: 10px;
+}
+
+.task-row-container.active {
+	width: calc( 100% - 260px );
+}
+
+.task-menu-aside {
+	/*
+	border: solid 0.1px #F00;
+	*/
+	width: 250px;
+	height: 400px;
+	margin-left: -260px;
+}
+
+.task-menu-aside.active {
+	margin-left: 0px;
+}
+
+.task-tool > div.active {
+	margin-left: 250px;
+}
+
+/*****************************/
+
+.task-menu-aside {
+	padding: 24px 0 0 0;
+}
+
+.task-menu-aside > * {
+	min-height: 40px;
+}
+
+.task-menu-aside section {
+	padding: 12px;
 	box-sizing: border-box;
-	padding-left: 6px; 
+}
+
+.task-menu-aside .task-menu-header {
+	height: 24px;
+}
+
+.task-menu-aside .task-menu-header > em {
+	width: calc( 100% - 50px );
+	height: 24px;
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 0 0 0 8px;
+	text-transform: capitalize;
+}
+
+.task-menu-aside .task-menu-header > button {
+	height: 100%;
+	width: 20px;
+	height: 24px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	top: 0;
+	vertical-align: top;
+	border: none;
+	background-color: transparent;
+}
+
+.task-menu-aside .task-menu-header > button:hover,
+.task-menu-aside .task-menu-header > button:focus {
+
+}
+
+.task-menu-aside .task-menu-cell {
+}
+
+.task-menu-aside .task-menu-week > *,
+.task-menu-aside .task-menu-cell > * {
+	width: calc( ( 100% / 7 ) );
+	display: inline-block; 
+	text-align: center;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	outline: 0;
+	height: 24px;
+	line-height: 28px;
+	position: relative;
+}
+
+.task-menu-aside .task-menu-cell > *::before {
+	content: "";
+	display: block;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: calc( 50% - 15px);
+	left: calc( 50% - 15px );
+	border-radius: 50%;
+	background-color: transparent;
+	z-index: -1;
+}
+
+.task-menu-aside .task-menu-cell > *:hover::before,
+.task-menu-aside .task-menu-cell > *:focus::before {
+	background-color: rgba( 241, 243, 244, 1 );
+}
+
+.task-menu-aside input {
+	border-radius: 4px;
+	border: none;
+	outline: 0;
+	border: solid 1px #DDD;
+	width: calc( 100% - 24px );
+	padding: 8px 12px;
+	font-size: 16px;
+	margin: 0;
+	margin-top: 24px;
 }

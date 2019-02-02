@@ -8,6 +8,9 @@
 		$session.check ( );
 
 		$scope.openTask = openTask;
+		$scope.menu = __menu;
+		$scope.aside = true;
+		$scope.calendar = __calendar ( );
 
 		$scope.tasks = [
 			{ hour: 8, title: "Reunião", local: "Sala 05" },
@@ -36,6 +39,16 @@
 
 		function openTask ( $task ) {
 			console.log ( $task );
+		};
+
+		function __menu ( ) {
+			$scope.aside = !$scope.aside;
+			console.log ( $scope.aside );
+		};
+
+		function __calendar ( ) {
+			var $date = $Date ( ); 
+			return $Date ( ).calendar ( $date.m, $date.Y );
 		};
 
 	};

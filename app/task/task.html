@@ -2,7 +2,7 @@
 <header class="task-header">
 	<nav class="task-nav">
 		<ul>
-			<li><button></button></li>
+			<li><button ng-click="menu ( );"></button></li>
 			<li><span>31</span><em>Agenda</em></li>
 			<li><button>Hoje</button></li>
 			<li class="task-nav-arrows"><button><</button><button>></button></li>
@@ -14,19 +14,40 @@
 <main class="task-view">
 	<section class="task-tool">
 		<button>+</button>
-		<div>
+		<div class="{{ ( aside ) ? 'active' : ''; }}">
 			<em>sex</em>
 			<span>1</span>
 		</div>
 	</section>
-	<section class="task-container">
-		<div data-hour="{{task.hour}}" ng-repeat=" task in taskView">
-			<!--button 
-				ng-show="task.title" 
-				ng-click="openTask ( task ); "
-				data-title="{{task.title}}" 
-				data-local="{{task.local}}"
-			></button-->
-		</div>
-	</section>
+	<aside class="task-menu-aside {{ ( aside ) ? 'active' : ''; }}">
+		<section>
+			<div class="task-menu-header">
+				<em>{{ calendar.month }} de {{ calendar.year }}</em>
+				<button><</button>
+				<button>></button>
+			</div>
+			<div class="task-menu-week">
+				<span ng-repeat=" w in calendar.week track by $index">{{ w }}</span>
+			</div>
+			<div class="task-menu-cell">
+				<button ng-repeat=" d in calendar.days track by $index" >{{ d }}</button>
+			</div>
+		</section>
+		<section>
+			<input type="" name="" ng-model="search" placeholder="Pesquise aqui..." >
+		</section>
+	</aside>
+	<div class="task-row-container {{ ( aside ) ? 'active': '' }}">
+		<section class="task-container">
+			<div></div>
+			<div data-hour="{{task.hour}}" ng-repeat=" task in taskView">
+				<button 
+					ng-show="task.title" 
+					ng-click="openTask ( task ); "
+					data-title="{{task.title}}" 
+					data-local="{{task.local}}"
+				></button>
+			</div>
+		</section>
+	</div>
 </main>

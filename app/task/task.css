@@ -12,7 +12,7 @@ body {
 .task-nav > * {
 	align-items: center;
 	display: grid;
-	grid-template-columns: 60px 3fr 2fr 2fr 3fr 4fr;
+	grid-template-columns: 60px 4fr 2fr 2fr 4fr;
 	grid-template-rows: 1fr;
 	height: 60px;
 	text-align: center;
@@ -26,6 +26,7 @@ body {
 	font-size: 18px;
 	text-align: center;
 	position: relative;
+	/* border: solid 1px #F00; */
 }
 
 .task-nav > * > * > button,
@@ -43,6 +44,7 @@ body {
 	background-color: transparent;
 	border:solid 1px #CCC;
 	outline: 0;
+	text-transform: capitalize;
 }
 
 .task-nav > * > * > button:hover,
@@ -56,8 +58,7 @@ body {
 .task-nav > * > * > input {
 	cursor: auto;
 	background-color: transparent !important;
-	width: auto
-	margin-right 16px;
+	width: calc( 100% - 60px );
 	display: block;
 }
 
@@ -73,16 +74,23 @@ body {
   	background-position: center;
   	background-repeat: no-repeat;
   	background-size: 60% 60%;
-	width: 80%;
+	width: 50px;
 	border: none;
 	border-radius: 50%;
-	height: 80%;
+	height: 50px;
 	vertical-align: top;
 	padding: 0;
-	margin: 10% 0 0 0;
-	top: 0;
-	left: 0;
+	margin: 0 0 0 0;
+	top: calc( 50% - 25px ) ;
+	left: calc( 50% - 25px);
 	position: relative;
+	transition: box-shadow 0.3s ease-in-out;
+	background-color: rgba( 241, 243, 244, 0.4 );
+}
+
+.task-nav > * > *:first-child button:hover,
+.task-nav > * > *:first-child button:focus {
+	box-shadow: 0px 1px 12px 1px #CCC;
 }
 
 .task-nav > * > * > span {
@@ -94,14 +102,15 @@ body {
 	vertical-align: baseline;
 	border-radius: 4px;
 	background-color: rgb( 68, 132, 241 );
-	border:solid 1px #AAA;
 	color: #FFF;
 	margin-right: 8px;
+	border: none;
 }
 
 .task-nav > * > * > em {
 	font-weight: normal;
 	font-style: normal;
+	text-transform: capitalize;
 }
 
 .task-nav .task-nav-arrows > * {
@@ -358,48 +367,54 @@ body {
 	min-height: 40px;
 }
 
-.task-menu-aside section {
+.calendar {
 	padding: 12px;
 	box-sizing: border-box;
 }
 
-.task-menu-aside .task-menu-header {
+.calendar .calendar-header {
 	height: 24px;
 }
 
-.task-menu-aside .task-menu-header > em {
-	width: calc( 100% - 50px );
+.calendar .calendar-header > *:first-child {
+	width: calc( 100% - 72px );
 	height: 24px;
 	display: inline-block;
 	box-sizing: border-box;
 	padding: 0 0 0 8px;
 	text-transform: capitalize;
+	font-style: normal;
 }
 
-.task-menu-aside .task-menu-header > button {
+.calendar .calendar-header > button {
 	height: 100%;
-	width: 20px;
-	height: 24px;
+	width: 28px;
+	height: 28px;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	top: 0;
-	vertical-align: top;
 	border: none;
 	background-color: transparent;
+	border-radius: 50%;
+	outline: 0;
+	font-size: 20px;
+	line-height: 28px
+	vertical-align: top;
+	text-align: center;
 }
 
-.task-menu-aside .task-menu-header > button:hover,
-.task-menu-aside .task-menu-header > button:focus {
-
+.calendar .calendar-header > button:hover,
+.calendar .calendar-header > button:focus {
+	background-color: rgba( 241, 243, 244, 1 );
 }
 
-.task-menu-aside .task-menu-cell {
+.calendar .calendar-cells {
 }
 
-.task-menu-aside .task-menu-week > *,
-.task-menu-aside .task-menu-cell > * {
-	width: calc( ( 100% / 7 ) );
+.calendar .calendaar-week > *,
+.calendar .calendar-cells > * {
+	width: calc( ( 100% / 7 ) - 1px );
 	display: inline-block; 
 	text-align: center;
 	box-sizing: border-box;
@@ -412,9 +427,11 @@ body {
 	height: 24px;
 	line-height: 28px;
 	position: relative;
+	vertical-align: top;
+	top: 0;
 }
 
-.task-menu-aside .task-menu-cell > *::before {
+.calendar .calendar-cells > *::before {
 	content: "";
 	display: block;
 	width: 30px;
@@ -427,9 +444,14 @@ body {
 	z-index: -1;
 }
 
-.task-menu-aside .task-menu-cell > *:hover::before,
-.task-menu-aside .task-menu-cell > *:focus::before {
+.calendar .calendar-cells > *:hover::before,
+.calendar .calendar-cells > *:focus::before {
 	background-color: rgba( 241, 243, 244, 1 );
+}
+
+
+.calendar .calendar-cells .monthLess {
+	color: #AAA;
 }
 
 .task-menu-aside input {

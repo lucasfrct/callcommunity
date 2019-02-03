@@ -3,10 +3,15 @@
 	<nav class="task-nav">
 		<ul>
 			<li><button ng-click="menu ( );"></button></li>
-			<li><span>31</span><em>Agenda</em></li>
-			<li><button>Hoje</button></li>
-			<li class="task-nav-arrows"><button><</button><button>></button></li>
-			<li><button>Janeiro de 2019</button></li>
+			<li>
+				<span>{{ date.day }}</span>
+				<em>{{ date.Month }} de {{ date.Year }}</em>
+			</li>
+			<li><button ng-click=" today ( ); ">Hoje</button></li>
+			<li class="task-nav-arrows">
+				<button ng-click=" previousDay ( ( date.d ) );"><</button>
+				<button ng-click=" nextDay ( ( date.d ) );">></button>
+			</li>
 			<li><input  type="text" placeholder="Pesquise aqui..." ></li>
 		</ul>
 	</nav>
@@ -15,22 +20,35 @@
 	<section class="task-tool">
 		<button>+</button>
 		<div class="{{ ( aside ) ? 'active' : ''; }}">
-			<em>sex</em>
-			<span>1</span>
+			<em>{{ date.week }}</em>
+			<span>{{ date.day }}</span>
 		</div>
 	</section>
 	<aside class="task-menu-aside {{ ( aside ) ? 'active' : ''; }}">
-		<section>
-			<div class="task-menu-header">
-				<em>{{ calendar.month }} de {{ calendar.year }}</em>
-				<button><</button>
-				<button>></button>
+		<section class="calendar">
+			<div class="calendar-header">
+				<em>{{ calendar.month }} de {{ calendar.current.year }}</em>
+				<button ng-click="previous ( calendar.current.year, calendar.current.m );" ><</button>
+				<button ng-click="next ( calendar.current.year, calendar.current.m );" >></button>
 			</div>
-			<div class="task-menu-week">
+			<div class="calendaar-week">
 				<span ng-repeat=" w in calendar.week track by $index">{{ w }}</span>
 			</div>
-			<div class="task-menu-cell">
-				<button ng-repeat=" d in calendar.days track by $index" >{{ d }}</button>
+			<div class="calendar-cells">
+				<button 
+					ng-repeat=" before in calendar.before.days track by $index"
+					ng-click=" daySelect ( calendar.before.year, calendar.before.m, before )"
+					class="monthLess" 
+				>{{ before }}</button>
+				<button 
+					ng-repeat=" current in calendar.current.days track by $index"
+					ng-click=" daySelect ( calendar.current.year, calendar.current.m, current )"
+				>{{ current }}</button>
+				<button 
+					ng-repeat=" after in calendar.after.days track by $index"
+					ng-click=" daySelect ( calendar.after.year, calendar.after.m, after )"
+					class="monthLess"
+				>{{ after }}</button>
 			</div>
 		</section>
 		<section>

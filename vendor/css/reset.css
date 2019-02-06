@@ -16,12 +16,29 @@ html body {
 }
 
 body {
-    background-image: url( "../img/community3.jpg" );
     background-attachment: local;
     background-origin: border-box;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+html,
+html body, 
+html body header, 
+html body main, 
+html body footer {
+    clear: both;
+    display: block;
+}
+
+html body header::after, 
+html body main::after, 
+html body footer::after {
+    content: "";
+    clear: both;
+    display: block;
+    vertical-align: top;
 }
 
 html,
@@ -42,4 +59,5 @@ body div {
     top: 0;
     left: 0;
     vertical-align: top;
+    display: block;
 }

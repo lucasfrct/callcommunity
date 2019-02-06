@@ -1,6 +1,3 @@
-body {
-    background: none;
-}
 
 .task-header {  }
 
@@ -33,7 +30,7 @@ body {
 .task-nav > * > * > input {
 	cursor: pointer;
 	border: none;
-	height: 100%;
+	height: auto;
 	font-size: inherit;
 	line-height: inherit;
 	display: inline-block;
@@ -128,6 +125,7 @@ body {
 	min-height: 500px;
   	display: block;
   	margin-top: 10px;
+  	animation: enter 2s ease-in-out;
   	/* border: solid 1px #f00;*/
 	/*
 	scrollbar-width: 2px;
@@ -464,4 +462,13 @@ body {
 	font-size: 16px;
 	margin: 0;
 	margin-top: 24px;
+}
+
+@keyframes enter {
+	0% {
+		opacity: 0;
+	},
+	100% {
+		opacity: 1;
+	}
 }

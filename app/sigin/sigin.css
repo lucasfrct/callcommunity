@@ -1,3 +1,7 @@
+body {
+    background-image: url( "../../vendor/img/community3.jpg" );
+}
+
 .sigin-form.sigin-authorized {
     animation: authorized 1s ease-in-out;
     opacity: 0;
@@ -6,17 +10,19 @@
 }
 
 .sigin-form {
-    background-color: rgba( 255, 255, 255, 0.97 );
+    background-color: rgba( 255, 255, 255, 0.98 );
 	border: solid 1px #dadce0;
     padding: 40px;
     max-width: 700px;
-    margin: 48px 0 0 calc( 50% - ( 700px / 2 ) ); 
-    width: 700px;
+    min-width: 600px;
+    margin: 80px calc( 50% - 350px ); 
+    width: 100%;
     border-radius: 12px;
     display: grid;
     grid-template-columns: 1fr 200px;
     grid-template-rows: 1fr;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .sigin-form.load::before {
@@ -56,17 +62,20 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	display: block;
 }
 
 .sigin-form input {
 	border-radius: 4px;
 	border: solid 1px #dadce0;
-	font-size: 1em;
-	padding: 0 0 0 12px;
+	font-size: 18px;
+	padding: 0 0 0 14px;
 	height: 34px;
 	background-color: transparent;
 	margin: 0;
 	box-sizing: border-box !important;
+	width: 100%;
+	display: inline-block;
 }
 
 .sigin-title {
@@ -89,7 +98,7 @@
 }
 
 .sigin-name > *:last-child {
-	left: 12px;
+	margin-left: 12px;
 }
 
 .sigin-email {
@@ -105,21 +114,20 @@
 .sigin-notice {
 	font-size:  0.7em;
 	padding: 8px 0;
+	position: relative;
 }
 
 .sigin-password {
 	display: grid;
-	grid-template-columns: calc( (100% - 58px ) / 2 ) calc( (100% - 58px ) / 2 ) calc( ( 100% + 34px ) - 100% );
+	grid-template-columns: 1fr 1fr 34px;
 	grid-template-rows: 34px;
-	margin: 0;
+	grid-gap: 8px;
+	margin: 0 0 8px 0;
+	width: 100%;
+	position: relative;
 }
-
-.sigin-password > *:nth-child( 2 ) {
-	left: 12px;
-}
-
 .sigin-password > *:last-child {
-	line-height: 32px;
+	line-height: 34px;
 	text-align: center;
 	background-image: url( "../../vendor/img/show-password.png" );
 	background-attachment: local;
@@ -128,8 +136,10 @@
   	background-repeat: no-repeat;
   	background-size: 70% 70%;
 	cursor: pointer;
-	left: 22px;
 	border-radius: 4px;
+	display: inline-block;
+	height: 34px;
+	width: auto;
 }
 
 .sigin-password > *:last-child:hover {
@@ -144,7 +154,7 @@
 	border-radius: 4px;
 	cursor: pointer;
 	display: block;
-	padding: 12px 20px;
+	padding: 14px 28px;
 	margin: 40px 0 8px 0;
 	float: right;
 	font-size: 1.01em;
